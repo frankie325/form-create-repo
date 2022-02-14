@@ -1,4 +1,4 @@
-import { extend } from "@/utils";
+import { extend, deepCopy } from "@/utils";
 import $FormCreate from "../components/formCreate";
 import Handle from "../handler";
 let _vue = null;
@@ -24,7 +24,7 @@ export default function FormCreateFactory(config) {
             });
         },
         initOptions(options) {
-            this.options = options;
+            this.options = { ...deepCopy(options) };
         },
         created() {},
     });

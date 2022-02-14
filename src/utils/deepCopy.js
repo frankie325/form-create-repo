@@ -12,7 +12,7 @@ export default function deepCopy(target) {
                 copy[i] = deepCopy(target[i]);
             }
             // 数组和对象，Map，Set可继续遍历
-        } else if (is.Object(target) === "Object") {
+        } else if (is.Object(target)) {
             copy = {};
             const keys = Object.keys(target);
             for (let i = 0; i < keys.length; i++) {
@@ -20,7 +20,7 @@ export default function deepCopy(target) {
             }
 
             // 其他类型调用构造函数创建
-        } else if (is.Date(target) === "Date") {
+        } else if (is.Date(target)) {
             const Ctor = target.constructor;
             copy = new Ctor(target);
         } else {
