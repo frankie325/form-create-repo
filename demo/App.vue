@@ -10,7 +10,15 @@ export default {
     data() {
         return {
             rule: [],
-            option: {},
+            // 全局配置
+            option: {
+                // iview的Form组件属性
+                form: {
+                    inline: false,
+                    labelWidth: "100",
+                    labelPosition: "left",
+                },
+            },
         };
     },
 };

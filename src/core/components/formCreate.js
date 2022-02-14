@@ -16,9 +16,7 @@ export default function $FormCreate(FormCreate) {
             },
         },
         data() {
-            return {
-                formCreate: null,
-            };
+            return {};
         },
         render(h) {
             // return h("div", "111");
@@ -27,6 +25,10 @@ export default function $FormCreate(FormCreate) {
         beforeCreate() {
             const { rule, option } = this.$options.propsData;
             this.formCreate = new FormCreate(this, rule, option);
+        },
+        mounted() {
+            console.log("---------form-create实例---------", this);
+            console.log("----------FormCreate实例----------", this.formCreate);
         },
     };
 }
