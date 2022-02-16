@@ -5,4 +5,6 @@ export default function Handler(fc) {
         fc,
         vm: fc.vm,
     });
+
+    this.$manager = new fc.manager(this); //
 }

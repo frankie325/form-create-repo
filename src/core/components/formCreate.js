@@ -15,11 +15,30 @@ export default function $FormCreate(FormCreate) {
                 },
             },
         },
+        watch: {
+            option: {
+                handler(n) {
+                    this.formCreate.initOptions(n);
+                    console.log("----------FormCreate实例----------", this.formCreate);
+                },
+                deep: true,
+            },
+        },
         data() {
             return {};
         },
         render(h) {
-            // return h("div", "111");
+            console.log("form-create重新渲染");
+            return h(
+                "div",
+                {
+                    style: { color: "red" },
+                    // class: "div1",
+                    // class: { div1: true },
+                    class: [{ div1: true }, "div2", ["div3"]],
+                },
+                11
+            );
             // return this.formCreate.render;
         },
         beforeCreate() {

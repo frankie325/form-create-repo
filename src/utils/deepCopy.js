@@ -1,7 +1,11 @@
 import is from "./type";
 
+function isObject(obj) {
+    return obj !== null && typeof obj === "object";
+}
+
 export default function deepCopy(target) {
-    if (!is.Object(target)) {
+    if (!isObject(target)) {
         // 非引用类型直接返回
         return target;
     } else {
