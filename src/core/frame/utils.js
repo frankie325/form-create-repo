@@ -1,4 +1,13 @@
-import { mergeProps } from "@/utils";
+import { mergeProps, is } from "@/utils";
+
+export function enumerable(value, writable) {
+    return {
+        value,
+        enumerable: false,
+        configurable: false,
+        writable: !!writable,
+    };
+}
 
 // 合并option.global属性
 export function mergeGlobal(target, merge) {
@@ -13,7 +22,26 @@ export function mergeGlobal(target, merge) {
     return target;
 }
 
-function mergeRule(rule, merge) {
+export function mergeRule(rule, merge) {
     // console.log(rule, merge);
     return mergeProps(rule, Array.isArray(merge) ? merge : [merge]);
+}
+
+// rule如果是由maker生成，则为creator实例，执行getRule方法，得到rule
+export function getRule(rule) {
+    return is.Function(rule.getRule) ? rule.getRule() : rule;
+}
+
+export function funcProxy(target, proxy) {
+    Object.defineProperties(
+        target,
+        Object.keys(proxy).reduce((initial, key) => {
+            initial[key] = {
+                get() {
+                    return proxy[key]();
+                },
+            };
+            return initial;
+        }, {})
+    );
 }

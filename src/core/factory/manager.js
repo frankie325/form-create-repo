@@ -9,10 +9,10 @@ export function createManager(proto) {
     return CustomManager;
 }
 
-export default function Manager(handler) {
+export default function Manager(handle) {
     extend(this, {
-        $handler: handler,
-        vm: handler.vm,
+        $handle: handle,
+        vm: handle.vm,
         options: {},
         ref: "fcForm",
         key: null, //Form组件的key属性

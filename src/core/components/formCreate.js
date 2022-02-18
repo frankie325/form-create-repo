@@ -3,6 +3,9 @@ const Name = "FormCreate";
 export default function $FormCreate(FormCreate) {
     return {
         name: Name,
+        model: {
+            prop: "api",
+        },
         props: {
             rule: {
                 type: Array,
@@ -14,8 +17,12 @@ export default function $FormCreate(FormCreate) {
                     return {};
                 },
             },
+            value: Object,
         },
         watch: {
+            // value:{
+
+            // },
             option: {
                 handler(n) {
                     this.formCreate.initOptions(n);
@@ -25,7 +32,10 @@ export default function $FormCreate(FormCreate) {
             },
         },
         data() {
-            return {};
+            return {
+                updateValue: "",
+                renderRule: [...(this.rule || [])],
+            };
         },
         render(h) {
             console.log("form-create重新渲染");
@@ -37,9 +47,21 @@ export default function $FormCreate(FormCreate) {
                     // class: { div1: true },
                     class: [{ div1: true }, "div2", ["div3"]],
                 },
-                11
+                "1111"
             );
             // return this.formCreate.render;
+        },
+        methods: {
+            _renderRule() {
+                this.renderRule = [...(this.rule || [])];
+            },
+            _updateValue(value) {
+                this.updateValue = JSON.stringify(value);
+                this.$emit("update:value", value);
+            },
+        },
+        updated() {
+            console.log("form-create执行updated钩子")
         },
         beforeCreate() {
             const { rule, option } = this.$options.propsData;
