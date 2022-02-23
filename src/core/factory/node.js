@@ -1,4 +1,10 @@
-import { extend, toLine } from "@/utils";
+import Vue from "vue";
+import { extend, toLine, is } from "@/utils";
+
+function parseProp(prop) {
+    if (is.String(prop)) return { domProps: { innerHTML: prop } };
+    return prop;
+}
 
 export default function createNodeFactory() {
     const aliasMap = {};
@@ -12,7 +18,13 @@ export default function createNodeFactory() {
             this.vm = vm;
             this.$h = vm.$createElement;
         },
-        make(tag, data, children) {},
+        make(tag, data, children) {
+            // 如果是保留标签，则删除data.nativeOn
+            if (Vue.config.isReservedTag(tag) && data.nativeOn) delete data.nativeOn;
+            let Node = this.$h(tag, parseProp(data), children || []);
+            Node.context = this.vm;
+            return Node;
+        },
         aliasMap,
     });
 

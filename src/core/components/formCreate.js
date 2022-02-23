@@ -33,23 +33,26 @@ export default function $FormCreate(FormCreate) {
         },
         data() {
             return {
+                isShow: true,
                 updateValue: "",
                 renderRule: [...(this.rule || [])],
+                formData: {},
+                validate: {},
             };
         },
         render(h) {
             console.log("form-create重新渲染");
-            return h(
-                "div",
-                {
-                    style: { color: "red" },
-                    // class: "div1",
-                    // class: { div1: true },
-                    class: [{ div1: true }, "div2", ["div3"]],
-                },
-                "1111"
-            );
-            // return this.formCreate.render;
+            // return h(
+            //     "div",
+            //     {
+            //         style: { color: "red" },
+            //         // class: "div1",
+            //         // class: { div1: true },
+            //         class: [{ div1: true }, "div2", ["div3"]],
+            //     },
+            //     "1111"
+            // );
+            return this.formCreate.render();
         },
         methods: {
             _renderRule() {
@@ -61,7 +64,7 @@ export default function $FormCreate(FormCreate) {
             },
         },
         updated() {
-            console.log("form-create执行updated钩子")
+            console.log("form-create执行updated钩子");
         },
         beforeCreate() {
             const { rule, option } = this.$options.propsData;

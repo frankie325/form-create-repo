@@ -1,5 +1,6 @@
-import { extend } from "@/utils";
+import { extend, toArray } from "@/utils";
 import is, { hasProperty } from "@/utils/type";
+import { invoke } from "../frame/utils";
 import { $set } from "@/utils/modify";
 export default function useInput(Handle) {
     extend(Handle.prototype, {
@@ -10,16 +11,25 @@ export default function useInput(Handle) {
             return ctx.cacheValue;
         },
         setValue(ctx, value, formValue, setFlag) {
-            console.log("value值更新了");
-            // this.setFormData(ctx, formValue);
+            console.log("value值更新了", this);
+
+            this.setFormData(ctx, formValue);
         },
+        onInput(ctx, value) {
+            let val;
+
+            if ((ctx.input && this.isQuote(ctx, (val = ctx.parser.toValue(value, ctx)))) || this.isChange(ctx, value)) {
+                this.setValue(ctx, val, value);
+            }
+        },
+        // 在form-create实例render过程中，只要访问了formData，Dep就会收集form-create实例
         getFormData(ctx) {
             return this.formData[ctx.id];
         },
         setFormData(ctx, formValue) {
             $set(this.formData, ctx.id, formValue);
         },
-        // 对rule.value，this.form[]进行拦截，相当于双向数据绑定
+        // 对rule.value，this.form进行拦截，相当于双向数据绑定
         valueHandle(ctx) {
             return {
                 enumerable: true,
@@ -86,12 +96,48 @@ export default function useInput(Handle) {
                 )
             );
 
-            this.syncValue(); 
+            this.syncValue();
         },
         //更新到form-create上:value.sync绑定的属性
         syncValue() {
+            if (this.deferSyncFn) {
+                return (this.deferSyncFn.sync = true);
+            }
             // this.vm._updateValue({ ...this.form }); //浅拷贝会丢失get，set方法
             this.vm._updateValue(this.form);
+        },
+        // 当递归调用传入的方法时，等所有递归结束后再执行syncValue方法
+        deferSyncValue(fn, sync) {
+            if (!this.deferSyncFn) {
+                this.deferSyncFn = fn;
+            }
+
+            if (!this.deferSyncFn.sync) {
+                this.deferSyncFn.sync = sync;
+            }
+
+            invoke(fn);
+
+            if (this.deferSyncFn === fn) {
+                this.deferSyncFn = null;
+                if (fn.sync) {
+                    this.syncValue();
+                }
+            }
+        },
+        // 生成表单的校验规则
+        validate() {
+            toEmpty(this.vm.validate);
+            this.fields().forEach((field) => {
+                this.fieldCtx[field].forEach((ctx) => {
+                    this.vm.validate[ctx.id] = toArray(ctx.rule.validate);
+                });
+            });
+            return this.vm.validate;
+        },
+        // 判断value是不是引用类型，且与之前的value相等
+        isQuote(ctx, value) {
+            return (is.Object(value) || Array.isArray(value)) && value === ctx.rule.value;
         },
         fields() {
             return Object.keys(this.fieldCtx);

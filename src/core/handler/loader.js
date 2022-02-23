@@ -39,7 +39,7 @@ export default function useLoader(Handle) {
                     this._loadRule(children, parent);
                 }
             };
-            console.log(rules);
+            // console.log(rules);
             rules.map((_rule, index) => {
                 if (!is.Object(_rule)) return err("rule 必须为对象或由maker创建", _rule);
 
@@ -58,6 +58,7 @@ export default function useLoader(Handle) {
                         ctx.updateType();
                         this.bindParser();
                     }
+                    this.appendValue(ctx.rule);
                 }
 
                 ctx.parent = parent;
@@ -66,6 +67,9 @@ export default function useLoader(Handle) {
                 //处理rule.children
                 ctx.parser.loadChildren === false || loadChildren(ctx.rule.children, ctx);
 
+                if (!parent) {
+                    this.sort.push(ctx.id);
+                }
                 const r = ctx.rule;
                 if (ctx.input) Object.defineProperty(r, "value", this.valueHandle(ctx));
             });

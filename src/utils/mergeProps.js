@@ -37,6 +37,7 @@ const rule = {
     field: "表单字段",
     value: "",
     name: "自定义组件的字段名称",
+    native: false,
     attrs: {}, //与props一样，组件的props如果没有用到，将渲染到组件根标签
     props: {}, //作为组件的props
     domProps: {},

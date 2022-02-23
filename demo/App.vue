@@ -1,7 +1,7 @@
 <template>
     <div>
         <FormCreate :rule="rule" :option="option" :value.sync="fValue">
-            <div>11</div>
+            <!-- <div>11</div> -->
         </FormCreate>
         <Button type="primary" @click="changeProp">按钮</Button>
     </div>
@@ -23,7 +23,9 @@ export default {
                     type: "input",
                     // name: "自定义组件的字段名称",
                     attrs: {}, //与props一样，组件的props如果没有用到，将渲染到组件根标签
-                    props: {}, //作为组件的props
+                    props: {
+                        clearable: true,
+                    }, //作为组件的props
                     domProps: {},
                     scopedSlots: {
                         ceshi() {},
@@ -34,9 +36,12 @@ export default {
                     // class: "div1",
                     // class: { div1: true }, //class三种形式
                     // class: [{ div1: true }, "div2", ["div3"]], //组合
-                    validate: [], //校验规则
+                    validate: [{ required: true, message: "姓名不能为空", trigger: "change" }], //校验规则
                     children: [],
-                    wrap: {}, //设置FormItem
+                    wrap: {
+                        labelWidth: 80,
+                        label: "姓名11",
+                    }, //设置FormItem
                     options: [], //设置radio,select,checkbox等组件option选择项
                 },
                 {
@@ -49,6 +54,7 @@ export default {
                                     title: "年龄",
                                     type: "input",
                                     field: "age",
+                                    validate: [{ required: true, message: "年龄不能为空", trigger: "change" }], //校验规则
                                 },
                             ],
                         },
@@ -60,7 +66,7 @@ export default {
                 // iview的Form组件属性
                 form: {
                     inline: false,
-                    labelWidth: "100",
+                    labelWidth: 100,
                     labelPosition: "left",
                     disabled: false,
                 },
@@ -73,8 +79,8 @@ export default {
                             size: "large",
                         },
                         on: {
-                            fun1: () => {
-                                console.log("user");
+                            "on-change": (value) => {
+                                console.log("input-change", value);
                             },
                         },
                     },
@@ -100,17 +106,17 @@ export default {
         changeProp() {
             // this.$set(ceshi, "obj", { name: "kfg" });  //没有绑定过观察者实例的属性，使用$set不会进行响应式处理，只起简单的赋值作用
             // this.ceshi.name = {};
-            // this.fValue.name = "kfg33"
-            this.fValue = {
-                name: "kfg22",
-                age: "22222",
-            };
+            this.fValue.name = "kfg33";
+            // this.fValue = {
+            //     name: "kfg22",
+            //     age: "22222",
+            // };
             console.log(this.fValue);
             // this.option.form.inline = true;
         },
     },
     updated() {
-        console.log("update")
+        console.log("update");
     },
     mounted() {
         this.ceshi = {

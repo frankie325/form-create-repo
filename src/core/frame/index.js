@@ -86,6 +86,9 @@ export default function FormCreateFactory(config) {
             this.$handle.init();
             this.vm.$emit("created");
         },
+        render() {
+            return this.$handle.render();
+        },
     });
 
     function $form() {

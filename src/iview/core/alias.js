@@ -15,7 +15,7 @@ export default {
     inputNumber: 'InputNumber',
     input: 'Input',
     formItem: 'FormItem',
-    form: 'iForm',
+    form: 'Form',
     frame: 'fcFrame',
     col: 'iCol',
     row: 'row',

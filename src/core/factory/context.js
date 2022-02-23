@@ -13,9 +13,10 @@ export default function RuleContext(handle, rule) {
         id,
         key: "",
         ref: id,
-        wrapRef: id + "fi",
+        wrapRef: id + "fi", //FormItem的ref
         field: rule.field || undefined,
         rule,
+        prop: undefined,
         origin: rule.__origin__ || rule,
         name: rule.name,
         input: !!rule.field, //是否存在rule.field字段
@@ -26,6 +27,7 @@ export default function RuleContext(handle, rule) {
         parent: undefined, //父级rule配置
         root: undefined, //同一层级的rules配置
         cacheValue: undefined,
+        cacheConfig: undefined, //缓存option.global中的配置
     });
     this.updateType();
     this.updateKey();
@@ -56,5 +58,11 @@ extend(RuleContext.prototype, {
     setParser(parser) {
         this.parser = parser;
         parser.init();
+    },
+    //重新合并rule，比如重新注入参数后的事件
+    initProp() {
+        const rule = { ...this.rule };
+        delete rule.children;
+        this.prop = rule;
     },
 });

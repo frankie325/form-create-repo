@@ -10,7 +10,7 @@ Vue.use(FormCreate, {
     form: {
         clearable: true,
         inline: false,
-        labelWidth: "200",
+        labelWidth: 200,
         labelPosition: "right",
     },
     global: {
@@ -20,10 +20,10 @@ Vue.use(FormCreate, {
                 clearable: false,
                 disabled: false,
             },
-            on: {
-                fun1: [() => {console.log("global")}],
-                fun2: () => {},
-            },
+            // on: {
+            //     fun1: [() => {console.log("global")}],
+            //     fun2: () => {},
+            // },
         },
     },
 });

@@ -50,7 +50,7 @@ export default function useContext(Handle) {
                 this[field][key].push(ctx);
             }
         },
-        // 将ctx实例设置到handler.ctxs中，没有定义rule.field则不会进行设置
+        // 将ctx实例设置到handler.ctxs中，不论有没有定义rule.field都会进行设置
         setCtx(ctx) {
             const { id, field, name, rule } = ctx;
             this.ctxs[id] = ctx;

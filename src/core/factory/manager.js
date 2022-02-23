@@ -26,6 +26,11 @@ export default function Manager(handle) {
 }
 
 extend(Manager.prototype, {
+    __init() {
+        this.$render = this.$handle.$render;
+        this.$r = (...args) => this.$render.renderRule(...args);
+    },
+    beforeRender() {},
     updateKey() {
         this.key = unique();
     },
@@ -40,4 +45,5 @@ extend(Manager.prototype, {
     getDefaultOptions() {
         return {};
     },
+    render(children) {},
 });

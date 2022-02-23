@@ -1,4 +1,5 @@
 import { mergeProps, is } from "@/utils";
+import { logError } from "@/utils/console";
 
 export function enumerable(value, writable) {
     return {
@@ -44,4 +45,14 @@ export function funcProxy(target, proxy) {
             return initial;
         }, {})
     );
+}
+
+// 错误拦截，并执行该方法
+export function invoke(fn, def) {
+    try {
+        def = fn();
+    } catch (e) {
+        logError(e);
+    }
+    return def;
 }
