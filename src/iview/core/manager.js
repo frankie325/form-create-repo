@@ -35,19 +35,32 @@ export default {
     // 创建FormItem
     makeWrap(ctx, children) {
         const rule = ctx.prop;
-        const key = `${this.key}${ctx.key}`;
-        const wrap = mergeProps(rule.wrap, [
-            {
-                props: {
-                    label: rule.title,
-                    prop: ctx.id,
-                },
-                key: key,
-                ref: ctx.wrapRef,
-                type: "formItem",
+        const uni = `${this.key}${ctx.key}`;
+        const wrap = {
+            props: {
+                label: rule.title,
+                ...(rule.wrap || {}),
+                prop: ctx.id,
             },
-        ]);
+            key: `${uni}fi`,
+            ref: ctx.wrapRef,
+            type: "formItem",
+        };
 
-        return this.$r(wrap, children);
+        const item = this.$r(wrap, children);
+        if (rule.col) return this.makeCol(rule, uni, item);
+        return item;
+    },
+    // 创建Col
+    makeCol(rule, uni, children) {
+        const col = rule.col;
+        return this.$r(
+            {
+                type: "col",
+                props: col || { span: 24 },
+                key: `${uni}col`,
+            },
+            children
+        );
     },
 };

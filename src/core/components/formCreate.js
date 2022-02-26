@@ -18,6 +18,7 @@ export default function $FormCreate(FormCreate) {
                 },
             },
             value: Object,
+            api: Object,
         },
         watch: {
             // value:{
@@ -30,11 +31,19 @@ export default function $FormCreate(FormCreate) {
                 },
                 deep: true,
             },
+            // 只监听顶层rules的变化
+            rule(n) {
+                if (n.length === this.renderRule.length && n.every((v) => this.renderRule.indexOf(v) > -1)) return;
+                this.formCreate.$handle.reloadRule(n);
+                this._renderRule();
+            },
         },
         data() {
             return {
+                $f: {},
                 isShow: true,
                 updateValue: "",
+                unique: 1, //通过在render过程对unique操作，收集form-create渲染Watcher
                 renderRule: [...(this.rule || [])],
                 formData: {},
                 validate: {},
@@ -55,6 +64,10 @@ export default function $FormCreate(FormCreate) {
             return this.formCreate.render();
         },
         methods: {
+            // 当rules更新时，通过操作unique，实现重新执行render的过程
+            _refresh() {
+                ++this.unique;
+            },
             _renderRule() {
                 this.renderRule = [...(this.rule || [])];
             },

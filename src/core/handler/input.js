@@ -12,12 +12,15 @@ export default function useInput(Handle) {
         },
         setValue(ctx, value, formValue, setFlag) {
             console.log("value值更新了", this);
-
-            this.setFormData(ctx, formValue);
+            ctx.cacheValue = value;
+            this.$render.clearCache(ctx); //如果不清除，renderCtx方法会从缓存中取VNode
+            this.setFormData(ctx, formValue); //修改formData，重新执行form-create的render过程
+            this.syncValue();
+            this.valueChange(ctx, value);
+            // debugger
         },
         onInput(ctx, value) {
             let val;
-
             if ((ctx.input && this.isQuote(ctx, (val = ctx.parser.toValue(value, ctx)))) || this.isChange(ctx, value)) {
                 this.setValue(ctx, val, value);
             }
@@ -29,7 +32,11 @@ export default function useInput(Handle) {
         setFormData(ctx, formValue) {
             $set(this.formData, ctx.id, formValue);
         },
-        // 对rule.value，this.form进行拦截，相当于双向数据绑定
+        /*
+            进行拦截，代理到this.formData
+            所以不论是对rule.value，form-create上v-model绑定的值修改了
+            都是对this.formData修改，触发form-create重新render
+        */
         valueHandle(ctx) {
             return {
                 enumerable: true,
@@ -43,6 +50,10 @@ export default function useInput(Handle) {
                 },
             };
         },
+        valueChange(ctx, value) {
+            this.refreshRule(ctx, value);
+        },
+        refreshRule() {},
         // 判断rule.value是否发生改变
         isChange(ctx, value) {
             return JSON.stringify(ctx.rule.value, strFn) !== JSON.stringify(value, strFn);

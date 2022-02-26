@@ -1,3 +1,4 @@
+import Api from "../frame/api";
 import { extend } from "@/utils";
 import { funcProxy } from "../frame/utils";
 import Render from "../render";
@@ -13,7 +14,7 @@ export default function Handle(fc) {
         formData: {}, //表单数据
         appendData: {},
         form: {},
-        deferSyncFn:undefined,
+        deferSyncFn: undefined,
         api: undefined,
         watching: false, //rule中监听的属性变化了则为true
         loading: undefined, //表示正在处理所有rules
@@ -32,19 +33,33 @@ export default function Handle(fc) {
         options() {
             return fc.options;
         },
+        bus() {
+            return fc.bus;
+        },
     });
+    this.initData(fc.rules);
 
-    this.$manager = new fc.manager(this); //
+    this.$manager = new fc.manager(this);
     this.$render = new Render(this);
-    
+    this.api = fc.extendApi(Api(this), this);
 }
 
 extend(Handle.prototype, {
+    initData(rules) {
+        extend(this, {
+            ctxs: {},
+            fieldCtx: {},
+            nameCtx: {},
+            sort: [],
+            rules,
+        });
+    },
     init() {
         console.log("Handle.init");
         this.appendData = { ...(this.fc.options.formData || {}), ...(this.vm.value || {}), ...this.appendData };
         this.loadRule();
         this.$manager.__init();
+        // debugger
         this.vm.$set(this.vm, "formData", this.formData);
     },
 });

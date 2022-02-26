@@ -1,7 +1,7 @@
 import { extend } from "@/utils";
 import { funcProxy } from "../frame/utils";
 import useRender from "./render";
-import useCache from "./cache"
+import useCache from "./cache";
 export default function Render(handle) {
     extend(this, {
         $handle: handle,
@@ -10,6 +10,7 @@ export default function Render(handle) {
         $h: undefined,
         $manager: handle.$manager,
         orgChildren: {}, //保存每一个rule项的rule.children，没有则为空数组
+        tempList: {},
         vNode: new handle.fc.CreateNode(handle.vm),
         cache: {},
     });
@@ -24,7 +25,8 @@ export default function Render(handle) {
     });
 
     this.initCache();
+    this.initRender();
 }
 
 useRender(Render);
-useCache(Render)
+useCache(Render);

@@ -49,6 +49,8 @@ export default function FormCreateFactory(config) {
             manager: createManager(config.manager), //用来注册来自不同包的manager方法
             CreateNode,
             parsers,
+            bus: new _vue(),
+            extendApi: config.extendApi || ((api) => api), //注册来自不同包的api
         });
         this.init();
         this.initOptions(options);
@@ -59,7 +61,8 @@ export default function FormCreateFactory(config) {
             const vm = this.vm;
             const h = new Handle(this);
             this.$handle = h;
-
+            vm.$f = h.api;
+            vm.$emit("input", h.api);
             vm.$on("hook:created", () => {
                 this.created();
             });

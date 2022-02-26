@@ -1,8 +1,35 @@
 <template>
     <div>
-        <FormCreate :rule="rule" :option="option" :value.sync="fValue">
+        <!-- <Form :label-width="150">
+            <Row>
+                <Col span="12">
+                    <FormItem label="user" prop="user">
+                        <Input placeholder="Username"> </Input>
+                    </FormItem>
+                    <FormItem label="user" prop="user">
+                        <Input placeholder="Username"> </Input>
+                    </FormItem>
+                </Col>
+                <Col span="12">
+                    <FormItem label="user" prop="user">
+                        <Input placeholder="Username"> </Input>
+                    </FormItem>
+                </Col>
+                <Col span="12">
+                    <FormItem label="user" prop="user">
+                        <Input placeholder="Username"> </Input>
+                    </FormItem>
+                </Col>
+            </Row>
+            <FormItem label="password" prop="password">
+                <Input placeholder="Password"> </Input>
+            </FormItem>
+        </Form> -->
+        <!-- {{fValue}} -->
+        <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue">
             <!-- <div>11</div> -->
         </FormCreate>
+        <Button type="primary" @click="addRule">新增规则</Button>
         <Button type="primary" @click="changeProp">按钮</Button>
     </div>
 </template>
@@ -14,6 +41,7 @@ export default {
     watch: {},
     data() {
         return {
+            fApi: {},
             // ceshi: { name: "kfg" },
             rule: [
                 {
@@ -40,26 +68,55 @@ export default {
                     children: [],
                     wrap: {
                         labelWidth: 80,
-                        label: "姓名11",
+                        // label: "姓名11",
                     }, //设置FormItem
                     options: [], //设置radio,select,checkbox等组件option选择项
-                },
-                {
-                    type: "row",
-                    children: [
+                    // col: {},
+                    control: [
                         {
-                            type: "col",
-                            children: [
+                            handle: (val) => !!val,
+                            rule: [
                                 {
-                                    title: "年龄",
                                     type: "input",
-                                    field: "age",
-                                    validate: [{ required: true, message: "年龄不能为空", trigger: "change" }], //校验规则
+                                    field: "info",
+                                    title: "差评原因",
+                                    value: "default info",
                                 },
                             ],
                         },
                     ],
                 },
+                // {
+                //     type: "row",
+                //     children: [
+                //         {
+                //             type: "col",
+                //             props: { span: 24 },
+                //             children: [
+                //                 {
+                //                     title: "年龄",
+                //                     type: "input",
+                //                     field: "age",
+                //                     validate: [{ required: true, message: "年龄不能为空", trigger: "change" }], //校验规则
+                //                 },
+                //             ],
+                //         },
+                //     ],
+                // },
+                // {
+                //     type: "row",
+                //     children: [
+                //         {
+                //             title: "性别",
+                //             type: "input",
+                //             field: "sex",
+                //             col: {
+                //                 span: 12,
+                //             },
+                //             validate: [{ required: true, message: "性别不能为空", trigger: "change" }], //校验规则
+                //         },
+                //     ],
+                // },
             ],
             // 全局配置
             option: {
@@ -76,11 +133,11 @@ export default {
                         props: {
                             clearable: true,
                             disabled: false,
-                            size: "large",
+                            // size: "large",
                         },
                         on: {
                             "on-change": (value) => {
-                                console.log("input-change", value);
+                                // console.log("input-change", value);
                             },
                         },
                     },
@@ -106,13 +163,29 @@ export default {
         changeProp() {
             // this.$set(ceshi, "obj", { name: "kfg" });  //没有绑定过观察者实例的属性，使用$set不会进行响应式处理，只起简单的赋值作用
             // this.ceshi.name = {};
-            this.fValue.name = "kfg33";
+            this.fValue.name = Math.random();
             // this.fValue = {
             //     name: "kfg22",
             //     age: "22222",
             // };
             console.log(this.fValue);
             // this.option.form.inline = true;
+        },
+        addRule() {
+            this.fApi.append(
+                {
+                    type: "input",
+                    title: "商品简介",
+                    field: "goods_info",
+                    value: "商品",
+                    props: {
+                        type: "text",
+                        placeholder: "请输入商品简介",
+                    },
+                    validate: [{ required: true, message: "请输入商品简介", trigger: "blur" }],
+                },
+                "name"
+            );
         },
     },
     updated() {

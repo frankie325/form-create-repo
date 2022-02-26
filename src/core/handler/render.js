@@ -4,7 +4,11 @@ export default function useRender(Handle) {
     extend(Handle.prototype, {
         render() {
             ++this.loadedId;
-            return this.$render.render();
+            if (this.vm.unique > 0) return this.$render.render();
+            else {
+                this.vm.unique = 1;
+                return [];
+            }
         },
     });
 }

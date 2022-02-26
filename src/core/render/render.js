@@ -2,6 +2,10 @@ import { extend, is } from "@/utils";
 import { mergeRule } from "../frame/utils";
 export default function useRender(Render) {
     extend(Render.prototype, {
+        initRender() {
+            this.tempList = {};
+            this.clearOrgChildren();
+        },
         // 保存每一个rule项的rule.children，没有则为空数组
         initOrgChildren() {
             const ctxs = this.$handle.ctxs;
@@ -12,6 +16,9 @@ export default function useRender(Render) {
                 }
                 return initial;
             }, {});
+        },
+        clearOrgChildren() {
+            this.orgChildren = {};
         },
         // 合并option.global中的配置到rule
         mergeGlobal(ctx) {
@@ -50,6 +57,12 @@ export default function useRender(Render) {
             // console.log(ctx);
             if (ctx.rule.type === "hidden") return;
             const rule = ctx.rule;
+
+            /*
+            没有缓存，则进入下述的过程
+            只要访问了form-create的响应式数据都会收集form-create的渲染Watcher
+            当响应式数据变化时，触发form-create更新
+            */
             if (!this.cache[ctx.id]) {
                 let vn;
                 let cacheFlag = true; //是否需要缓存
@@ -123,6 +136,9 @@ export default function useRender(Render) {
             if (ctx.input) {
                 props.push({
                     model: {
+                        //访问this.formData[ctx.id]，收集form-create的渲染Watcher，如果值更新了不调用render.clearCache清除缓存
+                        // 会从缓存拿去VNode，则不会访问this.formData[ctx.id]，经过渲染Watcher的cleanupDeps，该属性收集的渲染Watcher被清除
+                        // 当下次值更新进行时，form-create就不会重新render了
                         value: this.$handle.getFormData(ctx),
                         callback: (value) => {
                             this.onInput(ctx, value);

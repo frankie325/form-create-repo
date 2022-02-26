@@ -2,6 +2,12 @@ import { extend, toCase } from "@/utils";
 import BaseParser from "../factory/parser";
 export default function useContext(Handle) {
     extend(Handle.prototype, {
+        getCtx(id) {
+            return this.getFieldCtx(id) || this.getNameCtx(id)[0] || this.ctxs[id];
+        },
+        getNameCtx(name) {
+            return this.nameCtx[name] || [];
+        },
         getType(originType) {
             const map = this.fc.CreateNode.aliasMap;
             const type = map[originType] || map[toCase(originType)] || originType;
@@ -23,19 +29,21 @@ export default function useContext(Handle) {
                 .filter((k) => none.indexOf(k) === -1)
                 .forEach((key) => {
                     ctx.watch.push(
-                        vm.$watch(() => ctx.rule[key]),
-                        (n, o) => {
-                            this.watching = true;
-                            if (false) {
-                            } else if (key === "type") {
-                                ctx.updateType();
+                        vm.$watch(
+                            () => ctx.rule[key],
+                            (n, o) => {
+                                this.watching = true;
+                                if (false) {
+                                } else if (key === "type") {
+                                    ctx.updateType();
+                                }
+                                this.watching = false;
+                            },
+                            {
+                                deep: key !== "children",
+                                sync: key === "children",
                             }
-                            this.watching = false;
-                        },
-                        {
-                            deep: key !== "children",
-                            sync: key === "children",
-                        }
+                        )
                     );
                 });
         },

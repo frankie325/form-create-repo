@@ -5,6 +5,14 @@ export default function useRender(Render) {
         initCache() {
             this.clearCacheAll();
         },
+        clearCache(ctx) {
+            if (!this.cache[ctx.id]) {
+                // ctx.parent &&
+                return;
+            }
+
+            this.cache[ctx.id] = null;
+        },
         clearCacheAll() {
             this.cache = {};
         },
