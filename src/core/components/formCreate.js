@@ -33,6 +33,7 @@ export default function $FormCreate(FormCreate) {
             },
             // 只监听顶层rules的变化
             rule(n) {
+                // 如果新rules在旧rules每一项都一样，则不用重新更新
                 if (n.length === this.renderRule.length && n.every((v) => this.renderRule.indexOf(v) > -1)) return;
                 this.formCreate.$handle.reloadRule(n);
                 this._renderRule();

@@ -129,6 +129,9 @@ export default function useLoader(Handle) {
                 validate.push(data);
             }
             if (!validate.length) return false;
+
+            let flag = false;
+            
         },
         checkCol(_rule, parent) {
             let rule = getRule(_rule);
