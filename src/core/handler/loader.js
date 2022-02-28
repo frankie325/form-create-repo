@@ -126,9 +126,13 @@ export default function useLoader(Handle) {
                     valid: invoke(() => handleFn(ctx.rule.value, api)),
                     // ctrl:
                 };
+                if (!data.valid) continue;
                 validate.push(data);
             }
             if (!validate.length) return false;
+            let flag = false;
+            
+
         },
         checkCol(_rule, parent) {
             let rule = getRule(_rule);
