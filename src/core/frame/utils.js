@@ -47,6 +47,10 @@ export function funcProxy(target, proxy) {
     );
 }
 
+export function byCtx(rule) {
+    return rule.__fc__ || (rule.__origin__ ? rule.__origin__.__fc__ : null);
+}
+
 // 错误拦截，并执行该方法
 export function invoke(fn, def) {
     try {

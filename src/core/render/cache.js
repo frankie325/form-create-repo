@@ -7,11 +7,13 @@ export default function useRender(Render) {
         },
         clearCache(ctx) {
             if (!this.cache[ctx.id]) {
-                // ctx.parent &&
+                ctx.parent && this.clearCache(ctx.parent);
                 return;
             }
-
+            
+            const parent = this.cache[ctx.id].parent;
             this.cache[ctx.id] = null;
+            parent && this.clearCache(parent);
         },
         clearCacheAll() {
             this.cache = {};

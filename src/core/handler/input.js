@@ -11,13 +11,14 @@ export default function useInput(Handle) {
             return ctx.cacheValue;
         },
         setValue(ctx, value, formValue, setFlag) {
+            // debugger
             console.log("value值更新了", this);
             ctx.cacheValue = value;
             this.$render.clearCache(ctx); //如果不清除，renderCtx方法会从缓存中取VNode
             this.setFormData(ctx, formValue); //修改formData，重新执行form-create的render过程
             this.syncValue();
             this.valueChange(ctx, value);
-            // debugger
+            // this.refresh()
         },
         onInput(ctx, value) {
             let val;
@@ -53,7 +54,16 @@ export default function useInput(Handle) {
         valueChange(ctx, value) {
             this.refreshRule(ctx, value);
         },
-        refreshRule() {},
+        refreshRule(ctx, value) {
+            // control的条件成立时，还需要再次触发loadRule，执行load-start方法
+            if (this.refreshControl(ctx)) {
+                // 因为不知道新增的control.rule会插入到哪里，清空所有缓存VNode
+                this.$render.clearCacheAll(); //可以优化
+                this.loadRule();
+                this.vm.$emit("update", this.api);
+            }
+            this.refresh();
+        },
         // 判断rule.value是否发生改变
         isChange(ctx, value) {
             return JSON.stringify(ctx.rule.value, strFn) !== JSON.stringify(value, strFn);

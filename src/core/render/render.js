@@ -1,5 +1,6 @@
 import { extend, is } from "@/utils";
 import { mergeRule } from "../frame/utils";
+import { lower } from "@/utils/toCase";
 export default function useRender(Render) {
     extend(Render.prototype, {
         initRender() {
@@ -68,7 +69,11 @@ export default function useRender(Render) {
                 let cacheFlag = true; //是否需要缓存
                 const _type = ctx.trueType;
 
+                const isShow = !is.Undef(rule.display) || !!rule.display;
+
                 if (false) {
+                } else if (_type === "fcFragment") {
+                    vn = this.renderChildren(ctx);
                 } else {
                     ctx.initProp(); //重新合并rule，比如重新注入参数后的事件
                     this.mergeGlobal(ctx);
@@ -93,6 +98,12 @@ export default function useRender(Render) {
                     if (ctx.input && prop.native !== false) {
                         vn = this.$manager.makeWrap(ctx, vn);
                     }
+
+                    // if (isShow) {
+                    //     vn = this.display(vn);
+                    // }
+                    // debugger
+                    vn = this.item(ctx, vn);
                 }
                 if (cacheFlag) {
                     this.setCache(ctx, vn, parent);
@@ -101,6 +112,25 @@ export default function useRender(Render) {
                 return vn;
             }
             return this.getCache(ctx);
+        },
+        display(vn) {
+            // if (Array.isArray(vn)) {
+            //     const data = [];
+            //     vn.forEach((v) => {
+            //         if (Array.isArray(v)) return this.display(v);
+            //         if (this.none(v)) data.push(vn);
+            //     });
+            // }
+        },
+        item(ctx, vn) {
+            return this.$h(
+                "fcFragment",
+                {
+                    slot: ctx.rule.slot,
+                    key: ctx.key,
+                },
+                [vn]
+            );
         },
         renderChildren(ctx) {
             const { children } = ctx.rule,
@@ -136,9 +166,6 @@ export default function useRender(Render) {
             if (ctx.input) {
                 props.push({
                     model: {
-                        //访问this.formData[ctx.id]，收集form-create的渲染Watcher，如果值更新了不调用render.clearCache清除缓存
-                        // 会从缓存拿去VNode，则不会访问this.formData[ctx.id]，经过渲染Watcher的cleanupDeps，该属性收集的渲染Watcher被清除
-                        // 当下次值更新进行时，form-create就不会重新render了
                         value: this.$handle.getFormData(ctx),
                         callback: (value) => {
                             this.onInput(ctx, value);
@@ -148,7 +175,6 @@ export default function useRender(Render) {
                 });
             }
             mergeRule(ctx.prop, props);
-            // console.log(ctx.prop.on)
         },
         // 根据rule.type在CreateNode实例中找到对应的方法生成VNode
         defaultRender(ctx, children) {

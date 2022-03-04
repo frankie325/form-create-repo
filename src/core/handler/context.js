@@ -1,9 +1,14 @@
-import { extend, toCase } from "@/utils";
+import { extend, toCase, is } from "@/utils";
 import BaseParser from "../factory/parser";
+import { invoke } from "../frame/utils";
+import { $del } from "@/utils/modify";
 export default function useContext(Handle) {
     extend(Handle.prototype, {
         getCtx(id) {
             return this.getFieldCtx(id) || this.getNameCtx(id)[0] || this.ctxs[id];
+        },
+        getCtxs(id) {
+            return this.fieldCtx[id] || this.nameCtx[id] || (this.ctxs[id] ? [this.ctxs[id]] : []);
         },
         getNameCtx(name) {
             return this.nameCtx[name] || [];
@@ -20,32 +25,14 @@ export default function useContext(Handle) {
         bindParser(ctx) {
             ctx.setParser(this.getParser(ctx));
         },
-        watchCtx(ctx) {
-            const vm = this.vm;
-            // 下列属性不需要监听变化
-            const none = ["field", "value", "vm", "template", "name", "config", "control", "inject", "sync", "payload", "optionsTo", "update"];
-
-            Object.keys(ctx.rule)
-                .filter((k) => none.indexOf(k) === -1)
-                .forEach((key) => {
-                    ctx.watch.push(
-                        vm.$watch(
-                            () => ctx.rule[key],
-                            (n, o) => {
-                                this.watching = true;
-                                if (false) {
-                                } else if (key === "type") {
-                                    ctx.updateType();
-                                }
-                                this.watching = false;
-                            },
-                            {
-                                deep: key !== "children",
-                                sync: key === "children",
-                            }
-                        )
-                    );
-                });
+        noWatch(fn) {
+            if (!this.noWatchFn) {
+                this.noWatchFn = fn;
+            }
+            invoke(fn);
+            if (this.noWatchFn === fn) {
+                this.noWatchFn = null;
+            }
         },
         getFieldCtx(field) {
             return (this.fieldCtx[field] || [])[0];
@@ -66,6 +53,107 @@ export default function useContext(Handle) {
             if (!ctx.input) return;
             this.setIdCtx(ctx, field, "field");
             this.setFormData(ctx, ctx.parser.toFormValue(rule.value, ctx));
+        },
+        watchCtx(ctx) {
+            const vm = this.vm;
+            // 下列属性不需要监听变化
+            const none = ["field", "value", "vm", "template", "name", "config", "control", "inject", "sync", "payload", "optionsTo", "update"];
+
+            Object.keys(ctx.rule)
+                .filter((k) => none.indexOf(k) === -1)
+                .forEach((key) => {
+                    ctx.watch.push(
+                        vm.$watch(
+                            () => ctx.rule[key],
+                            (n, o) => {
+                                /*
+                                    加载control配置时，因为监听rule.children
+                                */
+                                if (this.noWatchFn) return;
+                                // if (this.loading || this.noWatchFn || this.reloading) return;
+
+                                this.watching = true;
+                                if (false) {
+                                } else if (key === "type") {
+                                    ctx.updateType();
+                                } else if (key === "children") {
+                                    // debugger;
+
+                                    const flag = is.trueArray(n);
+                                    this.deferSyncValue(() => {
+                                        if (n !== o) {
+                                            this.rmSub(o);
+                                            this.$render.initOrgChildren();
+                                        }
+                                    });
+                                    flag && this.loadChildren(n, ctx);
+                                    this.vm.$emit("update", this.api);
+                                }
+                                this.$render.clearCache(ctx);
+                                this.watching = false;
+                            },
+                            {
+                                deep: key !== "children",
+                                sync: key === "children",
+                            }
+                        )
+                    );
+                });
+        },
+        rmSub(sub) {
+            is.trueArray(sub) &&
+                sub.forEach((r) => {
+                    r && r.__fc__ && this.rmCtx(r.__fc__);
+                });
+        },
+        rmIdCtx(ctx, key, type) {
+            const field = `${type}Ctx`;
+            const lst = this[field][key];
+            if (!lst) return false;
+            const flag = lst.splice(lst.indexOf(ctx) >>> 0, 1).length > 0;
+            if (!lst.length) {
+                delete this[field][key];
+            }
+            return flag;
+        },
+        rmCtx(ctx) {
+            if (ctx.deleted) return;
+            const { id, field, input, name } = ctx;
+
+            // 重新定义value，不再代理到formData，因为在下面已经删除了
+            // 因为rule还会用到，不然初始化时value的值为undefined
+            if (ctx.input) {
+                Object.defineProperty(ctx.rule, "value", {
+                    value: ctx.rule.value,
+                    writable: true,
+                });
+            }
+            // debugger;
+            $del(this.ctxs, id);
+            $del(this.$render.orgChildren, id);
+            $del(this.formData, id);
+            $del(ctx, "cacheValue");
+
+            input && this.rmIdCtx(ctx, field, "field");
+
+            this.syncForm()
+            
+            this.deferSyncValue(() => {
+                if (!this.reloading) {
+                    if (ctx.parser.loadChildren !== false) {
+                        if (is.trueArray(ctx.rule.children)) {
+                            ctx.rule.children.forEach((c) => {
+                                c.__fc__ && this.rmCtx(c.__fc__);
+                            });
+                        }
+                        // if(ctx.root)
+                    }
+                }
+            }, input);
+
+            this.$render.clearCache(ctx);
+            ctx.delete();
+            return ctx;
         },
     });
 }

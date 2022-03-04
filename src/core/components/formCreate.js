@@ -32,7 +32,9 @@ export default function $FormCreate(FormCreate) {
                 deep: true,
             },
             // 只监听顶层rules的变化
-            rule(n) {
+            rule(n, o) {
+                // debugger;
+                // 如果新rules在旧rules每一项都一样，则不用重新更新
                 if (n.length === this.renderRule.length && n.every((v) => this.renderRule.indexOf(v) > -1)) return;
                 this.formCreate.$handle.reloadRule(n);
                 this._renderRule();
@@ -77,7 +79,7 @@ export default function $FormCreate(FormCreate) {
             },
         },
         updated() {
-            console.log("form-create执行updated钩子");
+            console.log("form-create执行updated钩子", this);
         },
         beforeCreate() {
             const { rule, option } = this.$options.propsData;

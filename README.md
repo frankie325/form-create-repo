@@ -71,6 +71,52 @@ Vue.use(FormCreate, options)
 
 ## 布局组件
 
+## 组件联动
+
+- value： 当组件的值和rule.value全等时显示rule中的组件，handle的简写形式
+- handle `Function`: 当handle方法返回true时显示rule中的组件
+- rule `Array<string> | Array<object>`
+
+
+当rule为字符数组时，handle条件成立，控制表单字段对应组件的显示，不成立则隐藏
+
+```js
+{
+    control: [
+        {
+            // value: 1,
+            handle: function(val, api){
+                // val为rule.value
+                return val === 1
+            },
+            rule: ["field1", "field2"],
+        }
+    ]
+}
+```
+当为字符数组时，handle条件成立，添加rule对应的组件，不成立则移除该组件
+```js
+{
+    control: [
+        {
+            handle: function(val, api){
+                return val === 1
+            },
+            // append: "field1", //设置rule后置插入的位置，不填则默认插入control所在rule的后面
+            // prepend: "field2", //设置rule前置插入的位置，不填则默认插入control所在rule的前面
+            // child: false, //是否插入到指定位置的children中
+            rule: [
+                {
+                    title: "输入框"
+                    type: "input"
+                    value: "info"
+                }
+            ],
+        }
+    ]
+}
+```
+
 ### Row、Col布局
 ```js
 {

@@ -28,6 +28,8 @@ export default function RuleContext(handle, rule) {
         root: undefined, //同一层级的rules配置
         cacheValue: undefined,
         cacheConfig: undefined, //缓存option.global中的配置
+        ctrlRule: [],
+        deleted: false,
     });
     this.updateType();
     this.updateKey();
@@ -36,14 +38,20 @@ export default function RuleContext(handle, rule) {
 }
 
 extend(RuleContext.prototype, {
-    update(handle) {
+    // 初始化和rule删除后又被重新添加时调用
+    update(handle, init) {
         extend(this, {
+            deleted: false,
             $handle: handle,
             $render: handle.$render,
+            $api: handle.api,
             vm: handle.vm,
             trueType: handle.getType(this.originType), //rule.type对应的组件名称
+            vNode: handle.$render.vNode,
+            updated: false,
         });
-        this.watchTo();
+        !init && this.unwatch();
+        this.watchTo(); //监听
     },
     updateType() {
         this.originType = this.rule.type;
@@ -52,8 +60,15 @@ extend(RuleContext.prototype, {
     updateKey() {
         this.key = unique();
     },
+    check(handle) {
+        return this.vm === handle.vm;
+    },
     watchTo() {
         this.$handle.watchCtx(this);
+    },
+    unwatch() {
+        this.watch.forEach((un) => un());
+        this.watch = [];
     },
     setParser(parser) {
         this.parser = parser;
@@ -64,5 +79,52 @@ extend(RuleContext.prototype, {
         const rule = { ...this.rule };
         delete rule.children;
         this.prop = rule;
+    },
+    delete() {
+        const undef = void 0;
+        this.unwatch();
+        extend(this, {
+            deleted: true,
+            prop: { ...this.rule },
+            el: undef,
+            $handle: undef,
+            $render: undef,
+            $render: undef,
+            $api: undef,
+            vm: undef,
+            vNode: undef,
+            parent: null,
+            cacheConfig: null,
+        });
+    },
+    // 删除该rule.control中的rule项
+    rmCtrl() {
+        this.ctrlRule.forEach((ctrl) => {
+            ctrl.__fc__ && ctrl.__fc__.rm();
+        });
+        this.ctrlRule = [];
+    },
+    rm() {
+        // 该方法用来移除rule所在的位置
+        const _rm = () => {
+            let index = this.root.indexOf(this.origin);
+            if (index > -1) {
+                this.root.splice(index, 1);
+                this.$handle && this.$handle.refresh();
+            }
+        };
+
+        // 使用api刪除rule.children，使用noWatch方法，不用触发监听children的同步watcher
+        // 调用refresh重新渲染即可
+        this.$handle.noWatch(() => {
+            this.$handle.deferSyncValue(() => {
+                this.rmCtrl();
+                _rm();
+                this.$handle.rmCtx(this);
+                extend(this, {
+                    root: [],
+                });
+            }, this.input);
+        });
     },
 });

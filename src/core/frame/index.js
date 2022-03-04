@@ -2,6 +2,7 @@ import { extend, deepCopy, is, toCase } from "@/utils";
 import { mergeGlobal } from "./utils";
 
 import $FormCreate from "../components/formCreate";
+import fragment from '../components/fragment'
 import Handle from "../handler";
 import { createManager } from "../factory/manager";
 import createNodeFactory from "../factory/node";
@@ -98,6 +99,10 @@ export default function FormCreateFactory(config) {
         return _vue.extend($FormCreate(FormCreate));
     }
 
+    function $vnode() {
+        return _vue.extend(fragment);
+    }
+
     function create() {
         console.log("create方法");
     }
@@ -168,6 +173,7 @@ export default function FormCreateFactory(config) {
                 if (Vue._installedFormCreate === true) return;
                 _vue = Vue;
                 Vue.component("FormCreate", $form());
+                Vue.component('FcFragment', $vnode());  //注册fragment组件
                 Vue._installedFormCreate = true;
             },
         });
@@ -175,6 +181,8 @@ export default function FormCreateFactory(config) {
 
     useAttr(create);
     useStatic(create);
+
+    CreateNode.use({ fragment: "fcFragment" });
 
     if (config.install) config.install(create);
     return create;

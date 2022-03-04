@@ -18,7 +18,7 @@ export default function Handle(fc) {
         api: undefined,
         watching: false, //rule中监听的属性变化了则为true
         loading: undefined, //表示正在处理所有rules
-        sort: [], //保存最顶层的rule对应的ctx.id，按顺序排列，生成VNode时用到
+        sort: [], //保存最顶层的rule对应的ctx.id，按顺序排列，也是生成VNode时的顺序
         ctxs: {}, //所有rule对应的ctx实例，不论有没有定义rule.field都会进行设置
         nameCtx: {
             // "rule.name" : [ ctx ] //没有定义rule.name则不会进行设置
@@ -27,6 +27,7 @@ export default function Handle(fc) {
             // "rule.field" : [ ctx ] //没有定义rule.field则不会进行设置
         },
         loadedId: 1,
+        cycleLoad: false,
     });
 
     funcProxy(this, {
