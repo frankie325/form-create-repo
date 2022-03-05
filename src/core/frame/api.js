@@ -1,6 +1,7 @@
 import { byCtx } from "./utils";
-import { is } from "@/utils";
+import { is, deepCopy } from "@/utils";
 import { $set } from "@/utils/modify";
+
 // 核心api
 export default function Api(h) {
     function tidyFields(fields) {
@@ -29,9 +30,35 @@ export default function Api(h) {
             return h.options;
         },
         /**
+         * @description: 获取表单数据，返回的值不是双向绑定
+         * @param {String | string[]} fields 指定的表单字段，不填则为全部
+         */
+        formData(fields) {
+            return tidyFields(fields).reduce((initial, id) => {
+                const ctx = h.getFieldCtx(id);
+                if (!ctx) return initial;
+                initial[ctx.field] = deepCopy(ctx.rule.value);
+                return initial;
+            }, {});
+        },
+        /**
+         * @description: 重置表单数据为初始时候的值
+         * @param {String | string[]} fields 指定的表单字段，不填则为全部
+         */
+        resetFields(fields) {
+            tidyFields(fields).forEach((field) => {
+                h.getCtxs(field).forEach((ctx) => {
+                    // h.onInput(ctx, ctx.defaultValue);
+                    // h.$render.clearCache(ctx);
+                    ctx.rule.value = deepCopy(ctx.defaultValue);
+                    // h.refreshControl(ctx);
+                });
+            });
+        },
+        /**
          * @description: 移除指定表单字段的表单组件
          * @param {String} field 指定的表单字段
-         */        
+         */
         removeField(field) {
             const ctx = h.getCtx(field);
             h.deferSyncValue(() => {
@@ -77,7 +104,7 @@ export default function Api(h) {
          * @param {Object} rule 新的规则
          * @param {String} before 插入到指定表单字段的组件之前
          * @param {Boolean} child 是否插入到子节点中
-         */        
+         */
         prepend(rule, before, child) {
             let index = 0,
                 rules;

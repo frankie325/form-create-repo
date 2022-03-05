@@ -6,7 +6,7 @@ export function baseRule() {
         options: [],
         children: [],
         hidden: false,
-        display: true,
+        show: true,
         value: undefined,
     };
 }

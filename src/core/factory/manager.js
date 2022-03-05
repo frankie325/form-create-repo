@@ -34,9 +34,15 @@ extend(Manager.prototype, {
     updateKey() {
         this.key = unique();
     },
+    form() {
+        return this.vm.$refs[this.ref];
+    },
     mergeOptions(target, opt) {
-        // extend(target, opt);
-        return mergeProps(target, [opt], this.mergeOptionsRule);
+        return mergeProps(
+            target,
+            [opt].map((i) => this.tidyOptions(i)),
+            this.mergeOptionsRule
+        );
     },
     updateOptions(opt) {
         this.options = this.mergeOptions(this.getDefaultOptions(), opt);
@@ -46,4 +52,7 @@ extend(Manager.prototype, {
         return {};
     },
     render(children) {},
+    tidyOptions(options) {
+        return options;
+    },
 });

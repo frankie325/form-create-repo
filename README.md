@@ -41,7 +41,7 @@ Vue.use(FormCreate, options)
 - 类型：`Boolean`
 - 说明：设置组件是否生成
 
-### display
+### show
 - 类型：`Boolean`
 - 说明：设置组件是否显示，通过`display:none`进行隐藏
 
@@ -68,7 +68,54 @@ Vue.use(FormCreate, options)
 以上配置保持`VNodeData`一致，请参考[渲染函数](https://cn.vuejs.org/v2/guide/render-function.html)
 
 ## 全局配置
+FormCreate组件上的option属性
+```html
+ <FormCreate :rule="rule" :option="option" ></FormCreate>
+```
+```js
+option = {
+    form:{},
+    global:{},
+    formData:{},
+    submitBtn:{},
+    resetBtn:{},
+    onSubmit:()=>{},
+    onReload:()=>{},
+}
+```
+## form
+- 设置Form组件的属性: `Object`
+## formData  
+- 设置表单组件初始值: `Object`，优先级大于`rule.value`
+## submitBtn  
+- 设置提交按钮：`Boolean | Object`
 
+`props` 请参照 `iButton` 的属性[props](https://iviewui.com/components/button#API)
+```js
+option = {
+    // submitBtn: false, //隐藏按钮
+    submitBtn:{
+        ...props, //iButton的属性
+        width: '15px', //按钮宽度
+        click:(api) => {} //点击触发的回调方法
+        innerText:"" //按钮文字
+    }
+}
+```
+## resetBtn
+- 设置重置按钮：`Boolean | Object`
+
+```js
+option = {
+    // resetBtn: false, //隐藏按钮
+    resetBtn:{
+        ...props, //iButton的属性
+        width: '15px', //按钮宽度
+        click:(api) => {} //点击触发的回调方法
+        innerText:"" //按钮文字
+    }
+}
+```
 ## 布局组件
 
 ## 组件联动

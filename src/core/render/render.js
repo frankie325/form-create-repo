@@ -42,8 +42,6 @@ export default function useRender(Render) {
             const make = () => this.renderList();
 
             vn = make();
-            console.log(vn);
-
             // 生成Form包裹所有组件
             return this.$manager.render(vn);
         },
@@ -69,7 +67,7 @@ export default function useRender(Render) {
                 let cacheFlag = true; //是否需要缓存
                 const _type = ctx.trueType;
 
-                const isShow = !is.Undef(rule.display) || !!rule.display;
+                const isShow = is.Undef(rule.show) || !!rule.show;
 
                 if (false) {
                 } else if (_type === "fcFragment") {
@@ -98,11 +96,10 @@ export default function useRender(Render) {
                     if (ctx.input && prop.native !== false) {
                         vn = this.$manager.makeWrap(ctx, vn);
                     }
-
-                    // if (isShow) {
-                    //     vn = this.display(vn);
-                    // }
                     // debugger
+                    if (!isShow) {
+                        vn = this.display(vn);
+                    }
                     vn = this.item(ctx, vn);
                 }
                 if (cacheFlag) {
@@ -114,13 +111,26 @@ export default function useRender(Render) {
             return this.getCache(ctx);
         },
         display(vn) {
-            // if (Array.isArray(vn)) {
-            //     const data = [];
-            //     vn.forEach((v) => {
-            //         if (Array.isArray(v)) return this.display(v);
-            //         if (this.none(v)) data.push(vn);
-            //     });
-            // }
+            if (Array.isArray(vn)) {
+                const data = [];
+                vn.forEach((v) => {
+                    if (Array.isArray(v)) return this.display(v);
+                    if (this.none(v)) data.push(vn);
+                });
+                return data;
+            } else {
+                return this.none(vn);
+            }
+        },
+        none(vn) {
+            if (vn && vn.data) {
+                if (Array.isArray(vn.data.style)) {
+                    vn.data.style.push({ display: "none" });
+                } else {
+                    vn.data.style = [vn.data.style, { display: "none" }];
+                }
+                return vn;
+            }
         },
         item(ctx, vn) {
             return this.$h(

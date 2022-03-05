@@ -69,21 +69,21 @@ export default function FormCreateFactory(config) {
             });
         },
         initOptions(options) {
-            this.options = deepCopy(globalConfig); //由Vue.use注册的顶层配置优先级最高
+            this.options = deepCopy(globalConfig); //由Vue.use注册的顶层配置
             this.updateOptions(options);
         },
         mergeOptions(globalOptions, userOptions) {
             userOptions = deepCopy(userOptions);
 
             if (userOptions.global) {
-                userOptions.global = mergeGlobal(userOptions.global, globalOptions.global);
-                delete globalOptions.global; // 防止下面继续合并
+                userOptions.global = mergeGlobal(globalOptions.global, userOptions.global);
+                delete userOptions.global; // 防止下面继续合并
             }
 
-            return this.$handle.$manager.mergeOptions(userOptions, globalOptions);
+            return this.$handle.$manager.mergeOptions(globalOptions, userOptions);
         },
         updateOptions(userOptions) {
-            this.options = this.mergeOptions(this.options, userOptions); //用户传递的配置优先级为次
+            this.options = this.mergeOptions(this.options, userOptions); //用户传递的配置优先级大于顶层配置
             this.$handle.$manager.updateOptions(this.options); //iview包里的默认配置优先级最低
         },
         created() {

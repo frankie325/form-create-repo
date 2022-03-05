@@ -33,6 +33,8 @@
         <Button type="primary" @click="addRule">新增规则</Button>
         <Button type="primary" @click="removeRule">删除规则</Button>
         <Button type="primary" @click="changeProp">按钮</Button>
+        <Button type="primary" @click="validateForm">表单校验</Button>
+        <Button type="primary" @click="resetFields">重置表单字段</Button>
     </div>
 </template>
 
@@ -112,8 +114,8 @@ export default {
                             type: "col",
                             props: { span: 24 },
                             children: [
-                                "哈哈",
                                 {
+                                    // show: true,
                                     title: "年龄1",
                                     type: "input",
                                     field: "age1",
@@ -131,24 +133,24 @@ export default {
                         },
                     ],
                 },
-                {
-                    type: "row",
-                    children: [
-                        {
-                            type: "col",
-                            props: { span: 24 },
-                            children: [
-                                {
-                                    title: "年龄3",
-                                    type: "input",
-                                    field: "age3",
-                                    value: "age3",
-                                    validate: [{ required: true, message: "年龄不能为空", trigger: "change" }], //校验规则
-                                },
-                            ],
-                        },
-                    ],
-                },
+                // {
+                //     type: "row",
+                //     children: [
+                //         {
+                //             type: "col",
+                //             props: { span: 24 },
+                //             children: [
+                //                 {
+                //                     title: "年龄3",
+                //                     type: "input",
+                //                     field: "age3",
+                //                     value: "age3",
+                //                     validate: [{ required: true, message: "年龄不能为空", trigger: "change" }], //校验规则
+                //                 },
+                //             ],
+                //         },
+                //     ],
+                // },
                 // {
                 //     type: "row",
                 //     children: [
@@ -191,6 +193,12 @@ export default {
                 formData: {
                     name: "kfg2",
                 },
+                submitBtn: {
+                    show: true,
+                },
+                resetBtn: {
+                    show: true,
+                },
             },
             /*
                 表单控件value的初始值
@@ -209,7 +217,6 @@ export default {
         changeProp() {
             // this.$set(ceshi, "obj", { name: "kfg" });  //没有绑定过观察者实例的属性，使用$set不会进行响应式处理，只起简单的赋值作用
             // this.ceshi.name = {};
-
             // this.fValue.name = Math.random();
             // this.fValue = {
             //     name: "kfg22",
@@ -260,7 +267,7 @@ export default {
                     },
                     validate: [{ required: true, message: "请输入商品简介", trigger: "blur" }],
                 },
-                "age3"
+                // "age3"
             );
         },
         removeRule() {
@@ -268,6 +275,25 @@ export default {
             // console.log("删除的元素", this.fApi.removeField("age2"));
             // console.log("删除的元素", this.fApi.removeField("name"));
             // this.fApi.append(this.fApi.removeField("name"))
+        },
+        validateForm() {
+            // this.fApi.validate((arg) => {
+            //     console.log(arg);
+            // });
+            // this.fApi.validate().then((arg) => {
+            //     console.log(arg)
+            // });
+            this.fApi.submit(
+                (formData, api) => {
+                    console.log(formData, api);
+                },
+                (formData, api) => {
+                    console.log(formData, api);
+                }
+            );
+        },
+        resetFields() {
+            this.fApi.resetFields("goods_info");
         },
     },
     updated() {

@@ -1,4 +1,4 @@
-import { extend, unique, toCase } from "@/utils";
+import { extend, unique, toCase, deepCopy } from "@/utils";
 import { enumerable } from "../frame/utils";
 function bind(ctx) {
     // 为rule或者maker实例添加__fc__属性，为ctx实例
@@ -30,6 +30,7 @@ export default function RuleContext(handle, rule) {
         cacheConfig: undefined, //缓存option.global中的配置
         ctrlRule: [],
         deleted: false,
+        defaultValue: deepCopy(rule.value),
     });
     this.updateType();
     this.updateKey();

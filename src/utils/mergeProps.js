@@ -66,8 +66,9 @@ export default function mergeProps(target = {}, options, mergeStrategy = {}) {
     const _normalMerge = [...normalMerge, ...(mergeStrategy["normal"] || [])];
     const _toArrayMerge = [...toArrayMerge, ...(mergeStrategy["array"] || [])];
     const _toFunctionalMerge = [...functionalMerge, ...(mergeStrategy["function"] || [])];
-
+    // debugger
     return options.reduce((a, b) => {
+        
         for (const key in b) {
             if (a[key]) {
                 if (_normalMerge.indexOf(key) > -1) {

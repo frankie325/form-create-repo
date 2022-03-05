@@ -9,7 +9,7 @@ import FormCreate from "@/iview";
 Vue.use(FormCreate, {
     form: {
         clearable: true,
-        inline: false,
+        inline: true,
         labelWidth: 200,
         labelPosition: "right",
     },
@@ -26,6 +26,8 @@ Vue.use(FormCreate, {
             // },
         },
     },
+    // submitBtn: true,
+    // resetBtn: true,
 });
 
 new Vue({
