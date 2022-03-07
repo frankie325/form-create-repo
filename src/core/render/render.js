@@ -28,7 +28,7 @@ export default function useRender(Render) {
             if (!ctx.cacheConfig) {
                 ctx.cacheConfig = g[ctx.originType] || g[ctx.type] || g[ctx.trueType] || {};
             }
-            ctx.prop = mergeRule({}, [ctx.prop, g["*"], ctx.cacheConfig]);
+            ctx.prop = mergeRule({}, [g["*"], ctx.cacheConfig, ctx.prop]);
         },
         render() {
             if (!this.vm.isShow) {
@@ -62,6 +62,7 @@ export default function useRender(Render) {
             只要访问了form-create的响应式数据都会收集form-create的渲染Watcher
             当响应式数据变化时，触发form-create更新
             */
+            //    debugger
             if (!this.cache[ctx.id]) {
                 let vn;
                 let cacheFlag = true; //是否需要缓存

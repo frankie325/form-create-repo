@@ -1,5 +1,6 @@
 import { byCtx } from "./utils";
-import { is, deepCopy } from "@/utils";
+import { deepCopy } from "@/utils";
+import is, { hasProperty } from "@/utils/type";
 import { $set } from "@/utils/modify";
 
 // 核心api
@@ -29,17 +30,64 @@ export default function Api(h) {
         get options() {
             return h.options;
         },
+        get form() {
+            return h.form;
+        },
+        get rule() {
+            return h.rules;
+        },
         /**
-         * @description: 获取表单数据，返回的值不是双向绑定
-         * @param {String | string[]} fields 指定的表单字段，不填则为全部
+         * @description: 获取所有表单字段
+         * @return {string[]}
          */
-        formData(fields) {
-            return tidyFields(fields).reduce((initial, id) => {
-                const ctx = h.getFieldCtx(id);
-                if (!ctx) return initial;
-                initial[ctx.field] = deepCopy(ctx.rule.value);
-                return initial;
-            }, {});
+        fields: () => h.fields(),
+        /**
+         * @description: 获取指定表单字段的值
+         * @param {String} field
+         * @return {any}
+         */
+        getValue(field) {
+            if (is.String(field)) {
+                const ctx = h.getFieldCtx(field);
+                if (!ctx) return;
+                return deepCopy(ctx.rule.value);
+            }
+        },
+        /**
+         * @description: 设置表单值，全部覆盖，没有定义的字段全部设置为undefined
+         * @param {Object} formData
+         */
+        coverValue(formData) {
+            h.deferSyncValue(() => {
+                api.fields().forEach((key) => {
+                    const ctxs = h.fieldCtx[key];
+                    if (!ctxs) return (h.appendData[key] = formData[key]);
+                    const flag = hasProperty(formData, key);
+                    ctxs.forEach((ctx) => {
+                        ctx.rule.value = flag ? formData[key] : undefined;
+                    });
+                });
+            });
+        },
+        /**
+         * @description: 设置表单值，采用合并，未定义的字段不做修改
+         * @param {Object} formData
+         * 或者
+         * @param {field} 表单字段
+         * @param {value} 值
+         */
+        setValue(field) {
+            let formData = field;
+            if (arguments.length >= 2) formData = { [field]: arguments[1] };
+            h.deferSyncValue(() => {
+                Object.keys(formData).forEach((key) => {
+                    const ctxs = h.fieldCtx[key];
+                    if (!ctxs) return (h.appendData[key] = formData[key]);
+                    ctxs.forEach((ctx) => {
+                        ctx.rule.value = formData[key];
+                    });
+                });
+            });
         },
         /**
          * @description: 重置表单数据为初始时候的值
@@ -54,6 +102,38 @@ export default function Api(h) {
                     // h.refreshControl(ctx);
                 });
             });
+        },
+        /**
+         * @description: 隐藏指定的表单控件，Dom节点不渲染，表单验证不会生效
+         * @param {Boolean} state 是否开启隐藏
+         * @param {String | string[]} fields 指定的表单字段
+         */
+        hidden(state, fields) {
+            props(fields, "hidden", !!state);
+            h.refresh();
+        },
+        /**
+         * @description: 通过 display:none 隐藏指定的表单控件，Dom渲染，表单验证生效
+         * @param {Boolean} state 是否开启隐藏
+         * @param {String | string[]} fields 指定的表单字段
+         */
+        display(state, fields) {
+            props(fields, "show", !!state);
+            h.refresh();
+        },
+        /**
+         * @description: 禁用表单组件
+         * @param {Boolean} disabled 是否禁用
+         * @param { 不填 | String | string[]} fields 指定的表单字段，不填则禁用所有
+         */
+        disabled(disabled, fields) {
+            tidyFields(fields).forEach((field) => {
+                h.getCtxs(field).forEach((ctx) => {
+                    $set(ctx.rule.props, "disabled", !!disabled);
+                    h.$render.clearCache(ctx);
+                });
+            });
+            h.refresh();
         },
         /**
          * @description: 移除指定表单字段的表单组件
@@ -120,13 +200,16 @@ export default function Api(h) {
             rules.splice(index, 0, rule);
         },
         /**
-         * @description: 隐藏指定的表单控件，Dom节点不渲染，表单验证不会生效
-         * @param {Boolean} state 是否开启隐藏
-         * @param {String | string[]} fields 指定的表单字段
+         * @description: 获取表单数据，返回的值不是双向绑定
+         * @param {String | string[]} fields 指定的表单字段，不填则为全部
          */
-        hidden(state, fields) {
-            props(fields, "hidden", !!state);
-            h.refresh();
+        formData(fields) {
+            return tidyFields(fields).reduce((initial, id) => {
+                const ctx = h.getFieldCtx(id);
+                if (!ctx) return initial;
+                initial[ctx.field] = deepCopy(ctx.rule.value);
+                return initial;
+            }, {});
         },
     };
 

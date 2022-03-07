@@ -62,6 +62,8 @@ export default function useContext(Handle) {
             Object.keys(ctx.rule)
                 .filter((k) => none.indexOf(k) === -1)
                 .forEach((key) => {
+                    // if (key === "show") debugger;
+
                     ctx.watch.push(
                         vm.$watch(
                             () => ctx.rule[key],
@@ -136,8 +138,8 @@ export default function useContext(Handle) {
 
             input && this.rmIdCtx(ctx, field, "field");
 
-            this.syncForm()
-            
+            this.syncForm();
+
             this.deferSyncValue(() => {
                 if (!this.reloading) {
                     if (ctx.parser.loadChildren !== false) {
