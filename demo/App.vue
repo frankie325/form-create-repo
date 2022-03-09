@@ -29,16 +29,53 @@
         <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue">
             <!-- <div>11</div> -->
         </FormCreate>
-        <Button type="primary" @click="changeProp">按钮</Button>
-        <Button type="primary" @click="fields">获取所有表单字段</Button>
-        <Button type="primary" @click="getValue">获取指定表单字段的值</Button>
-        <Button type="primary" @click="setValue">设置表单值</Button>
-        <Button type="primary" @click="resetFields">重置表单值</Button>
-        <Button type="primary" @click="hidden">隐藏表单组件</Button>
-        <Button type="primary" @click="disabled">禁用表单组件</Button>
-        <Button type="primary" @click="addRule">新增规则</Button>
-        <Button type="primary" @click="removeRule">删除规则</Button>
-        <Button type="primary" @click="validateForm">表单校验</Button>
+        <Collapse>
+            <Panel name="1">
+                字段操作
+                <p slot="content">
+                    <Button type="primary" @click="changeProp">按钮</Button>
+                    <Button type="primary" @click="fields">获取所有表单字段</Button>
+                    <Button type="primary" @click="getValue">获取指定表单字段的值</Button>
+                    <Button type="primary" @click="setValue">设置表单值</Button>
+                    <Button type="primary" @click="resetFields">重置表单值</Button>
+                    <Button type="primary" @click="hidden">隐藏表单组件</Button>
+                    <Button type="primary" @click="disabled">禁用表单组件</Button>
+                </p>
+            </Panel>
+            <Panel name="2">
+                规则操作
+                <p slot="content">
+                    <Button type="primary" @click="removeRule">删除规则</Button>
+                    <Button type="primary" @click="addRule">新增规则</Button>
+                    <Button type="primary" @click="getAllRule">获取所有表单组件规则</Button>
+                    <Button type="primary" @click="updateRule">更新指定规则</Button>
+                </p>
+            </Panel>
+            <Panel name="3">
+                验证操作
+                <p slot="content">
+                    <Button type="primary" @click="updateValidate">更新表单校验规则</Button>
+                    <Button type="primary" @click="clearValidateState">清除表单校验</Button>
+                    <Button type="primary" @click="validateForm">表单校验</Button>
+                </p>
+            </Panel>
+            <Panel name="4">
+                表单操作
+                <p slot="content">
+                    <Button type="primary" @click="formData">获取表单数据</Button>
+                    <Button type="primary" @click="changeStatus">表单值是否改变</Button>
+                    <Button type="primary" @click="submitBtnProps">修改提交按钮</Button>
+                    <Button type="primary" @click="resetBtnProps">修改重置按钮</Button>
+                    <Button type="primary" @click="updateOptions">更新表单配置</Button>
+                    <Button type="primary" @click="refreshOptions">刷新表单配置</Button>
+                    <Button type="primary" @click="hideForm">隐藏表单</Button>
+                    <Button type="primary" @click="reload">重载表单</Button>
+                    <Button type="primary" @click="destroy">销毁表单</Button>
+                    <Button type="primary" @click="nextTick">表单重新渲染后的回调</Button>
+                    <Button type="primary" @click="nextRefresh">自动重新渲染</Button>
+                </p>
+            </Panel>
+        </Collapse>
     </div>
 </template>
 
@@ -124,14 +161,17 @@ export default {
                                     type: "input",
                                     field: "age1",
                                     value: "age1",
-                                    validate: [{ required: true, message: "年龄不能为空", trigger: "change" }], //校验规则
+                                    // props: {
+                                    //     size: "large",
+                                    // },
+                                    validate: [{ required: true, message: "年龄1不能为空", trigger: "change" }], //校验规则
                                 },
                                 {
                                     title: "年龄2",
                                     type: "input",
                                     field: "age2",
                                     value: "age2",
-                                    validate: [{ required: true, message: "年龄不能为空", trigger: "change" }], //校验规则
+                                    validate: [{ required: true, message: "年龄2不能为空", trigger: "change" }], //校验规则
                                 },
                             ],
                         },
@@ -189,7 +229,7 @@ export default {
                         },
                         on: {
                             "on-change": (value) => {
-                                // console.log("input-change", value);
+                                console.log("input-change", value);
                             },
                         },
                     },
@@ -199,9 +239,19 @@ export default {
                 },
                 submitBtn: {
                     show: true,
+                    // 这里配置了点击事件，则下面的onSubmit不会触发
+                    click(api) {
+                        console.log(api);
+                    },
                 },
                 resetBtn: {
                     show: true,
+                },
+                onSubmit(formData, api) {
+                    console.log(formData, api);
+                },
+                reload(api) {
+                    console.log("reload", api);
                 },
             },
             /*
@@ -212,7 +262,7 @@ export default {
             */
             fValue: {
                 name: "kfg1",
-                age: "22",
+                age1: "22",
                 sex: "男",
             },
         };
@@ -222,7 +272,7 @@ export default {
         changeProp() {
             // this.$set(this.ceshi, "name", false);  //没有绑定过观察者实例的属性，使用$set不会进行响应式处理，只起简单的赋值作用
             // this.ceshi.name = false;
-            // this.fValue.name = Math.random();
+            this.fValue.age1 = 23;
             // this.fValue = {
             //     name: "kfg22",
             //     age: "22222",

@@ -1,6 +1,6 @@
 import { mergeProps, is } from "@/utils";
 import { logError } from "@/utils/console";
-
+import { arrayAttrs, normalAttrs } from "./attrs";
 export function enumerable(value, writable) {
     return {
         value,
@@ -25,7 +25,7 @@ export function mergeGlobal(target, merge) {
 
 export function mergeRule(rule, merge) {
     // console.log(rule, merge);
-    return mergeProps(rule, Array.isArray(merge) ? merge : [merge]);
+    return mergeProps(rule, Array.isArray(merge) ? merge : [merge], { normal: normalAttrs, array: arrayAttrs });
 }
 
 // rule如果是由maker生成，则为creator实例，执行getRule方法，得到rule

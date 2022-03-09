@@ -13,8 +13,15 @@ function tidyBool(opt, name) {
 }
 
 export default {
-    validate(call) {
-        return this.form().validate(call);
+    validate(callback) {
+        return this.form().validate(callback);
+    },
+    validateField(field, callback) {
+        return this.form().validateField(field, callback);
+    },
+    clearValidateState(ctx) {
+        const fItem = this.vm.$refs[ctx.wrapRef];
+        fItem.resetField();
     },
     getDefaultOptions() {
         return getConfig();

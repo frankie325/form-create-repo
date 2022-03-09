@@ -6,6 +6,7 @@ import useLoader from "./loader";
 import useContext from "./context";
 import useInput from "./input";
 import useRender from "./render";
+import useLifecycle from "./lifecycle";
 export default function Handle(fc) {
     extend(this, {
         fc,
@@ -28,6 +29,11 @@ export default function Handle(fc) {
         },
         loadedId: 1,
         cycleLoad: false,
+        changeStatus: false,
+        nextTick: null,
+        nextReload: () => {
+            this.lifecycle("reload");
+        },
     });
 
     funcProxy(this, {
@@ -69,3 +75,4 @@ useLoader(Handle);
 useContext(Handle);
 useInput(Handle);
 useRender(Handle);
+useLifecycle(Handle);

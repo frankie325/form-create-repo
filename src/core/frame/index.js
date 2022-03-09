@@ -2,7 +2,7 @@ import { extend, deepCopy, is, toCase } from "@/utils";
 import { mergeGlobal } from "./utils";
 
 import $FormCreate from "../components/formCreate";
-import fragment from '../components/fragment'
+import fragment from "../components/fragment";
 import Handle from "../handler";
 import { createManager } from "../factory/manager";
 import createNodeFactory from "../factory/node";
@@ -66,6 +66,12 @@ export default function FormCreateFactory(config) {
             vm.$emit("input", h.api);
             vm.$on("hook:created", () => {
                 this.created();
+            });
+
+            vm.$on("hook:mounted", () => {});
+
+            vm.$on("hook:updated", () => {
+                h.bindNextTick(() => this.bus.$emit("next-tick", h.api));
             });
         },
         initOptions(options) {
@@ -173,7 +179,7 @@ export default function FormCreateFactory(config) {
                 if (Vue._installedFormCreate === true) return;
                 _vue = Vue;
                 Vue.component("FormCreate", $form());
-                Vue.component('FcFragment', $vnode());  //注册fragment组件
+                Vue.component("FcFragment", $vnode()); //注册fragment组件
                 Vue._installedFormCreate = true;
             },
         });

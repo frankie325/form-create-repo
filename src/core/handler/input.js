@@ -11,16 +11,18 @@ export default function useInput(Handle) {
             return ctx.cacheValue;
         },
         setValue(ctx, value, formValue, setFlag) {
-            // debugger
             console.log("value值更新了", this);
             ctx.cacheValue = value;
+            this.changeStatus = true;
+            this.nextRefresh();
             this.$render.clearCache(ctx); //如果不清除，renderCtx方法会从缓存中取VNode
-            this.setFormData(ctx, formValue); //修改formData，重新执行form-create的render过程
+            this.setFormData(ctx, formValue);
             this.syncValue();
             this.valueChange(ctx, value);
-            // this.refresh()
         },
         onInput(ctx, value) {
+            // debugger
+
             let val;
             if ((ctx.input && this.isQuote(ctx, (val = ctx.parser.toValue(value, ctx)))) || this.isChange(ctx, value)) {
                 this.setValue(ctx, val, value);
@@ -61,8 +63,8 @@ export default function useInput(Handle) {
                 this.$render.clearCacheAll(); //可以优化
                 this.loadRule();
                 this.vm.$emit("update", this.api);
+                this.refresh();
             }
-            this.refresh();
         },
         // 判断rule.value是否发生改变
         isChange(ctx, value) {

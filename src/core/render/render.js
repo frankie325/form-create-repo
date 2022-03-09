@@ -28,6 +28,7 @@ export default function useRender(Render) {
             if (!ctx.cacheConfig) {
                 ctx.cacheConfig = g[ctx.originType] || g[ctx.type] || g[ctx.trueType] || {};
             }
+            // debugger;
             ctx.prop = mergeRule({}, [g["*"], ctx.cacheConfig, ctx.prop]);
         },
         render() {
@@ -174,6 +175,7 @@ export default function useRender(Render) {
                     },
                 },
             ];
+
             if (ctx.input) {
                 props.push({
                     model: {

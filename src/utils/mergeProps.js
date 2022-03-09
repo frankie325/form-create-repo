@@ -68,7 +68,6 @@ export default function mergeProps(target = {}, options, mergeStrategy = {}) {
     const _toFunctionalMerge = [...functionalMerge, ...(mergeStrategy["function"] || [])];
     // debugger
     return options.reduce((a, b) => {
-        
         for (const key in b) {
             if (a[key]) {
                 if (_normalMerge.indexOf(key) > -1) {
@@ -91,10 +90,10 @@ export default function mergeProps(target = {}, options, mergeStrategy = {}) {
                     a[key] = b[key];
                 }
             } else {
-                if (_normalMerge.indexOf(key) > -1) {
-                    a[key] = b[key];
+                if (_normalMerge.indexOf(key) > -1 || _toFunctionalMerge.indexOf(key) > -1) {
+                    a[key] = { ...b[key] };
                 } else if (_toArrayMerge.indexOf(key) > -1) {
-                    a[key] = Array.isArray(b[key]) ? b[key] : [b[key]];
+                    a[key] = Array.isArray(b[key]) ? [...b[key]] : [b[key]];
                 } else {
                     a[key] = b[key];
                 }

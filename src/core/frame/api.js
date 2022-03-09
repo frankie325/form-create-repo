@@ -1,8 +1,8 @@
-import { byCtx } from "./utils";
-import { deepCopy } from "@/utils";
+import { byCtx, mergeRule } from "./utils";
+import { extend, deepCopy } from "@/utils";
 import is, { hasProperty } from "@/utils/type";
 import { $set } from "@/utils/modify";
-
+import { invoke } from "./utils";
 // 核心api
 export default function Api(h) {
     function tidyFields(fields) {
@@ -36,6 +36,10 @@ export default function Api(h) {
         get rule() {
             return h.rules;
         },
+        helper: {
+            tidyFields,
+            props,
+        },
         /**
          * @description: 获取所有表单字段
          * @return {string[]}
@@ -43,7 +47,7 @@ export default function Api(h) {
         fields: () => h.fields(),
         /**
          * @description: 获取指定表单字段的值
-         * @param {String} field
+         * @param {String} field 指定字段
          * @return {any}
          */
         getValue(field) {
@@ -200,6 +204,85 @@ export default function Api(h) {
             rules.splice(index, 0, rule);
         },
         /**
+         * @description:获取所有表单组件规则
+         * @param {Boolean} origin 是否返回原始规则（creator实例）
+         * @return {Object}
+         */
+        model(origin) {
+            return h.fields().reduce((initial, key) => {
+                const ctx = h.fieldCtx[key][0];
+                initial[key] = origin ? ctx.origin : ctx.rule;
+                return initial;
+            }, {});
+        },
+        /**
+         * @description: 更新指定规则，合并方式
+         * @param {String} field 表单字段
+         * @param {Object} rule 表单规则
+         * @return {*}
+         */
+        mergeRule(field, rule) {
+            h.getCtxs(field).forEach((ctx) => {
+                mergeRule(ctx.rule, rule);
+                h.$render.clearCache(ctx);
+            });
+            h.refresh();
+        },
+        /**
+         * @description: 一次更新多个指定规则，合并方式
+         * @param {Object} rules 规则对象
+         */
+        mergeRules(rules) {
+            Object.keys(rules).forEach((field) => {
+                api.mergeRule(field, rules[field]);
+            });
+        },
+        /**
+         * @description: 更新指定规则，覆盖方式
+         * @param {String} field 表单字段
+         * @param {Object} rule 表单规则
+         * @return {*}
+         */
+        updateRule(field, rule) {
+            h.getCtxs(field).forEach((ctx) => {
+                extend(ctx.rule, rule);
+                h.$render.clearCache(ctx);
+            });
+            h.refresh();
+        },
+        /**
+         * @description: 一次更新多个指定规则，覆盖方式
+         * @param {Object} rules 规则对象
+         */
+        updateRules(rules) {
+            Object.keys(rules).forEach((field) => {
+                api.updateRule(field, rules[field]);
+            });
+        },
+        /**
+         * @description: 更新表单组件的校验规则
+         * @param {String} field 表单字段
+         * @param {Object | Array} validate 校验规则
+         * @param {Boolean} merge 是否采用合并方式，否则直接覆盖
+         */
+        updateValidate(field, validate, merge) {
+            if (merge) {
+                api.mergeRule(field, { validate });
+            } else {
+                props(field, "validate", validate);
+            }
+        },
+        /**
+         * @description: 批量更新表单组件的校验规则
+         * @param {Object} validates 校验规则
+         * @param {*} merge 是否采用合并方式，否则直接覆盖
+         */
+        updateValidates(validates, merge) {
+            Object.keys(validates).forEach((field) => {
+                api.updateValidate(field, validates[field], merge);
+            });
+        },
+        /**
          * @description: 获取表单数据，返回的值不是双向绑定
          * @param {String | string[]} fields 指定的表单字段，不填则为全部
          */
@@ -210,6 +293,90 @@ export default function Api(h) {
                 initial[ctx.field] = deepCopy(ctx.rule.value);
                 return initial;
             }, {});
+        },
+        /**
+         * @description: 获取表单数据，返回的值为双向绑定
+         */
+        bind() {
+            return api.form;
+        },
+        /**
+         * @description: 表示表单中的值是否发生了变化
+         */
+        changeStatus() {
+            return h.changeStatus;
+        },
+        /**
+         * @description: 清除变化状态
+         */
+        clearChangeStatus() {
+            h.changeStatus = false;
+        },
+        /**
+         * @description: 刷新表单渲染
+         */
+        refresh() {
+            h.$render.clearCacheAll();
+            h.refresh();
+        },
+        /**
+         * @description: 更新表单配置
+         * @param {Object} options 表单配置规则
+         */
+        updateOptions(options) {
+            h.fc.updateOptions(options);
+            api.refresh();
+        },
+        /**
+         * @description: 刷新表单配置
+         */
+        refreshOptions() {
+            h.$manager.updateOptions(h.options);
+            api.refresh();
+        },
+        /**
+         * @description: 更新表单提交事件方法
+         * @param {Function} fn 提交方法
+         */
+        onSubmit(fn) {
+            api.updateOptions({ onSubmit: fn });
+        },
+        /**
+         * @description: 隐藏表单
+         * @param {Boolean} hide
+         */
+        hideForm(hide) {
+            $set(h.vm, "isShow", !hide);
+        },
+        /**
+         * @description: 重载表单，重新加载新的rules规则
+         * @param {Array} rules rules规则数组
+         */
+        reload(rules) {
+            h.reloadRule(rules);
+        },
+        /**
+         * @description: 销毁表单
+         */
+        destroy() {
+            h.vm.$el.parentNode && h.vm.$el.parentNode.removeChild(h.vm.$el);
+            h.vm.$destroy();
+        },
+        /**
+         * @description: 表单重新渲染后的回调
+         * @param {Function} fn
+         */
+        nextTick(fn) {
+            h.bus.$once("next-tick", fn);
+            h.refresh();
+        },
+        /**
+         * @description: 执行传入的方法后，如果表单没重新渲染，会自动重新渲染
+         * @param {Function} fn
+         */        
+        nextRefresh(fn) {
+            fn && invoke(fn);
+            h.nextRefresh();
         },
     };
 

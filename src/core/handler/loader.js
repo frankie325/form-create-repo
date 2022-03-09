@@ -7,9 +7,15 @@ import is, { hasProperty } from "@/utils/type";
 import { err } from "@/utils/console";
 export default function useLoader(Handle) {
     extend(Handle.prototype, {
-        // nextRefresh(fn){
-
-        // },
+        nextRefresh(fn) {
+            const id = this.loadedId;
+            this.vm.$nextTick(() => {
+                // 如果还是相等，说明在这之前form-create还没重新渲染
+                if (id === this.loadedId) {
+                    fn ? fn() : this.refresh();
+                }
+            });
+        },
         // 处理rule中的一些属性
         parseRule(_rule) {
             const rule = getRule(_rule);
@@ -133,6 +139,7 @@ export default function useLoader(Handle) {
                     }
                 }
                 const r = ctx.rule;
+                // debugger
                 if (ctx.input) Object.defineProperty(r, "value", this.valueHandle(ctx));
                 if (this.refreshControl(ctx)) this.cycleLoad = true;
                 return ctx;
@@ -143,7 +150,7 @@ export default function useLoader(Handle) {
             return this._reloadRule(rules);
         },
         /*
-          顶层rules变化才需要执行_reloadRule
+          调用api.reloadRule或者顶层rules变化才需要执行_reloadRule
           rule.children内变化则执行loadChildren
         */
         _reloadRule(rules) {
@@ -167,13 +174,15 @@ export default function useLoader(Handle) {
             this.loadRule();
             this.reloading = false;
             this.refresh();
-            console.log(this);
+
+            // form-create的updated钩子执行后，触发reload方法
+            this.bus.$off("next-tick", this.nextReload);
+            this.bus.$once("next-tick", this.nextReload);
             this.vm.$emit("update", this.api);
         },
         //往rule.children新增rule时调用loadChildren，删除不会
         loadChildren(children, parent) {
             // debugger;
-            console.log(this);
             this.cycleLoad = false;
             this.loading = true;
             // this.bus.$emit('load-start');
