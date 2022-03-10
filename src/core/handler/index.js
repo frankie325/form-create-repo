@@ -29,6 +29,7 @@ export default function Handle(fc) {
         },
         loadedId: 1,
         cycleLoad: false,
+        isMounted: false,
         changeStatus: false,
         nextTick: null,
         nextReload: () => {
@@ -62,7 +63,6 @@ extend(Handle.prototype, {
         });
     },
     init() {
-        console.log("Handle.init");
         this.appendData = { ...(this.fc.options.formData || {}), ...(this.vm.value || {}), ...this.appendData };
         this.loadRule();
         this.$manager.__init();

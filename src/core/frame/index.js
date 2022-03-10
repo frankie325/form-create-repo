@@ -68,7 +68,9 @@ export default function FormCreateFactory(config) {
                 this.created();
             });
 
-            vm.$on("hook:mounted", () => {});
+            vm.$on("hook:mounted", () => {
+                this.mounted();
+            });
 
             vm.$on("hook:updated", () => {
                 h.bindNextTick(() => this.bus.$emit("next-tick", h.api));
@@ -94,7 +96,13 @@ export default function FormCreateFactory(config) {
         },
         created() {
             this.$handle.init();
-            this.vm.$emit("created");
+            this.vm.$emit("created", this.api());
+        },
+        api() {
+            return this.$handle.api;
+        },
+        mounted() {
+            this.$handle.mounted();
         },
         render() {
             return this.$handle.render();

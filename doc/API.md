@@ -403,7 +403,7 @@ fApi.nextRefresh(fn)
 ### submit
 表单提交
 
-- 如果没有传入成功时的回调，则会触发全局配置的`onSubmit`方法
+- 如果没有传入成功时的回调，则会触发全局配置的`onSubmit`方法，以及在 `form-create` 组件上绑定的 `submit` 方法
 ```js
 /**
  * @description: 表单提交

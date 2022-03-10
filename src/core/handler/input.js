@@ -12,6 +12,7 @@ export default function useInput(Handle) {
         },
         setValue(ctx, value, formValue, setFlag) {
             console.log("value值更新了", this);
+            if (ctx.deleted) return;
             ctx.cacheValue = value;
             this.changeStatus = true;
             this.nextRefresh();
@@ -19,6 +20,7 @@ export default function useInput(Handle) {
             this.setFormData(ctx, formValue);
             this.syncValue();
             this.valueChange(ctx, value);
+            this.vm.$emit("change", ctx.field, value, ctx.origin, this.api, setFlag);
         },
         onInput(ctx, value) {
             // debugger

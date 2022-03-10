@@ -26,7 +26,7 @@
             </FormItem>
         </Form> -->
         <!-- {{fValue}} -->
-        <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue">
+        <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue" @created="created" @update="update">
             <!-- <div>11</div> -->
         </FormCreate>
         <Collapse>
@@ -262,7 +262,7 @@ export default {
             */
             fValue: {
                 name: "kfg1",
-                age1: "22",
+                // age1: "22",
                 sex: "男",
             },
         };

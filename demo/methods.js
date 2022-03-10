@@ -204,13 +204,19 @@ export default function method() {
         },
         nextTick() {
             this.fApi.nextTick(() => {
-                console.log("渲染后触发")
+                console.log("渲染后触发");
             });
         },
-        nextRefresh(){
+        nextRefresh() {
             this.fApi.nextTick(() => {
-                console.log("如果该回调没有触发表单重新渲染，会自动重新渲染")
+                console.log("如果该回调没有触发表单重新渲染，会自动重新渲染");
             });
-        }
+        },
+        created(api) {
+            console.log("created钩子", api);
+        },
+        update(api) {
+            console.log("update钩子", api);
+        },
     };
 }
