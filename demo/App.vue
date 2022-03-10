@@ -25,7 +25,7 @@
                 <Input placeholder="Password"> </Input>
             </FormItem>
         </Form> -->
-        <!-- {{fValue}} -->
+        <!-- <Input type="textarea" :rows="10"></Input> -->
         <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue" @created="created" @update="update">
             <!-- <div>11</div> -->
         </FormCreate>
@@ -81,6 +81,7 @@
 
 <script>
 import methods from "./methods.js";
+import json from "./json.js";
 export default {
     name: "App",
     watch: {},
@@ -89,6 +90,7 @@ export default {
             fApi: {},
             ceshi: { name: true },
             rule: [
+                ...json(),
                 // "111",
                 // {
                 //     title: "姓名",
@@ -143,41 +145,6 @@ export default {
                 //     ],
                 // },
                 // {
-                //     type: "input",
-                //     field: "info",
-                //     title: "差评原因",
-                //     value: "default info",
-                // },
-                {
-                    type: "row",
-                    children: [
-                        {
-                            type: "col",
-                            props: { span: 24 },
-                            children: [
-                                {
-                                    // show: true,
-                                    title: "年龄1",
-                                    type: "input",
-                                    field: "age1",
-                                    value: "age1",
-                                    // props: {
-                                    //     size: "large",
-                                    // },
-                                    validate: [{ required: true, message: "年龄1不能为空", trigger: "change" }], //校验规则
-                                },
-                                {
-                                    title: "年龄2",
-                                    type: "input",
-                                    field: "age2",
-                                    value: "age2",
-                                    validate: [{ required: true, message: "年龄2不能为空", trigger: "change" }], //校验规则
-                                },
-                            ],
-                        },
-                    ],
-                },
-                // {
                 //     type: "row",
                 //     children: [
                 //         {
@@ -185,27 +152,24 @@ export default {
                 //             props: { span: 24 },
                 //             children: [
                 //                 {
-                //                     title: "年龄3",
+                //                     // show: true,
+                //                     title: "年龄1",
                 //                     type: "input",
-                //                     field: "age3",
-                //                     value: "age3",
-                //                     validate: [{ required: true, message: "年龄不能为空", trigger: "change" }], //校验规则
+                //                     field: "age1",
+                //                     value: "age1",
+                //                     // props: {
+                //                     //     size: "large",
+                //                     // },
+                //                     validate: [{ required: true, message: "年龄1不能为空", trigger: "change" }], //校验规则
+                //                 },
+                //                 {
+                //                     title: "年龄2",
+                //                     type: "input",
+                //                     field: "age2",
+                //                     value: "age2",
+                //                     validate: [{ required: true, message: "年龄2不能为空", trigger: "change" }], //校验规则
                 //                 },
                 //             ],
-                //         },
-                //     ],
-                // },
-                // {
-                //     type: "row",
-                //     children: [
-                //         {
-                //             title: "性别",
-                //             type: "input",
-                //             field: "sex",
-                //             col: {
-                //                 span: 12,
-                //             },
-                //             validate: [{ required: true, message: "性别不能为空", trigger: "change" }], //校验规则
                 //         },
                 //     ],
                 // },

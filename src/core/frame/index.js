@@ -121,6 +121,10 @@ export default function FormCreateFactory(config) {
         console.log("create方法");
     }
 
+    function component(id, component) {
+        console.log(id, component);
+    }
+
     // 注册来自iview包的
     function componentAlias(alias) {
         // 在CreateNode原型上生成创建表单表单控件VNode的原型方法
@@ -172,6 +176,7 @@ export default function FormCreateFactory(config) {
 
     function useAttr(create) {
         extend(create, {
+            component,
             componentAlias,
             parser,
         });
