@@ -364,7 +364,8 @@ export default {
 ```vue
 <template>
     <div>
-        <FormCreate @created="created" @update="update" @mounted="mounted" @change="change"></FormCreate>
+        <FormCreate @created="created" @update="update" @mounted="mounted" @change="change" 
+        @control="control" @submit="submit" @removeField="removeField" @removeRule="removeRule"></FormCreate>
     </div>
 </template>
 ```
