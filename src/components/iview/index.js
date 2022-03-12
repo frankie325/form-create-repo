@@ -1,4 +1,4 @@
-import select from './select'
+import select from './select/index.jsx'
 
 export default [
     select,

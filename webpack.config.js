@@ -17,6 +17,10 @@ module.exports = {
                 test: /\.vue?$/,
                 use: "vue-loader",
             },
+            {
+                test: /\.jsx$/,
+                use: ["babel-loader"],
+            },
         ],
     },
     plugins: [
