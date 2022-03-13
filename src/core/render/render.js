@@ -1,4 +1,5 @@
 import { extend, is } from "@/utils";
+import { $set } from "@/utils/modify";
 import { mergeRule } from "../frame/utils";
 import { lower } from "@/utils/toCase";
 export default function useRender(Render) {
@@ -80,6 +81,8 @@ export default function useRender(Render) {
                     this.ctxProp(ctx);
                     let prop = ctx.prop;
 
+                    prop.props.formCreateInject = this.injectProp(ctx);
+
                     if (prop.hidden) {
                         this.setCache(ctx, undefined, parent);
                         return;
@@ -143,6 +146,31 @@ export default function useRender(Render) {
                 },
                 [vn]
             );
+        },
+        // 自定义组件可以使用props访问下面的属性
+        injectProp(ctx) {
+            if (!this.vm.ctxInject[ctx.id]) {
+                $set(this.vm.ctxInject, ctx.id, {
+                    api: this.$handle.api,
+                    options: [],
+                    children: [],
+                    prop: {},
+                    field: ctx.field,
+                    rule: ctx.rule,
+                });
+            }
+            const inject = this.vm.ctxInject[ctx.id];
+            extend(inject, {
+                options: ctx.prop.options,
+                children: ctx.rule.children,
+                prop: (function () {
+                    const temp = { ...ctx.prop };
+                    temp.on = temp.on ? { ...temp.on } : {};
+                    // delete temp.model;
+                    return temp;
+                })(),
+            });
+            return inject;
         },
         renderChildren(ctx) {
             const { children } = ctx.rule,

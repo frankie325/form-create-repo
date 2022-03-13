@@ -1,3 +1,5 @@
+import { extend } from "@/utils";
+
 const Name = "FormCreate";
 
 export default function $FormCreate(FormCreate) {
@@ -49,6 +51,7 @@ export default function $FormCreate(FormCreate) {
                 renderRule: [...(this.rule || [])],
                 formData: {},
                 validate: {},
+                ctxInject: {},
             };
         },
         render(h) {
@@ -84,6 +87,10 @@ export default function $FormCreate(FormCreate) {
         beforeCreate() {
             const { rule, option } = this.$options.propsData;
             this.formCreate = new FormCreate(this, rule, option);
+            Object.keys(this.formCreate.prop).forEach((k) => {
+                extend(this.$options[k], this.formCreate.prop[k]);
+            });
+            this.$emit("beforeCreate", this.formCreate.api());
         },
         mounted() {
             console.log("---------form-create实例---------", this);

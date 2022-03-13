@@ -25,7 +25,6 @@
                 <Input placeholder="Password"> </Input>
             </FormItem>
         </Form> -->
-        <!-- <Input type="textarea" :rows="10"></Input> -->
         <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue" @created="created" @update="update">
             <!-- <div>11</div> -->
         </FormCreate>
@@ -87,6 +86,7 @@ export default {
     watch: {},
     data() {
         return {
+            single: [],
             fApi: {},
             ceshi: { name: true },
             rule: [

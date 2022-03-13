@@ -22,6 +22,8 @@ export default function createNodeFactory() {
             // 如果是保留标签，则删除data.nativeOn
             if (Vue.config.isReservedTag(tag) && data.nativeOn) delete data.nativeOn;
             let Node = this.$h(tag, parseProp(data), children || []);
+            // 修改VNode的context，保证使用make方法生成的VNode的上下文是一样的
+            // 这里可能会导致函数式组件渲染的根子节点内的插槽渲染错误
             Node.context = this.vm;
             return Node;
         },
