@@ -133,6 +133,7 @@ export default function useContext(Handle) {
             // debugger;
             $del(this.ctxs, id);
             $del(this.$render.orgChildren, id);
+            $del(this.vm.ctxInject, id);
             $del(this.formData, id);
             $del(ctx, "cacheValue");
 

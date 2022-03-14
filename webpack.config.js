@@ -5,6 +5,7 @@ const { VueLoaderPlugin } = require("vue-loader");
 
 module.exports = {
     mode: "development",
+    devtool: "cheap-source-map",
     entry: "./demo/main.js",
     module: {
         rules: [

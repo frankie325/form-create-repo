@@ -25,7 +25,6 @@
                 <Input placeholder="Password"> </Input>
             </FormItem>
         </Form> -->
-        <!-- <Input type="textarea" :rows="10"></Input> -->
         <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue" @created="created" @update="update">
             <!-- <div>11</div> -->
         </FormCreate>
@@ -202,14 +201,14 @@ export default {
                     name: "kfg2",
                 },
                 submitBtn: {
-                    show: true,
+                    show: false,
                     // 这里配置了点击事件，则下面的onSubmit不会触发
                     click(api) {
                         console.log(api);
                     },
                 },
                 resetBtn: {
-                    show: true,
+                    show: false,
                 },
                 onSubmit(formData, api) {
                     console.log(formData, api);

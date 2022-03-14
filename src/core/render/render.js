@@ -1,4 +1,5 @@
 import { extend, is } from "@/utils";
+import { $set } from "@/utils/modify";
 import { mergeRule } from "../frame/utils";
 import { lower } from "@/utils/toCase";
 export default function useRender(Render) {
@@ -80,6 +81,8 @@ export default function useRender(Render) {
                     this.ctxProp(ctx);
                     let prop = ctx.prop;
 
+                    prop.props.formCreateInject = this.injectProp(ctx);
+
                     if (prop.hidden) {
                         this.setCache(ctx, undefined, parent);
                         return;
@@ -94,11 +97,11 @@ export default function useRender(Render) {
                     }
 
                     vn = ctx.parser.render(children, ctx); //调用parser解析器生成VNode，没有则调用defaultRender
-
+                    // debugger
                     if (ctx.input && prop.native !== false) {
                         vn = this.$manager.makeWrap(ctx, vn);
                     }
-                    // debugger
+
                     if (!isShow) {
                         vn = this.display(vn);
                     }
@@ -111,6 +114,30 @@ export default function useRender(Render) {
                 return vn;
             }
             return this.getCache(ctx);
+        },
+        injectProp(ctx) {
+            if (!this.vm.ctxInject[ctx.id]) {
+                $set(this.vm.ctxInject, ctx.id, {
+                    api: this.$handle.api,
+                    options: [],
+                    children: [],
+                    prop: {},
+                    field: ctx.field,
+                    rule: ctx.rule,
+                });
+            }
+            const inject = this.vm.ctxInject[ctx.id];
+            extend(inject, {
+                options: ctx.prop.options,
+                children: ctx.rule.children,
+                prop: (function () {
+                    const temp = { ...ctx.prop };
+                    temp.on = temp.on ? { ...temp.on } : {};
+                    delete temp.model;
+                    return temp;
+                })(),
+            });
+            return inject;
         },
         display(vn) {
             if (Array.isArray(vn)) {
@@ -195,6 +222,8 @@ export default function useRender(Render) {
         // 根据rule.type在CreateNode实例中找到对应的方法生成VNode
         defaultRender(ctx, children) {
             const prop = ctx.prop;
+            // if(ctx.type=="select") debugger
+
             if (this.vNode[ctx.type]) return this.vNode[ctx.type](prop, children);
 
             if (this.vNode[ctx.originType]) return this.vNode[ctx.originType](prop, children);
@@ -214,7 +243,6 @@ export default function useRender(Render) {
                 }
             }
             let data = [[children]];
-
             return this.$h(type, { ...rule }, data);
         },
     });

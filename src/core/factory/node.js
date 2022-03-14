@@ -22,7 +22,7 @@ export default function createNodeFactory() {
             // 如果是保留标签，则删除data.nativeOn
             if (Vue.config.isReservedTag(tag) && data.nativeOn) delete data.nativeOn;
             let Node = this.$h(tag, parseProp(data), children || []);
-            Node.context = this.vm;
+            // Node.context = this.vm; // 会修改自定义函数式组件渲染出来的根VNode的context，可能造成插槽渲染不正确
             return Node;
         },
         aliasMap,
