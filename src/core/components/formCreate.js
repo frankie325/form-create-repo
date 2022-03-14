@@ -29,7 +29,7 @@ export default function $FormCreate(FormCreate) {
             option: {
                 handler(n) {
                     this.formCreate.initOptions(n);
-                    console.log("----------FormCreate实例----------", this.formCreate);
+                    // console.log("----------FormCreate实例----------", this.formCreate);
                 },
                 deep: true,
             },
@@ -90,6 +90,7 @@ export default function $FormCreate(FormCreate) {
             Object.keys(this.formCreate.prop).forEach((k) => {
                 extend(this.$options[k], this.formCreate.prop[k]);
             });
+            this.$emit("beforeCreate", this.formCreate.api());
         },
         mounted() {
             console.log("---------form-create实例---------", this);

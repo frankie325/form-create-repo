@@ -51,6 +51,9 @@ export default function FormCreateFactory(config) {
             vm,
             rules,
             manager: createManager(config.manager), //用来注册来自不同包的manager方法
+            prop: {
+                components,
+            },
             CreateNode,
             prop: {
                 components,
@@ -128,7 +131,6 @@ export default function FormCreateFactory(config) {
     }
 
     function component(id, component) {
-        // console.log(id, component);
         let name;
         if (is.String(id)) {
             name = toCase(id);
@@ -141,9 +143,9 @@ export default function FormCreateFactory(config) {
             name = toCase(id.name);
             component = id;
         }
-
         if (!name || !component) return;
         components[name] = component;
+        // if (component.formCreateParser) parser(name, component.formCreateParser);
     }
 
     // 注册来自iview包的

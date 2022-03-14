@@ -213,10 +213,10 @@ export default function method() {
             });
         },
         created(api) {
-            console.log("created钩子", api);
+            // console.log("created钩子", api);
         },
         update(api) {
-            console.log("update钩子", api);
+            // console.log("update钩子", api);
         },
     };
 }

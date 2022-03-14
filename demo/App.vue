@@ -86,6 +86,7 @@ export default {
     watch: {},
     data() {
         return {
+            single: [],
             fApi: {},
             ceshi: { name: true },
             rule: [

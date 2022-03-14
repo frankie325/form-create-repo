@@ -1,5 +1,5 @@
-import select from './select/index.jsx'
+import select from "./select";
+import radio from "./radio";
+import checkbox from "./checkbox";
 
-export default [
-    select,
-]
+export default [select, radio, checkbox];

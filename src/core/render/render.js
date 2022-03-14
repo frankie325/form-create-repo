@@ -171,6 +171,31 @@ export default function useRender(Render) {
                 [vn]
             );
         },
+        // 自定义组件可以使用props访问下面的属性
+        injectProp(ctx) {
+            if (!this.vm.ctxInject[ctx.id]) {
+                $set(this.vm.ctxInject, ctx.id, {
+                    api: this.$handle.api,
+                    options: [],
+                    children: [],
+                    prop: {},
+                    field: ctx.field,
+                    rule: ctx.rule,
+                });
+            }
+            const inject = this.vm.ctxInject[ctx.id];
+            extend(inject, {
+                options: ctx.prop.options,
+                children: ctx.rule.children,
+                prop: (function () {
+                    const temp = { ...ctx.prop };
+                    temp.on = temp.on ? { ...temp.on } : {};
+                    // delete temp.model;
+                    return temp;
+                })(),
+            });
+            return inject;
+        },
         renderChildren(ctx) {
             const { children } = ctx.rule,
                 orgChildren = this.orgChildren[ctx.id];
