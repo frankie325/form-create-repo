@@ -63,7 +63,7 @@ export default function FormCreateFactory(config) {
             extendApi: config.extendApi || ((api) => api), //注册来自不同包的api
         });
         this.init();
-        this.initOptions(options);
+        this.initOptions(options || {});
     }
 
     extend(FormCreate.prototype, {

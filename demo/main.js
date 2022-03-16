@@ -5,10 +5,11 @@ import "view-design/dist/styles/iview.css";
 Vue.use(ViewUI);
 
 import FormCreate from "@/iview";
+import FcDesigner from "@/designer";
 Vue.use(FormCreate, {
     form: {
-        clearable: true,
-        inline: true,
+        // clearable: true,
+        // inline: true,
         labelWidth: 200,
         labelPosition: "right",
     },
@@ -28,6 +29,8 @@ Vue.use(FormCreate, {
     // submitBtn: true,
     // resetBtn: true,
 });
+
+Vue.use(FcDesigner);
 
 new Vue({
     el: "#app",

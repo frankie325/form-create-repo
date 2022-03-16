@@ -16,7 +16,8 @@
         "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
         "@vue/babel-preset-jsx": "^1.2.4",
         "view-design": "^4.7.0",
-        "vue": "^2.6.14"
+        "vue": "^2.6.14",
+        "vuedraggable": "^2.24.3"
     },
     "devDependencies": {
         "@babel/core": "^7.17.5",

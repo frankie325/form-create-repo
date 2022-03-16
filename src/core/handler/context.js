@@ -68,9 +68,6 @@ export default function useContext(Handle) {
                         vm.$watch(
                             () => ctx.rule[key],
                             (n, o) => {
-                                /*
-                                    加载control配置时，因为监听rule.children
-                                */
                                 if (this.noWatchFn) return;
                                 // if (this.loading || this.noWatchFn || this.reloading) return;
 
@@ -80,7 +77,6 @@ export default function useContext(Handle) {
                                     ctx.updateType();
                                 } else if (key === "children") {
                                     // debugger;
-
                                     const flag = is.trueArray(n);
                                     this.deferSyncValue(() => {
                                         if (n !== o) {
@@ -93,6 +89,7 @@ export default function useContext(Handle) {
                                 }
                                 this.$render.clearCache(ctx);
                                 this.watching = false;
+                                this.refresh();
                             },
                             {
                                 deep: key !== "children",

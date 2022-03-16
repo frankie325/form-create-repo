@@ -72,19 +72,25 @@ export default {
     makeWrap(ctx, children) {
         const rule = ctx.prop;
         const uni = `${this.key}${ctx.key}`;
-        const wrap = {
-            props: {
-                label: rule.title,
-                ...(rule.wrap || {}),
-                prop: ctx.id,
-            },
-            key: `${uni}fi`,
-            ref: ctx.wrapRef,
-            type: "formItem",
-        };
 
-        const item = this.$r(wrap, children);
-        if (rule.col) return this.makeCol(rule, uni, item);
+        const item =
+            rule.wrap && isFalse(rule.wrap.show)
+                ? children
+                : this.$r(
+                      {
+                          props: {
+                              label: rule.title,
+                              ...(rule.wrap || {}),
+                              prop: ctx.id,
+                          },
+                          key: `${uni}fi`,
+                          ref: ctx.wrapRef,
+                          type: "formItem",
+                      },
+                      children
+                  );
+
+        if (rule.col && !isFalse(rule.col.show)) return this.makeCol(rule, uni, item);
         return item;
     },
     // 创建Col

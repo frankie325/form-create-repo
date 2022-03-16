@@ -44,8 +44,8 @@ export default function method() {
         },
         // 新增规则
         addRule() {
-            // this.fApi.append(
-            this.fApi.prepend(
+            this.fApi.append(
+                // this.fApi.prepend(
                 {
                     type: "input",
                     title: "商品简介",
@@ -70,8 +70,8 @@ export default function method() {
                         placeholder: "请输入商品简介",
                     },
                     validate: [{ required: true, message: "请输入商品简介", trigger: "blur" }],
-                }
-                // "age3"
+                },
+                "age1"
             );
         },
         // 获取所有表单组件规则

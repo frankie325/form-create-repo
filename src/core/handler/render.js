@@ -15,6 +15,7 @@ export default function useRender(Handle) {
             }, 0);
         },
         render() {
+            // debugger
             ++this.loadedId;
             if (this.vm.unique > 0) return this.$render.render();
             else {

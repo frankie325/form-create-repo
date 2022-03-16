@@ -5,6 +5,10 @@ export default function json() {
             type: "input",
             field: "input-field",
             value: "123456",
+            wrap: {
+                show: false,
+            },
+            // col: {},
             props: {
                 // type: "textarea",
                 // rows: 10,

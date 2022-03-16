@@ -25,9 +25,9 @@
                 <Input placeholder="Password"> </Input>
             </FormItem>
         </Form> -->
-        <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue" @created="created" @update="update">
-            <!-- <div>11</div> -->
-        </FormCreate>
+        <!-- <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue" @created="created" @update="update">
+            <div>11</div>
+        </FormCreate> -->
         <Collapse>
             <Panel name="1">
                 字段操作
@@ -75,14 +75,19 @@
                 </p>
             </Panel>
         </Collapse>
+        <Designer />
     </div>
 </template>
 
 <script>
 import methods from "./methods.js";
 import json from "./json.js";
+import Designer from "./Designer";
 export default {
     name: "App",
+    components: {
+        Designer,
+    },
     watch: {},
     data() {
         return {
@@ -144,35 +149,35 @@ export default {
                 //         },
                 //     ],
                 // },
-                // {
-                //     type: "row",
-                //     children: [
-                //         {
-                //             type: "col",
-                //             props: { span: 24 },
-                //             children: [
-                //                 {
-                //                     // show: true,
-                //                     title: "年龄1",
-                //                     type: "input",
-                //                     field: "age1",
-                //                     value: "age1",
-                //                     // props: {
-                //                     //     size: "large",
-                //                     // },
-                //                     validate: [{ required: true, message: "年龄1不能为空", trigger: "change" }], //校验规则
-                //                 },
-                //                 {
-                //                     title: "年龄2",
-                //                     type: "input",
-                //                     field: "age2",
-                //                     value: "age2",
-                //                     validate: [{ required: true, message: "年龄2不能为空", trigger: "change" }], //校验规则
-                //                 },
-                //             ],
-                //         },
-                //     ],
-                // },
+                {
+                    type: "row",
+                    children: [
+                        {
+                            type: "col",
+                            props: { span: 24 },
+                            children: [
+                                {
+                                    // show: true,
+                                    title: "年龄1",
+                                    type: "input",
+                                    field: "age1",
+                                    value: "age1",
+                                    // props: {
+                                    //     size: "large",
+                                    // },
+                                    validate: [{ required: true, message: "年龄1不能为空", trigger: "change" }], //校验规则
+                                },
+                                {
+                                    title: "年龄2",
+                                    type: "input",
+                                    field: "age2",
+                                    value: "age2",
+                                    validate: [{ required: true, message: "年龄2不能为空", trigger: "change" }], //校验规则
+                                },
+                            ],
+                        },
+                    ],
+                },
             ],
             // 全局配置
             option: {
