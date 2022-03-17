@@ -32,7 +32,14 @@ export default function useLoader(Handle) {
 
             rule.options = Array.isArray(rule.options) ? rule.options : [];
 
+            this.loadFn(rule);
+
             return rule;
+        },
+        loadFn(rule) {
+            ["on", "props", "nativeOn"].forEach((k) => {
+                rule[k] && this.parseInjectEvent(rule, rule[k]);
+            });
         },
         /*
             新增rule需要，通过control配置控制新增rule，都需要重新loadRule
@@ -87,9 +94,7 @@ export default function useLoader(Handle) {
 
                 // 一般通过api进行新增，重新loadRule，大部分rule都是有__fc__缓存的，可以重复利用，减少开销
                 if (_rule.__fc__ && _rule.__fc__.root === rules && this.ctxs[_rule.__fc__.id]) {
-                    // debugger
                     loadChildren(_rule.__fc__.rule.children, _rule.__fc__);
-                    // debugger
                     return _rule.__fc__;
                 }
 
@@ -121,6 +126,8 @@ export default function useLoader(Handle) {
                     }
                     this.appendValue(ctx.rule);
                 }
+                // 处理rule.emit | rule.nativeEmit
+                [true, false].forEach((b) => this.parseEmit(ctx, b));
 
                 ctx.parent = parent;
                 ctx.root = rules;
@@ -154,7 +161,7 @@ export default function useLoader(Handle) {
           rule.children内变化则执行loadChildren
         */
         _reloadRule(rules) {
-            // debugger;
+            debugger;
             if (!rules) rules = this.rules;
             // 旧的ctxs
             const ctxs = { ...this.ctxs };

@@ -1,4 +1,4 @@
-import { extend, unique, toCase, deepCopy } from "@/utils";
+import { extend, unique, toCase, deepCopy, mergeProps } from "@/utils";
 import { enumerable } from "../frame/utils";
 function bind(ctx) {
     // 为rule或者maker实例添加__fc__属性，为ctx实例
@@ -31,6 +31,7 @@ export default function RuleContext(handle, rule) {
         ctrlRule: [],
         deleted: false,
         defaultValue: deepCopy(rule.value),
+        computed: {},
     });
     this.updateType();
     this.updateKey();
@@ -79,7 +80,8 @@ extend(RuleContext.prototype, {
     initProp() {
         const rule = { ...this.rule };
         delete rule.children;
-        this.prop = rule;
+        // this.prop = rule;
+        this.prop = mergeProps({}, [rule, this.computed]);
     },
     delete() {
         const undef = void 0;

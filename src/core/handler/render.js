@@ -4,7 +4,7 @@ export default function useRender(Handle) {
     extend(Handle.prototype, {
         clearNextTick() {
             this.nextTick && clearTimeout(this.nextTick);
-            this.nextTick;
+            this.nextTick = null;
         },
         // form-create更新后，触发bus.$once绑定的next-tick方法
         bindNextTick(fn) {
@@ -15,7 +15,6 @@ export default function useRender(Handle) {
             }, 0);
         },
         render() {
-            // debugger
             ++this.loadedId;
             if (this.vm.unique > 0) return this.$render.render();
             else {

@@ -124,6 +124,22 @@ export default {
 ### children
 - 类型：`Array<rule | string>`
 - 说明：设置父组件的插槽，默认为default，可配合slot使用
+
+### inject
+- 类型：`Boolean | Any`
+- 说明：是否开启向事件中注入参数  
+[事件注入](#事件注入)
+### emit
+- 类型：`Array`
+- 说明：使用 `emit` 方式触发事件  
+[emit说明](#emit监听事件)
+### nativeEmit
+- 类型：`Array`
+- 说明：使用 `nativeEmit` 方式触发原生事件
+### emitPrefix
+- 类型：`String`
+- 说明：会为emit事件添加前缀  
+[emit说明](#emit监听事件)
 ## 通用配置
 以下配置保持`VNodeData`一致，请参考[渲染函数](https://cn.vuejs.org/v2/guide/render-function.html)
 ```js
@@ -180,6 +196,7 @@ export default {
                 form:{},
                 global:{},
                 formData:{},
+                injectEvent:true,
                 submitBtn:{},
                 resetBtn:{},
                 onSubmit:()=>{},
@@ -187,10 +204,10 @@ export default {
             }
 }
 ```
-## form
+### form
 设置Form组件的属性: `Object`
 
-## global
+### global
 设置表单组件的全局配置: `Object`  
 ```js
 export default {
@@ -214,10 +231,13 @@ export default {
             }
 }
 ```
-## formData  
+### formData  
 设置表单组件初始值: `Object`，优先级大于`rule.value`
 
-## submitBtn  
+### injectEvent
+所有表单组件事件都会开启事件注入: `Boolean | Any`  
+[事件注入](#事件注入)
+### submitBtn  
 设置提交按钮：`Boolean | Object`
 
 `props` 请参照 `iButton` 的属性[props](https://iviewui.com/components/button#API)
@@ -241,7 +261,7 @@ export default {
     }
 }
 ```
-## resetBtn
+### resetBtn
 设置重置按钮：`Boolean | Object`，默认为隐藏
 ```js
 export default {
@@ -264,10 +284,10 @@ export default {
 }
 ```
 
-## onSubmit
+### onSubmit
 设置表单提交的回调函数
 
-## on
+### onReload
 ## 布局组件
 
 ### Row、Col布局
@@ -313,6 +333,7 @@ export default {
 }
 ```
 <font color="red">注意：如果父级不是Row组件，则col属性不会生效</font>
+
 ## 组件联动
 
 - value： 当组件的值和rule.value全等时显示rule中的组件，handle的简写形式
@@ -359,13 +380,108 @@ export default {
 }
 ```
 
+## 事件注入
+全局开启事件参数注入`option.injectEvent: true`，或者局部开启事件参数注入`rule.inject: true`，为表单组件的所有回调事件都会注入一个参数。
+```js
+export default {
+    data(){
+        return {
+            rule:[
+                    {
+                       type: "input",      
+                       field: "input-field",
+                       inject: true,
+                       props:{
+                            // props中的属性如果是函数，也会开启事件注入 
+                       },
+                       on:{
+                           "on-change":(inject, event)=>{
+                            //    注入的参数在第一个位置
+                           }
+                       }
+                    }
+            ]
+        }
+    }
+}
+```
+注入的参数为
+```js
+{
+    $f: Object , //api
+    rule: Array, //所有生成规则
+    self：Object, //表单组件的生成规则
+    option: Object, //全局配置
+    inject: Any, //自定义的注入参数
+    args:Array, //原始的回调参数
+}
+```
+
+## 事件监听
+### emit监听事件
+设置 `emit` 可监听组件内抛出的事件：`Array<String> | Array<Object>`  
+
+事件名称为`${field} - ${eventName}`，如果采用驼峰写法会转为连字符，
+如果设置了`rule.emitPrefix`，则事件名称为`${emitPrefix} - ${eventName}`
+```vue
+<template>
+    <div>
+        <FormCreate @input-field-on-change="emitChange"></FormCreate>
+    </div>
+</template>
+```
+```js
+export default {
+    data(){
+        return {
+            rule:[
+                    {
+                       type: "input",      
+                       field: "input-field",
+                       emit: ["on-change"], //当触发组件的on-change时，同时会触发在form-create组件上绑定的自定义事件
+                    }
+            ]
+        }
+    },
+    methods:{
+        emitChange(){
+
+        }
+    }
+}
+```
+`emit` 也可配置为数组对象，为事件开启参数注入
+```js
+export default {
+    data(){
+        return {
+            rule:[
+                    {
+                       type: "input",      
+                       field: "input-field",
+                       //inject: "注入参数"
+                       emit: [{
+                           name: "on-change",
+                           inject: "自定义注入参数",
+                       }],
+                    }
+            ]
+        }
+    },
+    methods:{
+        emitChange(){
+
+        }
+    }
+}
+```
 ## 组件事件
 
 ```vue
 <template>
     <div>
         <FormCreate @created="created" @update="update" @mounted="mounted" @change="change" 
-        @control="control" @submit="submit" @removeField="removeField" @removeRule="removeRule"></FormCreate>
+        @control="control" @submit="submit" @removeField="removeField" @removeRule="removeRule" @emit-event="emitEvent"></FormCreate>
     </div>
 </template>
 ```
@@ -380,6 +496,7 @@ export default {
         submit(formData, fApi){},
         removeField(field, rule, fApi){},
         removeRule(rule, fApi){},
+        emitEvent(emitName, ...args){},
     }
 }
 ```
@@ -431,5 +548,12 @@ export default {
 - 参数：
   - rule: 组件的rule规则
   - fApi: api接口
+
+### emit-event
+- 说明：在组件的`emit`事件触发时触发
+- 参数：
+  - emitName: `emit`触发的事件名称
+  - args: `emit`触发的事件的参数
+
 # Api
 [api](./doc/API.md)

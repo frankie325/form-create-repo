@@ -25,9 +25,9 @@
                 <Input placeholder="Password"> </Input>
             </FormItem>
         </Form> -->
-        <!-- <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue" @created="created" @update="update">
-            <div>11</div>
-        </FormCreate> -->
+        <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue" @created="created" @update="update" @input-field-on-change="emitChange" @emit-event="emitEvent">
+            <!-- <div>11</div> -->
+        </FormCreate>
         <Collapse>
             <Panel name="1">
                 字段操作
@@ -75,7 +75,7 @@
                 </p>
             </Panel>
         </Collapse>
-        <Designer />
+        <!-- <Designer /> -->
     </div>
 </template>
 
@@ -149,35 +149,35 @@ export default {
                 //         },
                 //     ],
                 // },
-                {
-                    type: "row",
-                    children: [
-                        {
-                            type: "col",
-                            props: { span: 24 },
-                            children: [
-                                {
-                                    // show: true,
-                                    title: "年龄1",
-                                    type: "input",
-                                    field: "age1",
-                                    value: "age1",
-                                    // props: {
-                                    //     size: "large",
-                                    // },
-                                    validate: [{ required: true, message: "年龄1不能为空", trigger: "change" }], //校验规则
-                                },
-                                {
-                                    title: "年龄2",
-                                    type: "input",
-                                    field: "age2",
-                                    value: "age2",
-                                    validate: [{ required: true, message: "年龄2不能为空", trigger: "change" }], //校验规则
-                                },
-                            ],
-                        },
-                    ],
-                },
+                // {
+                //     type: "row",
+                //     children: [
+                //         {
+                //             type: "col",
+                //             props: { span: 24 },
+                //             children: [
+                //                 {
+                //                     // show: true,
+                //                     title: "年龄1",
+                //                     type: "input",
+                //                     field: "age1",
+                //                     value: "age1",
+                //                     // props: {
+                //                     //     size: "large",
+                //                     // },
+                //                     validate: [{ required: true, message: "年龄1不能为空", trigger: "change" }], //校验规则
+                //                 },
+                //                 {
+                //                     title: "年龄2",
+                //                     type: "input",
+                //                     field: "age2",
+                //                     value: "age2",
+                //                     validate: [{ required: true, message: "年龄2不能为空", trigger: "change" }], //校验规则
+                //                 },
+                //             ],
+                //         },
+                //     ],
+                // },
             ],
             // 全局配置
             option: {
@@ -196,11 +196,11 @@ export default {
                             disabled: false,
                             // size: "large",
                         },
-                        on: {
-                            "on-change": (value) => {
-                                console.log("input-change", value);
-                            },
-                        },
+                        // on: {
+                        //     "on-change": (value) => {
+                        //         console.log("input-change", value);
+                        //     },
+                        // },
                     },
                 },
                 formData: {
@@ -263,7 +263,7 @@ export default {
         },
     },
     updated() {
-        console.log("update", this);
+        // console.log("update", this);
     },
     mounted() {
         // 只有经过响应式处理的数据，才能调用watch进行监听

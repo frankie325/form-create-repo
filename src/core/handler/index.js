@@ -6,7 +6,9 @@ import useLoader from "./loader";
 import useContext from "./context";
 import useInput from "./input";
 import useRender from "./render";
+import useInject from "./inject";
 import useLifecycle from "./lifecycle";
+
 export default function Handle(fc) {
     extend(this, {
         fc,
@@ -75,4 +77,5 @@ useLoader(Handle);
 useContext(Handle);
 useInput(Handle);
 useRender(Handle);
+useInject(Handle);
 useLifecycle(Handle);

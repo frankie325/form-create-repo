@@ -70,8 +70,8 @@ export default function method() {
                         placeholder: "请输入商品简介",
                     },
                     validate: [{ required: true, message: "请输入商品简介", trigger: "blur" }],
-                },
-                "age1"
+                }
+                // "age1"
             );
         },
         // 获取所有表单组件规则
@@ -217,6 +217,13 @@ export default function method() {
         },
         update(api) {
             // console.log("update钩子", api);
+        },
+        // emit注入参数的事件
+        emitChange(...args) {
+            // console.log("emitChange", args);
+        },
+        emitEvent(emitName, ...args) {
+            console.log(emitName, args);
         },
     };
 }

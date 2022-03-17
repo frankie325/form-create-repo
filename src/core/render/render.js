@@ -64,7 +64,6 @@ export default function useRender(Render) {
             只要访问了form-create的响应式数据都会收集form-create的渲染Watcher
             当响应式数据变化时，触发form-create更新
             */
-            //    debugger
             if (!this.cache[ctx.id]) {
                 let vn;
                 let cacheFlag = true; //是否需要缓存
@@ -116,6 +115,7 @@ export default function useRender(Render) {
             return this.getCache(ctx);
         },
         injectProp(ctx) {
+            // 这里对ctxInject操作，会导致form-create执行完render，再次执行render
             if (!this.vm.ctxInject[ctx.id]) {
                 $set(this.vm.ctxInject, ctx.id, {
                     api: this.$handle.api,
