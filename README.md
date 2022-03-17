@@ -421,7 +421,7 @@ export default {
 ### emit监听事件
 设置 `emit` 可监听组件内抛出的事件：`Array<String> | Array<Object>`  
 
-事件名称为`${field} - ${eventName}`，如果采用驼峰写法会转为连字符，
+事件名称为`${field}-${eventName}`，如果采用驼峰写法会转为连字符，
 如果设置了`rule.emitPrefix`，则事件名称为`${emitPrefix} - ${eventName}`
 ```vue
 <template>
@@ -475,6 +475,9 @@ export default {
     }
 }
 ```
+
+### nativeEmit监听原生事件
+设置 `emit` 可监听组件内抛出的原生事件：`Array<String> | Array<Object>`，用法与 `emit` 一致，事件名称为`native-${field}-${eventName}`
 ## 组件事件
 
 ```vue
