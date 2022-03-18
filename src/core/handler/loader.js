@@ -5,6 +5,7 @@ import { baseRule } from "../factory/creator";
 import { extend, deepCopy } from "@/utils";
 import is, { hasProperty } from "@/utils/type";
 import { err } from "@/utils/console";
+import Vue from "vue";
 export default function useLoader(Handle) {
     extend(Handle.prototype, {
         nextRefresh(fn) {
@@ -188,7 +189,9 @@ export default function useLoader(Handle) {
           rule.children内变化则执行loadChildren
         */
         _reloadRule(rules) {
+            // debugger
             if (!rules) rules = this.rules;
+            if (!rules.__ob__) Vue.observable(rules);
             // 旧的ctxs
             const ctxs = { ...this.ctxs };
             this.$render.clearOrgChildren();

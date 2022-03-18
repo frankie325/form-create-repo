@@ -223,7 +223,7 @@ export default function method() {
             // console.log("emitChange", args);
         },
         emitEvent(emitName, ...args) {
-            // console.log(emitName, args);
+            console.log(emitName, args);
         },
     };
 }

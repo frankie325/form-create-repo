@@ -62,8 +62,8 @@ export default function useContext(Handle) {
             Object.keys(ctx.rule)
                 .filter((k) => k[0] !== "_" && none.indexOf(k) === -1)
                 .forEach((key) => {
-                    // if (key === "show") debugger;
-
+                    // debugger
+                    // if (key === "input-field") debugger;
                     ctx.watch.push(
                         vm.$watch(
                             () => ctx.rule[key],
@@ -72,7 +72,10 @@ export default function useContext(Handle) {
                                 // if (this.loading || this.noWatchFn || this.reloading) return;
 
                                 this.watching = true;
-                                if (false) {
+                                if (["props", "on", "nativeOn"].indexOf(key) > -1) {
+                                    this.parseInjectEvent(ctx.rule, n || {});
+                                } else if (["emit", "nativeEmit"].indexOf(key) > -1) {
+                                    this.parseEmit(ctx, key === "emit");
                                 } else if (key === "type") {
                                     ctx.updateType();
                                     this.bindParser(ctx);
@@ -145,16 +148,16 @@ export default function useContext(Handle) {
             this.deferSyncValue(() => {
                 // debugger
                 // if (!this.reloading) {
-                    if (ctx.parser.loadChildren !== false) {
-                        if (is.trueArray(ctx.rule.children)) {
-                            ctx.rule.children.forEach((c) => {
-                                c.__fc__ && this.rmCtx(c.__fc__);
-                            });
-                        }
-                        if (ctx.root === this.rules) {
-                            this.vm._renderRule();
-                        }
+                if (ctx.parser.loadChildren !== false) {
+                    if (is.trueArray(ctx.rule.children)) {
+                        ctx.rule.children.forEach((c) => {
+                            c.__fc__ && this.rmCtx(c.__fc__);
+                        });
                     }
+                    if (ctx.root === this.rules) {
+                        this.vm._renderRule();
+                    }
+                }
                 // }
             }, input);
 

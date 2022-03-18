@@ -99,6 +99,7 @@ extend(RuleContext.prototype, {
     delete() {
         const undef = void 0;
         this.unwatch();
+        this.rmCtrl();
         extend(this, {
             deleted: true,
             prop: { ...this.rule },

@@ -27,7 +27,6 @@ export default function useInject(Handle) {
             } else if (Array.isArray(fn) && fn[0]) {
                 return this.parseEventList(rule, fn, inject);
             } else if (is.String(fn)) {
-
             }
         },
         // 注入的参数
@@ -45,7 +44,7 @@ export default function useInject(Handle) {
         },
         inject(self, _fn, inject) {
             if (_fn.__origin) {
-                // return
+                if (this.watching && !this.loading) return _fn;
                 _fn = _fn.__origin;
             }
 

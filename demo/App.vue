@@ -136,11 +136,11 @@ FormCreate.register({
     //mounted 对应的组件生成时
     mounted(data, rule, api) {
         console.log("自定义属性mounted", data, rule, api);
-        data.mergeProp({
-            props: {
-                large: "size",
-            },
-        });
+        // data.mergeProp({
+        //     props: {
+        //         large: "size",
+        //     },
+        // });
     },
     //自定义属性值发生变化
     watch(data, rule, api) {
@@ -306,7 +306,7 @@ export default {
         changeProp() {
             // this.$set(this.ceshi, "name", false);  //没有绑定过观察者实例的属性，使用$set不会进行响应式处理，只起简单的赋值作用
             // this.ceshi.name = false;
-            this.fValue.age1 = 23;
+            // this.fValue.age1 = 23;
             // this.fValue = {
             //     name: "kfg22",
             //     age: "22222",
@@ -325,6 +325,16 @@ export default {
             //     },
             // ];
             // this.rule[0].children[0].children.splice(0, 1);
+            // this.rule[0].type = "select";
+            // this.rule[0].on["on-change"].push((...args) => {
+            //     console.log("哈哈哈", args);
+            // });
+            // this.rule[0]["emit"].push({
+            //     name: "on-blur",
+            //     inject: "新增emit",
+            // });
+            // this.$set(this.rule[0].props, "size", "large");
+            //  = "large";
         },
     },
     updated() {
@@ -335,28 +345,24 @@ export default {
         // this.$watch("ceshi.name", () => {
         //     console.log("变化了");
         // });
-        this.fApi.reload([
-            {
-                title: "输入框",
-                type: "input",
-                field: "input-field",
-                value: "123456",
-
-                effect: {
-                    str: "我是自定义属性",
-                },
-
-                children: [
-                    {
-                        type: "icon",
-                        props: {
-                            type: "ios-checkmark",
-                        },
-                        slot: "prefix",
-                    },
-                ],
-            },
-        ]);
+        // reload中的rule不是响应式的，$watch无法监听rule中的配置
+        // this.fApi.reload([
+        //     {
+        //         title: "输入框",
+        //         type: "input",
+        //         field: "input-field",
+        //         value: "hhh",
+        //         children: [
+        //             {
+        //                 type: "icon",
+        //                 props: {
+        //                     type: "ios-checkmark",
+        //                 },
+        //                 slot: "prefix",
+        //             },
+        //         ],
+        //     },
+        // ]);
     },
 };
 </script>
