@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- <Form :label-width="150">
+        <Form>
             <Row>
                 <Col span="12">
                     <FormItem label="user" prop="user">
@@ -24,8 +24,8 @@
             <FormItem label="password" prop="password">
                 <Input placeholder="Password"> </Input>
             </FormItem>
-        </Form> -->
-        <FormCreate
+        </Form>
+        <!-- <FormCreate
             v-model="fApi"
             :rule="rule"
             :option="option"
@@ -35,7 +35,6 @@
             @input-field-on-change="emitChange"
             @emit-event="emitEvent"
         >
-            <!-- <div>11</div> -->
         </FormCreate>
         <Collapse>
             <Panel name="1">
@@ -83,8 +82,8 @@
                     <Button type="primary" @click="nextRefresh">自动重新渲染</Button>
                 </p>
             </Panel>
-        </Collapse>
-        <!-- <Designer /> -->
+        </Collapse> -->
+        <Designer />
     </div>
 </template>
 
@@ -248,10 +247,10 @@ export default {
             option: {
                 // iview的Form组件属性
                 form: {
-                    inline: false,
-                    labelWidth: 100,
-                    labelPosition: "left",
-                    disabled: false,
+                    // inline: false,
+                    // labelWidth: 100,
+                    // labelPosition: "left",
+                    // disabled: false,
                 },
                 global: {
                     input: {

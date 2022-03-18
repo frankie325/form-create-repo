@@ -19,10 +19,19 @@
             </Sider>
             <Content class="fc-m">
                 <div class="fc-m-drag">
-                    <FormCreate :rule="dragForm.rule" :option="form.value"></FormCreate>
+                    <FormCreate :rule="dragForm.rule" v-model="dragForm.api" :option="form.value"></FormCreate>
                 </div>
             </Content>
-            <Sider :width="260" class="fc-side-r" hide-trigger>Sider</Sider>
+            <Sider :width="320" class="fc-side-r" hide-trigger>
+                <Tabs v-model="activeTab">
+                    <TabPane label="表单配置" name="form">
+                        <FormCreate :rule="form.rule" :option="form.option" :value.sync="form.value.form"></FormCreate>
+                    </TabPane>
+                    <TabPane label="组件配置" name="props">
+                        <!-- <FormCreate :rule="baseForm.rule" v-model="baseForm.api" :option="baseForm.options"></FormCreate> -->
+                    </TabPane>
+                </Tabs>
+            </Sider>
         </Layout>
         <Footer class="fc-side-footer">Footer</Footer>
     </Layout>
@@ -30,9 +39,10 @@
 
 <script>
 import draggable from "vuedraggable";
+import { deepCopy } from "@/utils";
 import createMenu from "../config/menu";
 import ruleList from "../config/rule";
-
+import form from "../config/base/form";
 export default {
     name: "FcDesigner",
     components: {
@@ -49,10 +59,22 @@ export default {
         const children = [];
         return {
             menuList: createMenu(),
+            activeTab: "form",
             dragForm: {
                 rule: this.makeDragRule(children),
+                api: {},
             },
             form: {
+                rule: form(),
+                option: {
+                    form: {
+                        // inline: true,
+                        // labelPosition: "top",
+                        
+                        labelWidth: null,
+                    },
+                    submitBtn: false,
+                },
                 value: {
                     form: {
                         inline: false,
@@ -70,10 +92,10 @@ export default {
         makeDragRule(children) {
             return [
                 this.makeDrag(true, "draggable", children, {
-                    start: (evt) => this.dragStart(children, evt),
-                    unchoose: (evt) => this.dragUnChoose(children, evt),
-                    add: (evt) => this.dragAdd(children, evt),
-                    end: (evt) => this.dragEnd(children, evt),
+                    start: (inject, evt) => this.dragStart(children, evt),
+                    unchoose: (inject, evt) => this.dragUnChoose(children, evt),
+                    add: (inject, evt) => this.dragAdd(children, evt),
+                    end: (inject, evt) => this.dragEnd(children, evt),
                 }),
             ];
         },
@@ -84,6 +106,7 @@ export default {
                 wrap: {
                     show: false,
                 },
+                inject: true,
                 props: {
                     rule: {
                         attrs: {
@@ -154,20 +177,20 @@ export default {
             this.addRule = null;
             this.added = null;
         },
+        // 生成组件规则
         makeRule(config, _rule) {
-            // debugger
             const rule = _rule || config.rule();
-
+            rule.config = { config };
             let drag;
             // 布局组件col内可继续拖拽
             if (config.drag) {
                 const children = [];
                 rule.children.push(
                     (drag = this.makeDrag(config.drag, rule.type, children, {
-                        start: (evt) => this.dragStart(children, evt),
-                        unchoose: (evt) => this.dragUnChoose(children, evt),
-                        add: (evt) => this.dragAdd(children, evt),
-                        end: (evt) => this.dragEnd(children, evt),
+                        start: (inject, evt) => this.dragStart(inject.self.children, evt),
+                        unchoose: (inject, evt) => this.dragUnChoose(inject.self.children, evt),
+                        add: (inject, evt) => this.dragAdd(inject.self.children, evt),
+                        end: (inject, evt) => this.dragEnd(inject.self.children, evt),
                     }))
                 );
             }
@@ -185,12 +208,28 @@ export default {
                             dragBtn: config.dragBtn !== false,
                             children: config.children,
                         },
+                        inject: true,
                         on: {
-                            delete() {},
-                            add() {},
-                            addChild() {},
-                            copy() {},
-                            active() {},
+                            delete: ({ self }) => {
+                                // console.log(inject);
+                                this.getParent(self).parent.__fc__.rm();
+                            },
+                            add: ({ self }) => {
+                                const top = this.getParent(self);
+                                top.root.children.splice(top.root.children.indexOf(top.parent) + 1, 0, this.makeRule(top.parent.config.config));
+                            },
+                            // addChild: ({ self }) => {
+                            //     console.log(self);
+                            //     const top = this.getParent(self);
+                            //     const config = top.parent.config.config;
+                            //     const item = ruleList[config.children];
+                            //     if (!item) return;
+                            // },
+                            copy: ({ self }) => {
+                                const top = this.getParent(self);
+                                top.root.children.splice(top.root.children.indexOf(top.parent) + 1, 0, deepCopy(top.parent));
+                            },
+                            active: () => {},
                         },
                         children: rule.children,
                     },
@@ -203,18 +242,42 @@ export default {
                         dragBtn: config.dragBtn !== false,
                         children: config.children,
                     },
+                    inject: true,
                     on: {
-                        delete(e) {
-                            console.log(e);
+                        delete: ({ self }) => {
+                            self.__fc__.rm();
                         },
-                        add() {},
-                        addChild() {},
-                        copy() {},
-                        active() {},
+                        add: ({ self }) => {
+                            const top = this.getParent(self);
+                            top.root.children.splice(top.root.children.indexOf(top.parent) + 1, 0, this.makeRule(self.children[0].config.config));
+                        },
+                        addChild: ({ self }) => {
+                            console.log(self);
+                            const config = self.children[0].config.config;
+                            const item = ruleList[config.children];
+                            if (!item) return;
+                            (!config.drag ? self : self.children[0]).children[0].children.push(this.makeRule(item));
+                        },
+                        copy: ({ self }) => {
+                            const top = this.getParent(self);
+                            top.root.children.splice(top.root.children.indexOf(top.parent) + 1, 0, deepCopy(top.parent));
+                        },
+                        active: () => {},
                     },
                     children: [rule],
                 };
             }
+        },
+        // 找到父级rule
+        getParent(rule) {
+            let parent = rule.__fc__.parent.rule;
+            const config = parent.config;
+            // 如果是col内的DragTool，再往外一层
+            if (config && config.config.inside) {
+                rule = parent; //col的rule
+                parent = parent.__fc__.parent.rule; //row的rule
+            }
+            return { root: parent, parent: rule };
         },
     },
 };
@@ -232,11 +295,15 @@ export default {
     background: #fff;
     border: 1px solid #dedede;
 }
+
 .fc-side-r {
+    /* padding: 8px; */
     background: #fff;
     border: 1px solid #dedede;
 }
-
+.fc-side-r .ivu-tabs-tabpane {
+    padding: 0 16px;
+}
 .fc-group {
     padding: 0 10px;
 }

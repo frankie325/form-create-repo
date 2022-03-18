@@ -11,8 +11,8 @@ Vue.use(FormCreate, {
     form: {
         // clearable: true,
         // inline: true,
-        labelWidth: 200,
-        labelPosition: "right",
+        // labelWidth: 200,
+        // labelPosition: "right",
     },
     global: {
         input: {
