@@ -34,7 +34,7 @@ export default function $FormCreate(FormCreate) {
                 deep: true,
             },
             // 只监听顶层rules的变化
-            rule(n, o) {
+            rule(n) {
                 // debugger;
                 // 如果新rules在旧rules每一项都一样，则不用重新更新
                 if (n.length === this.renderRule.length && n.every((v) => this.renderRule.indexOf(v) > -1)) return;

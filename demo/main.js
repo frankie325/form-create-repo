@@ -6,6 +6,7 @@ Vue.use(ViewUI);
 
 import FormCreate from "@/iview";
 import FcDesigner from "@/designer";
+
 Vue.use(FormCreate, {
     form: {
         // clearable: true,

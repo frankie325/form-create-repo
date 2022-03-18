@@ -7,6 +7,7 @@ import useContext from "./context";
 import useInput from "./input";
 import useRender from "./render";
 import useInject from "./inject";
+import useEffect from "./effect";
 import useLifecycle from "./lifecycle";
 
 export default function Handle(fc) {
@@ -37,6 +38,7 @@ export default function Handle(fc) {
         nextReload: () => {
             this.lifecycle("reload");
         },
+        providers: {},
     });
 
     funcProxy(this, {
@@ -66,6 +68,7 @@ extend(Handle.prototype, {
     },
     init() {
         this.appendData = { ...(this.fc.options.formData || {}), ...(this.vm.value || {}), ...this.appendData };
+        this.useProvider();
         this.loadRule();
         this.$manager.__init();
         // debugger
@@ -78,4 +81,5 @@ useContext(Handle);
 useInput(Handle);
 useRender(Handle);
 useInject(Handle);
+useEffect(Handle);
 useLifecycle(Handle);

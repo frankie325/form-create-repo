@@ -21,6 +21,7 @@ export default function useInput(Handle) {
             this.syncValue();
             this.valueChange(ctx, value);
             this.vm.$emit("change", ctx.field, value, ctx.origin, this.api, setFlag);
+            this.effect(ctx, "value");
         },
         onInput(ctx, value) {
             // debugger

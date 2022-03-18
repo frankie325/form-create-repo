@@ -2,7 +2,7 @@ import { getRule, enumerable, byCtx, invoke } from "../frame/utils";
 import RuleContext from "../factory/context";
 import { baseRule } from "../factory/creator";
 
-import { extend } from "@/utils";
+import { extend, deepCopy } from "@/utils";
 import is, { hasProperty } from "@/utils/type";
 import { err } from "@/utils/console";
 export default function useLoader(Handle) {
@@ -100,7 +100,14 @@ export default function useLoader(Handle) {
 
                 let rule = getRule(_rule);
 
+                const isRepeat = () => {
+                    return;
+                };
+
+                this.ruleEffect(rule, "init", { repeat: isRepeat() });
+
                 let ctx;
+                let isCopy = false;
                 let isExited = !!_rule.__fc__; //是否已经创建过ctx实例
                 if (isExited) {
                     ctx = _rule.__fc__;
@@ -109,10 +116,21 @@ export default function useLoader(Handle) {
                     // 当rule.value值符合control配置时，拿到之前的ctx
                     if (ctx.deleted) {
                         if (!check) {
+                            if (isCtrl(ctx)) {
+                                return;
+                            }
                             ctx.update(this);
                         }
                     } else {
                         // 从别的form-create实例复制过来的，进行clone
+                        if (!check) {
+                            if (isCtrl(ctx)) {
+                                return;
+                            }
+                            rules[index] = _rule = _rule._clone ? _rule._clone() : deepCopy(_rule);
+                            ctx = null;
+                            isCopy = true;
+                        }
                     }
                 }
                 if (!ctx) {
@@ -132,6 +150,9 @@ export default function useLoader(Handle) {
                 ctx.parent = parent;
                 ctx.root = rules;
                 this.setCtx(ctx);
+
+                !isCopy && !isExited && this.effect(ctx, "load");
+
                 //处理rule.children
                 ctx.parser.loadChildren === false || loadChildren(ctx.rule.children, ctx);
 
@@ -146,6 +167,12 @@ export default function useLoader(Handle) {
                     }
                 }
                 const r = ctx.rule;
+
+                if (!ctx.updated) {
+                    ctx.updated = true;
+
+                    this.effect(ctx, "loaded");
+                }
                 // debugger
                 if (ctx.input) Object.defineProperty(r, "value", this.valueHandle(ctx));
                 if (this.refreshControl(ctx)) this.cycleLoad = true;
@@ -161,7 +188,6 @@ export default function useLoader(Handle) {
           rule.children内变化则执行loadChildren
         */
         _reloadRule(rules) {
-            debugger;
             if (!rules) rules = this.rules;
             // 旧的ctxs
             const ctxs = { ...this.ctxs };
@@ -237,8 +263,9 @@ export default function useLoader(Handle) {
                     ctrl: findCtrl(ctx, control.rule),
                     isHidden: is.String(control.rule[0]),
                 };
-                //reloadRule时，防止重复添加control或者valid校验不通过时，会在下面进行删除
-                // 触发监听rule的Watcher更新，再次调用loadRule，此时ctrl已经移除了，所以直接跳过
+                // reloadRule时，防止重复添加control
+                // 或者valid校验不通过时，会删除该rule，触发监听rule的Watcher更新，
+                // 再次调用loadRule，此时ctrl已经移除了，所以直接跳过
                 if ((data.valid && data.ctrl) || (!data.valid && !data.ctrl)) continue;
                 validate.push(data);
             }
@@ -293,6 +320,7 @@ export default function useLoader(Handle) {
                 });
             });
             this.vm.$emit("control", ctx.origin, this.api);
+            this.effect(ctx, "control");
             return flag;
         },
         checkCol(_rule, parent) {
@@ -328,4 +356,9 @@ function fullRule(rule) {
     });
 
     return rule;
+}
+
+// 是否是control生成的fragment的rule
+function isCtrl(ctx) {
+    return !!ctx.rule.__ctrl;
 }

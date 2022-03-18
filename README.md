@@ -1,5 +1,5 @@
 # 动态表单生成器
-本仓库的实现参考了form-create动态表单，根据公司需求在功能上做了一些修改，并对部分源码进行了注释，帮助有需要理解form-create源码的同学，需要对vue源码有一定理解，如果想要使用完整的功能，请使用[form-create](https://github.com/xaboy/form-create)
+本仓库的实现参考了form-create动态表单，根据公司需求在功能上做了一些修改，并对部分源码进行了注释，帮助有需要理解form-create源码的同学，如果想要使用完整的功能，请使用[form-create](https://github.com/xaboy/form-create)
 
 
 
@@ -478,6 +478,83 @@ export default {
 
 ### nativeEmit监听原生事件
 设置 `emit` 可监听组件内抛出的原生事件：`Array<String> | Array<Object>`，用法与 `emit` 一致，事件名称为`native-${field}-${eventName}`
+
+# 进阶使用
+## 自定义属性
+使用自定义属性可以在处理`rule`的各个阶段中，对规则实现扩展
+- 注册自定义属性
+```js
+FormCreate.register({
+    name: "str", //自定义属性名称
+    components: ["input", "select"], //属性绑定的组件，不设置或者'*'默认为全部组件
+    input: true, //拥有rule.field字段才会触发自定义属性的事件
+    // rule初始化时
+    init(data, rule, api) {
+    },
+    // rule正在处理时
+    load(data, rule, api) {
+    },
+    // rule处理完成时
+    loaded(data, rule, api) {
+        // api.removeField("input-field");
+    },
+    // 组件值发生变化时
+    value(data, rule, api) {
+    },
+    // 组件的control配置处理完成时
+    control(data, rule, api) {
+    },
+    //rule 移除时
+    deleted(data, rule, api) {
+    },
+    //mounted 对应的组件生成时
+    mounted(data, rule, api) {
+    },
+    //自定义属性值发生变化
+    watch(data, rule, api) {
+    },
+});
+```
+
+- 在规则中使用自定义属性
+```js
+export default {
+    data(){
+        return {
+            rule:[
+                    {
+                       type: "input",      
+                       field: "input-field",
+                       effect: {
+                           str: "我是自定义属性" // 键为自定义属性名称，值为自定义属性值，在处理rule的各个阶段中，触发自定义属性的方法
+                       }
+                    }
+            ]
+        }
+    },
+}
+
+```
+- 自定义属性方法中的参数
+
+```js
+FormCreate.register({
+    // rule正在处理时
+    load({value, getValue, getProp, clearProp, mergeProp }, rule, api) {
+        // 自定义属性的值
+        value
+        // 合并新的rule规则
+        mergeProp({
+            props:{ /*...*/ }
+        })
+        // 获取由 mergeProp 合并的规则
+        getProp()
+        // 清除由 mergeProp 合并的规则
+        clearProp()
+    },
+
+});
+```
 ## 组件事件
 
 ```vue

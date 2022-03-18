@@ -13,6 +13,7 @@ export default function RuleContext(handle, rule) {
         id,
         key: "",
         ref: id,
+        el: null,
         wrapRef: id + "fi", //FormItem的ref
         field: rule.field || undefined,
         rule,
@@ -30,7 +31,9 @@ export default function RuleContext(handle, rule) {
         cacheConfig: undefined, //缓存option.global中的配置
         ctrlRule: [],
         deleted: false,
+        updated: false,
         defaultValue: deepCopy(rule.value),
+        payload: {},
         computed: {},
     });
     this.updateType();
@@ -40,6 +43,15 @@ export default function RuleContext(handle, rule) {
 }
 
 extend(RuleContext.prototype, {
+    effectData(name) {
+        if (!this.payload[name]) {
+            this.payload[name] = {};
+        }
+        return this.payload[name];
+    },
+    clearEffectData(name) {
+        delete this.payload[name];
+    },
     // 初始化和rule删除后又被重新添加时调用
     update(handle, init) {
         extend(this, {
@@ -62,6 +74,7 @@ extend(RuleContext.prototype, {
     updateKey() {
         this.key = unique();
     },
+    // 检查ctx的实例是不是和handle上的实例一致
     check(handle) {
         return this.vm === handle.vm;
     },
@@ -81,7 +94,7 @@ extend(RuleContext.prototype, {
         const rule = { ...this.rule };
         delete rule.children;
         // this.prop = rule;
-        this.prop = mergeProps({}, [rule, this.computed]);
+        this.prop = mergeProps({}, [rule, ...Object.keys(this.payload).map((k) => this.payload[k]), this.computed]);
     },
     delete() {
         const undef = void 0;

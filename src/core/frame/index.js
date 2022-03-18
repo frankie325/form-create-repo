@@ -30,6 +30,7 @@ export default function FormCreateFactory(config) {
         [fragment.name]: fragment,
     };
     const parsers = {};
+    const providers = {};
     const maker = {};
     const CreateNode = createNodeFactory();
 
@@ -46,6 +47,23 @@ export default function FormCreateFactory(config) {
         onSubmit: () => {},
     };
 
+    // 注册自定义属性，以register({name:"str", components: "*", init(){},...})为例
+    function register() {
+        const data = nameProp(...arguments);
+        /*
+            providers为
+            {
+            str: {
+                name:"str",
+                component: "*",
+                init(){},
+                ...
+            }
+        }
+        */
+        if (data.id && data.prop) providers[data.id] = { ...data.prop, name: data.id };
+    }
+
     function FormCreate(vm, rules, options) {
         extend(this, {
             vm,
@@ -58,6 +76,7 @@ export default function FormCreateFactory(config) {
             prop: {
                 components,
             },
+            providers,
             parsers,
             bus: new _vue(),
             extendApi: config.extendApi || ((api) => api), //注册来自不同包的api
@@ -202,6 +221,7 @@ export default function FormCreateFactory(config) {
             component,
             componentAlias,
             parser,
+            register,
         });
     }
 

@@ -60,7 +60,7 @@ export default function useContext(Handle) {
             const none = ["field", "value", "vm", "template", "name", "config", "control", "inject", "sync", "payload", "optionsTo", "update"];
 
             Object.keys(ctx.rule)
-                .filter((k) => none.indexOf(k) === -1)
+                .filter((k) => k[0] !== "_" && none.indexOf(k) === -1)
                 .forEach((key) => {
                     // if (key === "show") debugger;
 
@@ -75,6 +75,7 @@ export default function useContext(Handle) {
                                 if (false) {
                                 } else if (key === "type") {
                                     ctx.updateType();
+                                    this.bindParser(ctx);
                                 } else if (key === "children") {
                                     // debugger;
                                     const flag = is.trueArray(n);
@@ -98,6 +99,8 @@ export default function useContext(Handle) {
                         )
                     );
                 });
+
+            this.watchEffect(ctx);
         },
         rmSub(sub) {
             is.trueArray(sub) &&
@@ -135,26 +138,36 @@ export default function useContext(Handle) {
             $del(ctx, "cacheValue");
 
             input && this.rmIdCtx(ctx, field, "field");
+            name && this.rmIdCtx(ctx, name, "name");
 
             this.syncForm();
 
             this.deferSyncValue(() => {
-                if (!this.reloading) {
+                // debugger
+                // if (!this.reloading) {
                     if (ctx.parser.loadChildren !== false) {
                         if (is.trueArray(ctx.rule.children)) {
                             ctx.rule.children.forEach((c) => {
                                 c.__fc__ && this.rmCtx(c.__fc__);
                             });
                         }
-                        // if(ctx.root)
+                        if (ctx.root === this.rules) {
+                            this.vm._renderRule();
+                        }
                     }
-                }
+                // }
             }, input);
+
+            const index = this.sort.indexOf(id);
+            if (index > -1) {
+                this.sort.splice(index, 1);
+            }
 
             this.$render.clearCache(ctx);
             ctx.delete();
+            this.effect(ctx, "deleted");
             input && !this.fieldCtx[field] && this.vm.$emit("removeField", field, ctx.rule, this.api);
-            ctx.rule.__ctrl || this.$emit("removeRule", ctx.rule, this.api);
+            ctx.rule.__ctrl || this.vm.$emit("removeRule", ctx.rule, this.api);
             return ctx;
         },
     });

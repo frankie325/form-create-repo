@@ -1,45 +1,48 @@
 export default function json() {
     return [
-        {
-            title: "输入框",
-            type: "input",
-            field: "input-field",
-            value: "123456",
-            // wrap: {
-            //     show: false,
-            // },
-            // emit: ["change"],
-            emit: [
-                {
-                    name: "on-change",
-                    inject: "注入的参数",
-                },
-            ],
-            inject: false,
-            // on: {
-            //     "on-change": (...arg) => {
-            //         console.log("input-change", ...arg);
-            //     },
-            // },
-            // col: {},
-            props: {
-                // type: "textarea",
-                // rows: 10,
-                // autosize: {
-                //     minRows: 2,
-                //     maxRows: 20,
-                // },
-            },
-            children: [
-                {
-                    type: "icon",
-                    props: {
-                        type: "ios-checkmark",
-                    },
-                    slot: "prefix",
-                },
-            ],
-        },
+        // {
+        //     title: "输入框",
+        //     type: "input",
+        //     field: "input-field",
+        //     value: "123456",
+        //     // wrap: {
+        //     //     show: false,
+        //     // },
+        //     effect: {
+        //         str:"我是自定义属性"
+        //     },
+        //     // emit: ["change"],
+        //     emit: [
+        //         {
+        //             name: "on-change",
+        //             inject: "注入的参数",
+        //         },
+        //     ],
+        //     inject: false,
+        //     // on: {
+        //     //     "on-change": (...arg) => {
+        //     //         console.log("input-change", ...arg);
+        //     //     },
+        //     // },
+        //     // col: {},
+        //     props: {
+        //         // type: "textarea",
+        //         // rows: 10,
+        //         // autosize: {
+        //         //     minRows: 2,
+        //         //     maxRows: 20,
+        //         // },
+        //     },
+        //     children: [
+        //         {
+        //             type: "icon",
+        //             props: {
+        //                 type: "ios-checkmark",
+        //             },
+        //             slot: "prefix",
+        //         },
+        //     ],
+        // },
         // {
         //     title: "选择器",
         //     type: "select",

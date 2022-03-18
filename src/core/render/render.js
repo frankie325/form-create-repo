@@ -208,7 +208,14 @@ export default function useRender(Render) {
                 }
             });
         },
-        onMounted(ctx) {},
+        onMounted(ctx) {
+            ctx.el = this.vm.$refs[ctx.ref];
+            if (ctx.el) {
+                (ctx.el.$el || ctx.el).__rule__ = ctx.rule;
+            }
+            ctx.parser.mounted(ctx);
+            this.$handle.effect(ctx, "mounted");
+        },
         onInput(ctx, value) {
             this.$handle.onInput(ctx, value);
         },

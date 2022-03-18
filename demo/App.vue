@@ -25,7 +25,16 @@
                 <Input placeholder="Password"> </Input>
             </FormItem>
         </Form> -->
-        <FormCreate v-model="fApi" :rule="rule" :option="option" :value.sync="fValue" @created="created" @update="update" @input-field-on-change="emitChange" @emit-event="emitEvent">
+        <FormCreate
+            v-model="fApi"
+            :rule="rule"
+            :option="option"
+            :value.sync="fValue"
+            @created="created"
+            @update="update"
+            @input-field-on-change="emitChange"
+            @emit-event="emitEvent"
+        >
             <!-- <div>11</div> -->
         </FormCreate>
         <Collapse>
@@ -83,6 +92,62 @@
 import methods from "./methods.js";
 import json from "./json.js";
 import Designer from "./Designer";
+import FormCreate from "@/iview";
+
+FormCreate.register({
+    name: "str",
+    components: ["input", "select"], //属性绑定的组件,不设置或者'*'默认为全部组件
+    input: true, //拥有rule.field字段才会触发自定义属性的事件
+    // rule初始化时
+    init(data, rule, api) {
+        // api.removeField("input-field");
+
+        console.log("自定义属性init", data, rule, api);
+    },
+    // rule正在处理时
+    load(data, rule, api) {
+        // rule.effect.str = "新字符";
+
+        console.log("自定义属性load", data, rule, api);
+        // data.mergeProp({
+        //     props: {
+        //         size: "large",
+        //     },
+        // });
+    },
+    // rule处理完成时
+    loaded(data, rule, api) {
+        // api.removeField("input-field");
+
+        console.log("自定义属性loaded", data, rule, api);
+    },
+    // 组件值发生变化时
+    value(data, rule, api) {
+        console.log("自定义属性value", data, rule, api);
+    },
+    // 组件的control配置处理完成时
+    control(data, rule, api) {
+        console.log("自定义属性control", data, rule, api);
+    },
+    //rule 移除时
+    deleted(data, rule, api) {
+        console.log("自定义属性deleted", data, rule, api);
+    },
+    //mounted 对应的组件生成时
+    mounted(data, rule, api) {
+        console.log("自定义属性mounted", data, rule, api);
+        data.mergeProp({
+            props: {
+                large: "size",
+            },
+        });
+    },
+    //自定义属性值发生变化
+    watch(data, rule, api) {
+        console.log("自定义属性watch", data, rule, api);
+    },
+});
+
 export default {
     name: "App",
     components: {
@@ -267,9 +332,31 @@ export default {
     },
     mounted() {
         // 只有经过响应式处理的数据，才能调用watch进行监听
-        this.$watch("ceshi.name", () => {
-            console.log("变化了");
-        });
+        // this.$watch("ceshi.name", () => {
+        //     console.log("变化了");
+        // });
+        this.fApi.reload([
+            {
+                title: "输入框",
+                type: "input",
+                field: "input-field",
+                value: "123456",
+
+                effect: {
+                    str: "我是自定义属性",
+                },
+
+                children: [
+                    {
+                        type: "icon",
+                        props: {
+                            type: "ios-checkmark",
+                        },
+                        slot: "prefix",
+                    },
+                ],
+            },
+        ]);
     },
 };
 </script>
