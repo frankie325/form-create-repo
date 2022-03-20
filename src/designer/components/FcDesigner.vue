@@ -19,7 +19,7 @@
             </Sider>
             <Content class="fc-m">
                 <div class="fc-m-drag">
-                    <FormCreate :rule="dragForm.rule" v-model="dragForm.api" :option="form.value"></FormCreate>
+                    <FormCreate :rule="dragForm.rule" v-model="dragForm.api" :option="form.value" :value.sync="form.ceshi"></FormCreate>
                 </div>
             </Content>
             <Sider :width="320" class="fc-side-r" hide-trigger>
@@ -28,7 +28,23 @@
                         <FormCreate :rule="form.rule" :option="form.option" :value.sync="form.value.form"></FormCreate>
                     </TabPane>
                     <TabPane label="组件配置" name="props">
-                        <!-- <FormCreate :rule="baseForm.rule" v-model="baseForm.api" :option="baseForm.options"></FormCreate> -->
+                        <Divider v-if="showBaseRule" size="small">基础配置</Divider>
+                        <FormCreate
+                            v-show="showBaseRule"
+                            :rule="baseForm.rule"
+                            v-model="baseForm.api"
+                            :option="baseForm.option"
+                            :value.sync="baseForm.value"
+                            @change="baseChange"
+                        ></FormCreate>
+                        <Divider size="small">属性配置</Divider>
+                        <FormCreate
+                            :rule="propsFrom.rule"
+                            v-model="propsFrom.api"
+                            :option="propsFrom.option"
+                            :value.sync="propsFrom.value"
+                            @change="propsChange"
+                        ></FormCreate>
                     </TabPane>
                 </Tabs>
             </Sider>
@@ -43,6 +59,7 @@ import { deepCopy } from "@/utils";
 import createMenu from "../config/menu";
 import ruleList from "../config/rule";
 import form from "../config/base/form";
+import field from "../config/base/field";
 export default {
     name: "FcDesigner",
     components: {
@@ -69,23 +86,59 @@ export default {
                 option: {
                     form: {
                         // inline: true,
-                        // labelPosition: "top",
-                        
+                        labelPosition: "top",
+                        size: "small",
                         labelWidth: null,
+                        // showMessage: false,
                     },
                     submitBtn: false,
                 },
                 value: {
                     form: {
+                        name: "",
                         inline: false,
+                        size: "default",
                         labelWidth: 120,
+                        labelPosition: "right",
+                        labelColon: false,
+                        showMessage: false,
+                        hideRequiredMark: false,
                     },
                     submitBtn: false,
                 },
+                ceshi: {},
             },
+            baseForm: {
+                rule: field(),
+                api: {},
+                option: {
+                    form: {
+                        labelPosition: "top",
+                        size: "small",
+                        labelWidth: null,
+                    },
+                    submitBtn: false,
+                },
+                value: {},
+            },
+            propsFrom: {
+                rule: [],
+                api: {},
+                option: {
+                    form: {
+                        labelPosition: "top",
+                        size: "small",
+                        labelWidth: null,
+                    },
+                    submitBtn: false,
+                },
+                value: {},
+            },
+            showBaseRule: false,
             moveRule: null,
             addRule: null,
             added: null,
+            activeRule: {},
         };
     },
     methods: {
@@ -112,7 +165,7 @@ export default {
                         attrs: {
                             tag: "div",
                             group: group === true ? "default" : group,
-                            // ghostClass: "ghost",
+                            ghostClass: "ghost",
                             animation: 150,
                             handle: ".fc-drag-btn",
                             direction: "vertical",
@@ -262,7 +315,9 @@ export default {
                             const top = this.getParent(self);
                             top.root.children.splice(top.root.children.indexOf(top.parent) + 1, 0, deepCopy(top.parent));
                         },
-                        active: () => {},
+                        active: ({ self }) => {
+                            this.toolActive(self.children[0]);
+                        },
                     },
                     children: [rule],
                 };
@@ -278,6 +333,36 @@ export default {
                 parent = parent.__fc__.parent.rule; //row的rule
             }
             return { root: parent, parent: rule };
+        },
+        toolActive(rule) {
+            this.activeTab = "props";
+
+            this.activeRule = rule;
+            this.showBaseRule = !!rule.field;
+
+            this.propsFrom.rule = rule.config.config.props();
+            this.propsFrom.value = {
+                ...rule.props,
+            };
+            if (this.showBaseRule) {
+                this.baseForm.value = {
+                    field: rule.field,
+                    title: rule.title,
+                };
+            }
+        },
+        baseChange(field, value, origin, api, flag) {
+            if (!flag && this.activeRule) {
+                this.$set(this.activeRule, field, value);
+            }
+        },
+        propsChange(field, value, origin, api, flag) {
+            if (!flag && this.activeRule) {
+                if (false) {
+                } else {
+                    this.$set(this.activeRule.props, field, value);
+                }
+            }
         },
     },
 };
@@ -335,12 +420,16 @@ export default {
     color: #fff;
 }
 
-.fc-m .form-create .fc-group-item {
+.fc-group-item.ghost {
     background: #2e73ff;
     width: 100%;
     height: 10px;
     overflow: hidden;
     transition: all 0.3s ease;
+}
+
+.fc-group-item.ghost > div {
+    display: none;
 }
 
 .fc-m {

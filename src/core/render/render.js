@@ -222,7 +222,7 @@ export default function useRender(Render) {
         // 绑定v-model
         ctxProp(ctx, custom) {
             const { ref, key, rule } = ctx;
-
+            this.$manager.mergeProp(ctx, custom);
             ctx.parser.mergeProp(ctx, custom);
 
             const props = [

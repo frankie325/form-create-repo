@@ -121,7 +121,6 @@ export default function useInput(Handle) {
                     }, {})
                 )
             );
-
             this.syncValue();
         },
         //更新到form-create上:value.sync绑定的属性
@@ -129,8 +128,8 @@ export default function useInput(Handle) {
             if (this.deferSyncFn) {
                 return (this.deferSyncFn.sync = true);
             }
-            // this.vm._updateValue({ ...this.form }); //浅拷贝会丢失get，set方法
-            this.vm._updateValue(this.form);
+            this.vm._updateValue({ ...this.form }); //浅拷贝会丢失get，set方法，还需要在form-create上:value.sync的变化
+            // this.vm._updateValue(this.form);
         },
         // 当递归调用传入的方法时，等所有递归结束后再执行syncValue方法
         deferSyncValue(fn, sync) {

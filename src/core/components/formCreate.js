@@ -23,13 +23,18 @@ export default function $FormCreate(FormCreate) {
             api: Object,
         },
         watch: {
-            // value:{
-
-            // },
+            value: {
+                handler(n) {
+                    if (JSON.stringify(n) === this.updateValue) return;
+                    this.$f.setValue(n);
+                },
+                deep: true,
+            },
             option: {
                 handler(n) {
+                    // debugger
                     this.formCreate.initOptions(n);
-                    // console.log("----------FormCreate实例----------", this.formCreate);
+                    this.$f.refresh();
                 },
                 deep: true,
             },

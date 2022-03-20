@@ -1,30 +1,17 @@
 <template>
     <div>
-        <Form>
-            <Row>
-                <Col span="12">
-                    <FormItem label="user" prop="user">
-                        <Input placeholder="Username"> </Input>
-                    </FormItem>
-                    <FormItem label="user" prop="user">
-                        <Input placeholder="Username"> </Input>
-                    </FormItem>
-                </Col>
-                <Col span="12">
-                    <FormItem label="user" prop="user">
-                        <Input placeholder="Username"> </Input>
-                    </FormItem>
-                </Col>
-                <Col span="12">
-                    <FormItem label="user" prop="user">
-                        <Input placeholder="Username"> </Input>
-                    </FormItem>
-                </Col>
-            </Row>
+        <!-- <Form label-position="top" :label-width="0">
+            <FormItem label="user" prop="user">
+                <Input placeholder="Username"> </Input>
+            </FormItem>
+            <FormItem label="user" prop="user">
+                <Input placeholder="Username"> </Input>
+            </FormItem>
+
             <FormItem label="password" prop="password">
                 <Input placeholder="Password"> </Input>
             </FormItem>
-        </Form>
+        </Form> -->
         <!-- <FormCreate
             v-model="fApi"
             :rule="rule"
@@ -246,12 +233,12 @@ export default {
             // 全局配置
             option: {
                 // iview的Form组件属性
-                form: {
-                    // inline: false,
-                    // labelWidth: 100,
-                    // labelPosition: "left",
-                    // disabled: false,
-                },
+                // form: {
+                //     inline: false,
+                //     labelWidth: 0,
+                //     labelPosition: "top",
+                //     disabled: false,
+                // },
                 global: {
                     input: {
                         style: "color:red",
@@ -297,6 +284,7 @@ export default {
                 name: "kfg1",
                 // age1: "22",
                 sex: "男",
+                "input-field": 22,
             },
         };
     },
@@ -306,6 +294,7 @@ export default {
             // this.$set(this.ceshi, "name", false);  //没有绑定过观察者实例的属性，使用$set不会进行响应式处理，只起简单的赋值作用
             // this.ceshi.name = false;
             // this.fValue.age1 = 23;
+            this.fValue["input-field"] = 23;
             // this.fValue = {
             //     name: "kfg22",
             //     age: "22222",
@@ -364,4 +353,28 @@ export default {
         // ]);
     },
 };
+
+let str = "name";
+let obj = {};
+
+// Object.defineProperty(obj, "str", {
+//     get() {
+//         return str;
+//     },
+//     set(n) {
+//         str = n;
+//     },
+// });
+
+Object.defineProperties(obj, {
+    str: {
+        get() {
+            return str;
+        },
+        set(n) {
+            str = n;
+        },
+    },
+});
+let obj2 = { ...obj };
 </script>

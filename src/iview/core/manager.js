@@ -33,6 +33,19 @@ export default {
         });
         return options;
     },
+    mergeProp(ctx) {
+        ctx.prop = mergeProps(
+            ctx.prop,
+            [
+                {
+                    wrap: this.options.wrap || {},
+                    // col: this.options.col || {},
+                },
+            ],
+            { normal: ["wrap"] }
+        );
+        this.setSize(ctx.prop.props);
+    },
     setSize(props) {
         if (!props.size && this.options.form.size) {
             props.size = this.options.form.size;
