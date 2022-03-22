@@ -635,5 +635,7 @@ export default {
   - emitName: `emit`触发的事件名称
   - args: `emit`触发的事件的参数
 
+# 进阶使用
+[进阶使用](./doc/ADVANCE.md)
 # Api
 [api](./doc/API.md)

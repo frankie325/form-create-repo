@@ -21,7 +21,9 @@ export default {
     },
     clearValidateState(ctx) {
         const fItem = this.vm.$refs[ctx.wrapRef];
-        fItem.resetField();
+        if (fItem) {
+            fItem.resetField();
+        }
     },
     getDefaultOptions() {
         return getConfig();
@@ -68,7 +70,9 @@ export default {
     },
     // 设置Form表单的属性
     beforeRender() {
-        const { key, ref, $handle } = this;
+        const { key, ref, $handle, vm } = this;
+        const subClass = "sub-form-create";
+        if (vm.extendOption && this.rule.class.indexOf(subClass) === -1) this.rule.class.push(subClass);
         extend(this.rule, { key, ref });
         extend(this.rule.props, {
             model: $handle.formData,

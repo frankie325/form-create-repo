@@ -4,6 +4,11 @@ import { invoke } from "../frame/utils";
 import { $set } from "@/utils/modify";
 export default function useInput(Handle) {
     extend(Handle.prototype, {
+        addSubForm(ctx, subForm) {
+            if (ctx.input) {
+                this.subForm[ctx.id] = subForm;
+            }
+        },
         getValue(ctx) {
             if (is.Undef(ctx.cacheValue)) {
                 ctx.cacheValue = ctx.parser.toValue(this.getFormData(ctx), ctx);

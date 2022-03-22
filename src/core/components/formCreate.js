@@ -8,6 +8,13 @@ export default function $FormCreate(FormCreate) {
         model: {
             prop: "api",
         },
+        // 注入参数，子表单使用
+        provide() {
+            return {
+                $pfc: this,
+            };
+        },
+        inject: { $pfc: { default: null } },
         props: {
             rule: {
                 type: Array,
@@ -21,6 +28,7 @@ export default function $FormCreate(FormCreate) {
             },
             value: Object,
             api: Object,
+            extendOption: Boolean, //子表单为true
         },
         watch: {
             value: {
@@ -57,20 +65,11 @@ export default function $FormCreate(FormCreate) {
                 formData: {},
                 validate: {},
                 ctxInject: {},
+                destroyed: false,
             };
         },
         render(h) {
             console.log("form-create重新渲染");
-            // return h(
-            //     "div",
-            //     {
-            //         style: { color: "red" },
-            //         // class: "div1",
-            //         // class: { div1: true },
-            //         class: [{ div1: true }, "div2", ["div3"]],
-            //     },
-            //     "1111"
-            // );
             return this.formCreate.render();
         },
         methods: {
@@ -82,6 +81,7 @@ export default function $FormCreate(FormCreate) {
                 this.renderRule = [...(this.rule || [])];
             },
             _updateValue(value) {
+                if (this.destroyed) return;
                 this.updateValue = JSON.stringify(value);
                 this.$emit("update:value", value);
             },

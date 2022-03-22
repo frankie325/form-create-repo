@@ -122,19 +122,22 @@ export default function method() {
         },
         // 清除表单校验
         clearValidateState() {
-            this.fApi.clearValidateState();
+            this.fApi.clearValidateState(undefined, true);
             // this.fApi.clearValidateState("age1");
             // this.fApi.clearValidateState(["age1", "age2"]);
         },
         // 表单校验
         validateForm() {
-            // this.fApi.validate((valid) => {
-            //     console.log(valid);
-            // });
-            this.fApi.validateField("age1", (err) => {
+            this.fApi.validate((valid) => {
                 console.log(valid);
             });
-            // this.fApi.validateField(("age1", err) => {
+            // this.fApi.validateField("age1", (err) => {
+            //     console.log(valid);
+            // });
+            // this.fApi.validateField("sub-form1", (err) => {
+            //     console.log(err);
+            // });
+            // this.fApi.validateField("input-field", (err) => {
             //     console.log(err);
             // });
             // this.fApi.validate().then((arg) => {

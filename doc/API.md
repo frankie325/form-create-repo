@@ -1,5 +1,18 @@
 # API
 ## 字段操作
+
+### parent
+### parent
+获取父级 `form-create` 实例
+```js  
+fApi.parent()
+```
+
+### children
+获取子表单api
+```js  
+fApi.children()
+```
 ### fields
 获取所有表单字段
 ```js
@@ -234,13 +247,23 @@ fApi.updateValidates({
 ```
 
 ### clearValidateState
-清除指定表单组件的校验
+清除指定表单组件的校验状态
 ```js 
 /**
  * @description: 清除指定表单组件的校验
  * @param {String | string[]} fields 指定的表单字段，不填则为全部
+ * @param {Boolean} clearSub 是否清除子表单校验状态
  */      
-fApi.clearValidateState(fields, validate, merge)
+fApi.clearValidateState(fields, clearSub)
+```
+### clearSubValidateState
+清除指定子表单的校验状态
+```js
+/**
+ * @description: 清除指定子表单的校验状态
+ * @param {String | string[]} fields 指定的子表单表单字段
+ */   
+fApi.clearSubValidateState(fields)
 ```
 
 ### validateField

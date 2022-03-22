@@ -1,4 +1,4 @@
-import { extend, is } from "@/utils";
+import { extend, is, toArray } from "@/utils";
 import { invoke } from "@/core/frame/utils";
 
 function tidyBtnProp(btn, def) {
@@ -11,30 +11,82 @@ function tidyBtnProp(btn, def) {
 export default function extendApi(api, h) {
     extend(api, {
         /**
-         * @description: 表单校验，支持Promise
+         * @description: 表单校验
          * @param {Function} callback 回调
          * @return {*}
          */
         validate(callback) {
-            return h.$manager.validate(callback);
+            const forms = api.children;
+            const valid = (flag) => {
+                let _flag = true;
+                forms.forEach((form) => {
+                    form.validate((f) => {
+                        if (!f) {
+                            _flag = false;
+                        }
+                    });
+                });
+                callback(_flag && flag);
+            };
+            h.$manager.validate(valid);
         },
         /**
-         * @description: 对指定字段进行表单校验，支持Promise
+         * @description: 对指定字段进行表单校验
          * @param {String} field 校验字段
          * @param {Function} callback 回调
          */
         validateField(field, callback) {
             const ctx = h.getFieldCtx(field);
-            return h.$manager.validateField(ctx.id, callback);
+            if (!ctx) return;
+            const sub = h.subForm[ctx.id];
+            const valid = (error) => {
+                let _flag = true;
+                sub &&
+                    toArray(sub).forEach((form) => {
+                        form.validate((f) => {
+                            if (!f) {
+                                _flag = false;
+                            }
+                        });
+                    });
+                if (!_flag) {
+                    callback("子表单验证未通过");
+                } else {
+                    callback(error);
+                }
+            };
+            // debugger
+            h.$manager.validateField(ctx.id, valid);
         },
         /**
          * @description: 清除指定表单组件的校验
          * @param {String | string[]} fields 指定的表单字段，不填则为全部
+         * @param {Boolean} clearSub 是否清除子表单校验状态
          */
-        clearValidateState(fields) {
+        clearValidateState(fields, clearSub) {
             api.helper.tidyFields(fields).forEach((field) => {
+                if (clearSub) this.clearSubValidateState(field, clearSub);
                 h.getCtxs(field).forEach((ctx) => {
                     h.$manager.clearValidateState(ctx);
+                });
+            });
+        },
+        /**
+         * @description: 清除指定子表单的校验状态
+         * @param {String | string[]} fields 指定的子表单表单字段
+         */
+        clearSubValidateState(fields, clearSub) {
+            api.helper.tidyFields(fields).forEach((field) => {
+                h.getCtxs(field).forEach((ctx) => {
+                    const subForm = h.subForm[ctx.id];
+                    if (!subForm) return;
+                    if (Array.isArray(subForm)) {
+                        subForm.forEach((form) => {
+                            form.clearValidateState(undefined, clearSub);
+                        });
+                    } else if (subForm) {
+                        subForm.clearValidateState(undefined, clearSub);
+                    }
                 });
             });
         },

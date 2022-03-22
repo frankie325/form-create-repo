@@ -12,7 +12,7 @@
                 <Input placeholder="Password"> </Input>
             </FormItem>
         </Form> -->
-        <!-- <FormCreate
+        <FormCreate
             v-model="fApi"
             :rule="rule"
             :option="option"
@@ -69,8 +69,8 @@
                     <Button type="primary" @click="nextRefresh">自动重新渲染</Button>
                 </p>
             </Panel>
-        </Collapse> -->
-        <Designer />
+        </Collapse>
+        <!-- <Designer /> -->
     </div>
 </template>
 
@@ -235,8 +235,8 @@ export default {
                 // iview的Form组件属性
                 // form: {
                 //     inline: false,
-                //     labelWidth: 0,
-                //     labelPosition: "top",
+                //     labelWidth: 125,
+                //     labelPosition: "right",
                 //     disabled: false,
                 // },
                 global: {
@@ -284,7 +284,7 @@ export default {
                 name: "kfg1",
                 // age1: "22",
                 sex: "男",
-                "input-field": 22,
+                // "input-field": "22",
             },
         };
     },

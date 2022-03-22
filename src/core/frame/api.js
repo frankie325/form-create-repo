@@ -23,6 +23,17 @@ export default function Api(h) {
         });
     }
 
+    function allSubForm() {
+        const subs = h.subForm;
+        return Object.keys(subs).reduce((initial, k) => {
+            const sub = subs[k];
+            if (!sub) return initial;
+            if (Array.isArray(sub)) initial.push(...sub);
+            else initial.push(sub);
+            return initial;
+        }, []);
+    }
+
     const api = {
         get config() {
             return h.options;
@@ -35,6 +46,12 @@ export default function Api(h) {
         },
         get rule() {
             return h.rules;
+        },
+        get parent() {
+            return h.vm.$pfc;
+        },
+        get children() {
+            return allSubForm();
         },
         helper: {
             tidyFields,
@@ -316,6 +333,9 @@ export default function Api(h) {
          * @description: 刷新表单渲染
          */
         refresh() {
+            allSubForm().forEach((sub) => {
+                sub.refresh();
+            });
             h.$render.clearCacheAll();
             h.refresh();
         },
@@ -373,7 +393,7 @@ export default function Api(h) {
         /**
          * @description: 执行传入的方法后，如果表单没重新渲染，会自动重新渲染
          * @param {Function} fn
-         */        
+         */
         nextRefresh(fn) {
             fn && invoke(fn);
             h.nextRefresh();

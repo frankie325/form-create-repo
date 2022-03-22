@@ -138,6 +138,7 @@ export default function useContext(Handle) {
             $del(this.$render.orgChildren, id);
             $del(this.vm.ctxInject, id);
             $del(this.formData, id);
+            $del(this.subForm, id);
             $del(ctx, "cacheValue");
 
             input && this.rmIdCtx(ctx, field, "field");

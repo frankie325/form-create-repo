@@ -15,6 +15,7 @@ export default function Handle(fc) {
         fc,
         vm: fc.vm,
         rules: fc.rules,
+        subForm: {}, //子表单
         formData: {}, //表单数据
         appendData: {},
         form: {},

@@ -15,17 +15,17 @@ Vue.use(FormCreate, {
         // labelPosition: "right",
     },
     global: {
-        input: {
-            style: "color:blue",
-            props: {
-                clearable: false,
-                disabled: false,
-            },
-            // on: {
-            //     fun1: [() => {console.log("global")}],
-            //     fun2: () => {},
-            // },
-        },
+        // input: {
+        //     style: "color:blue",
+        //     props: {
+        //         clearable: false,
+        //         disabled: false,
+        //     },
+        //     // on: {
+        //     //     fun1: [() => {console.log("global")}],
+        //     //     fun2: () => {},
+        //     // },
+        // },
     },
     // submitBtn: true,
     // resetBtn: true,

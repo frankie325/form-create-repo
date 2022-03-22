@@ -67,6 +67,7 @@ export default function FormCreateFactory(config) {
     function FormCreate(vm, rules, options) {
         extend(this, {
             vm,
+            create,
             rules,
             manager: createManager(config.manager), //用来注册来自不同包的manager方法
             prop: {
@@ -93,23 +94,56 @@ export default function FormCreateFactory(config) {
             vm.$f = h.api;
             vm.$emit("input", h.api);
             vm.$on("hook:created", () => {
+                if (this.isSub()) {
+                    this.unwatch = vm.$watch(
+                        () => vm.$pfc.option,
+                        () => {
+                            this.initOptions(this.options);
+                            vm.$f.refresh();
+                        },
+                        { deep: true }
+                    );
+                    this.initOptions(this.options);
+                }
                 this.created();
             });
 
             vm.$on("hook:mounted", () => {
+                if (config.setFormItemContentStyle && vm.extendOption) config.setFormItemContentStyle();
                 this.mounted();
             });
 
             vm.$on("hook:updated", () => {
                 h.bindNextTick(() => this.bus.$emit("next-tick", h.api));
             });
+
+            vm.$on("hook:beforeDestroy", () => {
+                vm.destroyed = true;
+                this.unwatch && this.unwatch();
+                h.reloadRule([]);
+            });
+        },
+        isSub() {
+            return this.vm.$pfc && this.vm.extendOption;
         },
         initOptions(options) {
             this.options = deepCopy(globalConfig); //由Vue.use注册的顶层配置
+
+            if (this.isSub()) {
+                //如果是子表单，则合并父级的表单配置
+                this.mergeOptions(this.options, this.vm.$pfc.$f.config || {}, true);
+            }
+
             this.updateOptions(options);
         },
-        mergeOptions(globalOptions, userOptions) {
+        mergeOptions(globalOptions, userOptions, parent) {
             userOptions = deepCopy(userOptions);
+
+            // 如果是子表单，下面的这些来自父级的属性不需要合并
+            parent &&
+                ["onSubmit", "mounted", "reload", "formData"].forEach((k) => {
+                    delete userOptions[k];
+                });
 
             if (userOptions.global) {
                 userOptions.global = mergeGlobal(globalOptions.global, userOptions.global);
@@ -222,6 +256,7 @@ export default function FormCreateFactory(config) {
             componentAlias,
             parser,
             register,
+            $form,
         });
     }
 

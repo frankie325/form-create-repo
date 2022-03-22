@@ -176,6 +176,10 @@ export default function useRender(Render) {
             if (!this.vm.ctxInject[ctx.id]) {
                 $set(this.vm.ctxInject, ctx.id, {
                     api: this.$handle.api,
+                    form: this.fc.create,
+                    subForm: (subForm) => {
+                        this.$handle.addSubForm(ctx, subForm);
+                    },
                     options: [],
                     children: [],
                     prop: {},
