@@ -257,6 +257,7 @@ export default function FormCreateFactory(config) {
             parser,
             register,
             $form,
+            deepCopy,
         });
     }
 

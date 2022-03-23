@@ -57,6 +57,41 @@ export default function json() {
             // wrap: { show: false },
         },
         {
+            title: "数组组件",
+            type: "group",
+            field: "validate",
+            value: [
+                {
+                    "arr-input": "我是数组组件内的输入框",
+                    trigger: "string",
+                },
+            ],
+            props: {
+                // max: 3,
+                // min: 2,
+                expand: 2,
+                field: "arr-input",
+                rules: [
+                    {
+                        title: "数组输入框",
+                        type: "input",
+                        field: "arr-input",
+                    },
+                    {
+                        title: "数组选择器",
+                        type: "select",
+                        field: "trigger",
+                        options: [
+                            {
+                                label: "String",
+                                value: "string",
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+        {
             title: "输入框",
             type: "input",
             field: "input-field",

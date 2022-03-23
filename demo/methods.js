@@ -11,6 +11,18 @@ export default function method() {
         // 设置表单值
         setValue() {
             // 覆盖方式
+            this.fApi.coverValue({
+                validate: [
+                    {
+                        "arr-input": "我是数组组件内的输入框11",
+                        trigger: "string",
+                    },
+                    {
+                        "arr-input": "我是数组组件内的输入框22",
+                        trigger: "string",
+                    },
+                ],
+            });
             // this.fApi.coverValue({
             //     age1: "111",
             // });
@@ -36,6 +48,7 @@ export default function method() {
         disabled() {
             this.fApi.disabled(true);
             // this.fApi.disabled(true, "age1");
+            // this.fApi.disabled(true, "sub-form1");
         },
         // 删除规则
         removeRule() {
