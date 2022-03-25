@@ -29,6 +29,7 @@ export default function deepCopy(target) {
             copy = new Ctor(target);
         } else {
             /*...*/
+            /* 正则处理 */ 
         }
         return copy || target;
     }

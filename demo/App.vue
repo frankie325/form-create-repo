@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height: 100%">
         <!-- <Form label-position="top" :label-width="0">
             <FormItem label="user" prop="user">
                 <Input placeholder="Username"> </Input>
@@ -70,7 +70,7 @@
                 </p>
             </Panel>
         </Collapse>
-        <!-- <Designer /> -->
+        <Designer />
     </div>
 </template>
 
@@ -258,11 +258,11 @@ export default {
                     name: "kfg2",
                 },
                 submitBtn: {
-                    show: false,
+                    show: true,
                     // 这里配置了点击事件，则下面的onSubmit不会触发
-                    click(api) {
-                        console.log(api);
-                    },
+                    // click(api) {
+                    //     console.log(api);
+                    // },
                 },
                 resetBtn: {
                     show: false,
@@ -378,3 +378,10 @@ Object.defineProperties(obj, {
 });
 let obj2 = { ...obj };
 </script>
+
+<style>
+html,
+body {
+    height: 100%;
+}
+</style>

@@ -33,6 +33,7 @@ export default function useRender(Render) {
             ctx.prop = mergeRule({}, [g["*"], ctx.cacheConfig, ctx.prop]);
         },
         render() {
+            // debugger
             if (!this.vm.isShow) {
                 return;
             }
@@ -55,6 +56,7 @@ export default function useRender(Render) {
                 .filter((val) => val !== undefined);
         },
         renderCtx(ctx, parent) {
+            // debugger
             // console.log(ctx);
             if (ctx.rule.type === "hidden") return;
             const rule = ctx.rule;

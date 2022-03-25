@@ -10,7 +10,11 @@ export default function useRender(Render) {
                 ctx.parent && this.clearCache(ctx.parent);
                 return;
             }
-            
+
+            if (this.cache[ctx.id].use === true || this.cache[ctx.id].parent) {
+                this.$handle.refresh();
+            }
+
             const parent = this.cache[ctx.id].parent;
             this.cache[ctx.id] = null;
             parent && this.clearCache(parent);

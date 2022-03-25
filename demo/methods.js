@@ -127,11 +127,15 @@ export default function method() {
         },
         // 更新表单校验规则
         updateValidate() {
-            // this.fApi.updateValidate("age1", { required: true, message: "年龄1不能为空", trigger: "blur" }, true);
-            this.fApi.updateValidates({
-                age1: [{ required: true, message: "年龄1不能为空", trigger: "blur" }],
-                age2: { required: true, message: "年龄2不能为空", trigger: "blur" },
-            });
+            this.fApi.updateValidate("input-field", [
+                { required: false, message: "输入框不能为空1", trigger: "change" },
+                { required: true, message: "输入框不能为空2", trigger: "change" },
+                { required: false, message: "输入框不能为空3", trigger: "change" },
+            ]);
+            // this.fApi.updateValidates({
+            //     "input-field": [{ required: true, message: "输入框不能为空", trigger: "change" }],
+            //     // age2: { required: true, message: "年龄2不能为空", trigger: "blur" },
+            // });
         },
         // 清除表单校验
         clearValidateState() {

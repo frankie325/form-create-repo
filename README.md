@@ -103,6 +103,9 @@ export default {
 ### native
 - 类型：`Boolean`
 - 说明：设置是否使用 `FormItem` 包裹表单组件，默认会包裹
+- ### className
+- 类型：`String`
+- 说明：往 `FormItem` 设置class名称 
 ## 扩展配置
 
 ### col

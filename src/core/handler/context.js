@@ -70,7 +70,7 @@ export default function useContext(Handle) {
                             (n, o) => {
                                 if (this.noWatchFn) return;
                                 // if (this.loading || this.noWatchFn || this.reloading) return;
-
+                                // debugger
                                 this.watching = true;
                                 if (["props", "on", "nativeOn"].indexOf(key) > -1) {
                                     this.parseInjectEvent(ctx.rule, n || {});

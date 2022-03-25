@@ -23,7 +23,6 @@ export default function useInput(Handle) {
             this.nextRefresh();
             this.$render.clearCache(ctx); //如果不清除，renderCtx方法会从缓存中取VNode
             this.setFormData(ctx, formValue);
-            this.syncValue();
             this.valueChange(ctx, value);
             this.vm.$emit("change", ctx.field, value, ctx.origin, this.api, setFlag);
             this.effect(ctx, "value");
@@ -72,6 +71,8 @@ export default function useInput(Handle) {
                 this.loadRule();
                 this.vm.$emit("update", this.api);
                 this.refresh();
+            } else {
+                this.syncValue();
             }
         },
         // 判断rule.value是否发生改变

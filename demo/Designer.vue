@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <fc-designer></fc-designer>
-    </div>
+    <fc-designer></fc-designer>
 </template>
 
 <script>

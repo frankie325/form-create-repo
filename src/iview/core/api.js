@@ -59,7 +59,7 @@ export default function extendApi(api, h) {
             h.$manager.validateField(ctx.id, valid);
         },
         /**
-         * @description: 清除指定表单组件的校验
+         * @description: 清除指定表单组件的校验状态
          * @param {String | string[]} fields 指定的表单字段，不填则为全部
          * @param {Boolean} clearSub 是否清除子表单校验状态
          */

@@ -286,7 +286,12 @@ export default function Api(h) {
             if (merge) {
                 api.mergeRule(field, { validate });
             } else {
+                // debugger
                 props(field, "validate", validate);
+                api.nextTick(() => {
+                    api.clearValidateState(field);
+                });
+                // h.refresh();
             }
         },
         /**
@@ -298,6 +303,13 @@ export default function Api(h) {
             Object.keys(validates).forEach((field) => {
                 api.updateValidate(field, validates[field], merge);
             });
+        },
+        /**
+         * @description: 刷新校验规则
+         */
+        refreshValidate() {
+            h.vm.validate = {};
+            api.refresh();
         },
         /**
          * @description: 获取表单数据，返回的值不是双向绑定

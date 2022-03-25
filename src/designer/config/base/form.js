@@ -69,7 +69,7 @@ export default function form() {
             title: "是否显示校验错误信息",
             type: "switch",
             field: "showMessage",
-            value: false,
+            value: true,
         },
     ];
 }

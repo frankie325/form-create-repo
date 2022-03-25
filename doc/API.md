@@ -246,6 +246,14 @@ fApi.updateValidates({
 }, merge)
 ```
 
+### refreshValidate
+刷新校验规则
+```js 
+/**
+ * @description: 刷新校验规则
+ */
+fApi.refreshValidate()
+```
 ### clearValidateState
 清除指定表单组件的校验状态
 ```js 

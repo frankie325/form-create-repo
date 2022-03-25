@@ -1,5 +1,6 @@
 import getConfig from "./config";
 import { extend, mergeProps } from "@/utils";
+import { err } from "@/utils/console";
 import is, { hasProperty } from "@/utils/type";
 function isFalse(val) {
     return val === false;
@@ -12,6 +13,21 @@ function tidyBool(opt, name) {
     }
 }
 
+function parseValidate(rule) {
+    const validate = rule.validate || [];
+    validate.forEach((v) => {
+        if (v.pattern && !is.RegExp(v.pattern)) {
+            try {
+                v.pattern = eval(v.pattern);
+            } catch (e) {
+                v.pattern = undefined;
+                err("请输入合法的正则表达式：" + e);
+            }
+        }
+    });
+    return validate;
+}
+
 export default {
     validate(callback) {
         return this.form().validate(callback);
@@ -22,6 +38,10 @@ export default {
     clearValidateState(ctx) {
         const fItem = this.vm.$refs[ctx.wrapRef];
         if (fItem) {
+            // FormItem如果更新rules为空数组，无法取消必填标记
+            if (fItem.rules.length === 0) {
+                fItem.isRequired = false;
+            }
             fItem.resetField();
         }
     },
@@ -89,7 +109,7 @@ export default {
     makeWrap(ctx, children) {
         const rule = ctx.prop;
         const uni = `${this.key}${ctx.key}`;
-
+        // debugger
         const item =
             rule.wrap && isFalse(rule.wrap.show)
                 ? children
@@ -99,7 +119,10 @@ export default {
                               label: rule.title,
                               ...(rule.wrap || {}),
                               prop: ctx.id,
+                              rules: parseValidate(rule),
+                              //   required: rule.validate && rule.validate.some((v) => v.required),
                           },
+                          class: rule.className,
                           key: `${uni}fi`,
                           ref: ctx.wrapRef,
                           type: "formItem",

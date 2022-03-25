@@ -19,7 +19,7 @@
             </Sider>
             <Content class="fc-m">
                 <div class="fc-m-drag">
-                    <FormCreate :rule="dragForm.rule" v-model="dragForm.api" :option="form.value" :value.sync="form.ceshi"></FormCreate>
+                    <FormCreate :rule="dragForm.rule" v-model="dragForm.api" :option="form.value"></FormCreate>
                 </div>
             </Content>
             <Sider :width="320" class="fc-side-r" hide-trigger>
@@ -39,11 +39,20 @@
                         ></FormCreate>
                         <Divider size="small">属性配置</Divider>
                         <FormCreate
-                            :rule="propsFrom.rule"
-                            v-model="propsFrom.api"
-                            :option="propsFrom.option"
-                            :value.sync="propsFrom.value"
+                            :rule="propsForm.rule"
+                            v-model="propsForm.api"
+                            :option="propsForm.option"
+                            :value.sync="propsForm.value"
                             @change="propsChange"
+                        ></FormCreate>
+                        <Divider v-if="showBaseRule" size="small">校验规则</Divider>
+                        <FormCreate
+                            v-show="showBaseRule"
+                            :rule="validateForm.rule"
+                            v-model="validateForm.api"
+                            :option="validateForm.option"
+                            :value.sync="validateForm.value"
+                            @change="validateChange"
                         ></FormCreate>
                     </TabPane>
                 </Tabs>
@@ -60,6 +69,7 @@ import createMenu from "../config/menu";
 import ruleList from "../config/rule";
 import form from "../config/base/form";
 import field from "../config/base/field";
+import validate from "../config/base/validate";
 export default {
     name: "FcDesigner",
     components: {
@@ -101,12 +111,11 @@ export default {
                         labelWidth: 120,
                         labelPosition: "right",
                         labelColon: false,
-                        showMessage: false,
+                        showMessage: true,
                         hideRequiredMark: false,
                     },
                     submitBtn: false,
                 },
-                ceshi: {},
             },
             baseForm: {
                 rule: field(),
@@ -121,8 +130,21 @@ export default {
                 },
                 value: {},
             },
-            propsFrom: {
+            propsForm: {
                 rule: [],
+                api: {},
+                option: {
+                    form: {
+                        labelPosition: "top",
+                        size: "small",
+                        labelWidth: null,
+                    },
+                    submitBtn: false,
+                },
+                value: {},
+            },
+            validateForm: {
+                rule: validate(),
                 api: {},
                 option: {
                     form: {
@@ -340,8 +362,8 @@ export default {
             this.activeRule = rule;
             this.showBaseRule = !!rule.field;
 
-            this.propsFrom.rule = rule.config.config.props();
-            this.propsFrom.value = {
+            this.propsForm.rule = rule.config.config.props();
+            this.propsForm.value = {
                 ...rule.props,
             };
             if (this.showBaseRule) {
@@ -362,6 +384,11 @@ export default {
                 } else {
                     this.$set(this.activeRule.props, field, value);
                 }
+            }
+        },
+        validateChange(field, value, origin, api, flag) {
+            if (!flag && this.activeRule) {
+                this.dragForm.api.updateValidate(this.activeRule.field, value);
             }
         },
     },
@@ -388,6 +415,13 @@ export default {
 }
 .fc-side-r .ivu-tabs-tabpane {
     padding: 0 16px;
+}
+.fc-side-r .ivu-tabs {
+    height: 100%;
+}
+.fc-side-r .ivu-tabs .ivu-tabs-content {
+    height: calc(100% - 52px);
+    /* overflow-y: auto; */
 }
 .fc-group {
     padding: 0 10px;
