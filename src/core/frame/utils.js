@@ -1,5 +1,5 @@
 import { mergeProps, is } from "@/utils";
-import { logError } from "@/utils/console";
+import { logError, err } from "@/utils/console";
 import { arrayAttrs, normalAttrs } from "./attrs";
 export function enumerable(value, writable) {
     return {
@@ -59,4 +59,19 @@ export function invoke(fn, def) {
         logError(e);
     }
     return def;
+}
+
+export function parseValidate(validate) {
+    validate = validate || [];
+    validate.forEach((v) => {
+        if (v.pattern && !is.RegExp(v.pattern)) {
+            try {
+                v.pattern = eval(v.pattern);
+            } catch (e) {
+                v.pattern = undefined;
+                err("请输入合法的正则表达式：" + e);
+            }
+        }
+    });
+    return validate;
 }

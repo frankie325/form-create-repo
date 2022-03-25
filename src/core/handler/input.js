@@ -1,6 +1,6 @@
 import { extend, toArray } from "@/utils";
 import is, { hasProperty } from "@/utils/type";
-import { invoke } from "../frame/utils";
+import { invoke, parseValidate } from "../frame/utils";
 import { $set } from "@/utils/modify";
 export default function useInput(Handle) {
     extend(Handle.prototype, {
@@ -161,7 +161,7 @@ export default function useInput(Handle) {
             toEmpty(this.vm.validate);
             this.fields().forEach((field) => {
                 this.fieldCtx[field].forEach((ctx) => {
-                    this.vm.validate[ctx.id] = toArray(ctx.rule.validate);
+                    this.vm.validate[ctx.id] = parseValidate(toArray(ctx.rule.validate));
                 });
             });
             return this.vm.validate;

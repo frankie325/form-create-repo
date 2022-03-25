@@ -1,6 +1,6 @@
 import getConfig from "./config";
-import { extend, mergeProps } from "@/utils";
-import { err } from "@/utils/console";
+import { extend, mergeProps, toArray } from "@/utils";
+import { parseValidate } from "@/core/frame/utils";
 import is, { hasProperty } from "@/utils/type";
 function isFalse(val) {
     return val === false;
@@ -11,21 +11,6 @@ function tidyBool(opt, name) {
     if (hasProperty(opt, name) && !is.Object(opt[name])) {
         opt[name] = { show: !!opt[name] };
     }
-}
-
-function parseValidate(rule) {
-    const validate = rule.validate || [];
-    validate.forEach((v) => {
-        if (v.pattern && !is.RegExp(v.pattern)) {
-            try {
-                v.pattern = eval(v.pattern);
-            } catch (e) {
-                v.pattern = undefined;
-                err("请输入合法的正则表达式：" + e);
-            }
-        }
-    });
-    return validate;
 }
 
 export default {
@@ -119,7 +104,7 @@ export default {
                               label: rule.title,
                               ...(rule.wrap || {}),
                               prop: ctx.id,
-                              rules: parseValidate(rule),
+                              rules: parseValidate(toArray(rule.validate)),
                               //   required: rule.validate && rule.validate.some((v) => v.required),
                           },
                           class: rule.className,

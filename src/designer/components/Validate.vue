@@ -155,17 +155,6 @@ export default {
         }
     },
     methods: {
-        // parseReg(regStr) {
-        //     let reg = "";
-        //     try {
-        //         reg = eval(regStr);
-        //     } catch (e) {
-        //         reg = "";
-        //         console.log("请输入合法的正则表达式\n", e);
-        //     } finally {
-        //         return reg;
-        //     }
-        // },
         onInput(formData) {
             let val = [];
             const { validate, type } = formData;
@@ -173,9 +162,6 @@ export default {
                 return this.$emit("input", val);
             } else if (type) {
                 validate.forEach((v) => {
-                    // if (v.mode === "pattern" && v.pattern) {
-                    //     v.pattern = this.parseReg(v.pattern);
-                    // }
                     v.type = type;
                 });
                 val = [...validate];
