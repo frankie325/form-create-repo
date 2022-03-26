@@ -4,11 +4,13 @@ import draggable from "vuedraggable";
 import DragBox from "./components/DragBox";
 import DragTool from "./components/DragTool";
 import Validate from "./components/Validate";
+import Struct from "./components/Struct";
 
 FormCreate.component("draggable", draggable);
 FormCreate.component("DragBox", DragBox);
 FormCreate.component("DragTool", DragTool);
 FormCreate.component("Validate", Validate);
+FormCreate.component("Struct", Struct);
 
 FcDesigner.install = function (Vue) {
     Vue.component("FcDesigner", FcDesigner);

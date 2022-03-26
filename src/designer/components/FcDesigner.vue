@@ -1,64 +1,61 @@
 <template>
-    <Layout class="fc-designer">
-        <Header class="fc-header">Header</Header>
-        <Layout>
-            <Sider :width="260" class="fc-side-l" hide-trigger>
-                <template v-for="(item, index) in menuList">
-                    <div class="fc-group" :key="index">
-                        <h4 class="fc-group-title">{{ item.title }}</h4>
-                        <draggable :list="item.list" :group="{ name: 'default', pull: 'clone', put: false }" :sort="false">
-                            <div class="fc-group-item" v-for="(data, index) in item.list" :key="index">
-                                <div class="fc-group-item-icon">
-                                    <Icon :type="data.icon" size="20" />
-                                </div>
-                                <div class="fc-group-item-name">{{ data.label }}</div>
+    <Layout class="fc-center">
+        <Sider :width="260" class="fc-side-l" hide-trigger>
+            <template v-for="(item, index) in menuList">
+                <div class="fc-group" :key="index">
+                    <h4 class="fc-group-title">{{ item.title }}</h4>
+                    <draggable :list="item.list" :group="{ name: 'default', pull: 'clone', put: false }" :sort="false">
+                        <div class="fc-group-item" v-for="(data, index) in item.list" :key="index">
+                            <div class="fc-group-item-icon">
+                                <Icon :type="data.icon" size="20" />
                             </div>
-                        </draggable>
-                    </div>
-                </template>
-            </Sider>
-            <Content class="fc-m">
-                <div class="fc-m-drag">
-                    <FormCreate :rule="dragForm.rule" v-model="dragForm.api" :option="form.value"></FormCreate>
+                            <div class="fc-group-item-name">{{ data.label }}</div>
+                        </div>
+                    </draggable>
                 </div>
-            </Content>
-            <Sider :width="320" class="fc-side-r" hide-trigger>
-                <Tabs v-model="activeTab">
-                    <TabPane label="表单配置" name="form">
-                        <FormCreate :rule="form.rule" :option="form.option" :value.sync="form.value.form"></FormCreate>
-                    </TabPane>
-                    <TabPane label="组件配置" name="props">
-                        <Divider v-if="showBaseRule" size="small">基础配置</Divider>
-                        <FormCreate
-                            v-show="showBaseRule"
-                            :rule="baseForm.rule"
-                            v-model="baseForm.api"
-                            :option="baseForm.option"
-                            :value.sync="baseForm.value"
-                            @change="baseChange"
-                        ></FormCreate>
-                        <Divider size="small">属性配置</Divider>
-                        <FormCreate
-                            :rule="propsForm.rule"
-                            v-model="propsForm.api"
-                            :option="propsForm.option"
-                            :value.sync="propsForm.value"
-                            @change="propsChange"
-                        ></FormCreate>
-                        <Divider v-if="showBaseRule" size="small">校验规则</Divider>
-                        <FormCreate
-                            v-show="showBaseRule"
-                            :rule="validateForm.rule"
-                            v-model="validateForm.api"
-                            :option="validateForm.option"
-                            :value.sync="validateForm.value"
-                            @change="validateChange"
-                        ></FormCreate>
-                    </TabPane>
-                </Tabs>
-            </Sider>
-        </Layout>
-        <Footer class="fc-side-footer">Footer</Footer>
+            </template>
+        </Sider>
+        <Content class="fc-m">
+            <div class="fc-m-drag">
+                <FormCreate :rule="dragForm.rule" v-model="dragForm.api" :option="form.value"></FormCreate>
+            </div>
+        </Content>
+        <Sider :width="320" class="fc-side-r" hide-trigger>
+            <Tabs v-model="activeTab">
+                <TabPane label="表单配置" name="form">
+                    <FormCreate :rule="form.rule" :option="form.option" :value.sync="form.value.form"></FormCreate>
+                </TabPane>
+                <TabPane label="组件配置" name="props">
+                    <Divider v-if="showBaseRule" size="small">基础配置</Divider>
+                    <FormCreate
+                        v-show="showBaseRule"
+                        :rule="baseForm.rule"
+                        v-model="baseForm.api"
+                        :option="baseForm.option"
+                        :value.sync="baseForm.value"
+                        @change="baseChange"
+                    ></FormCreate>
+                    <Divider v-if="activeProps" size="small">属性配置</Divider>
+                    <FormCreate
+                        v-show="activeProps"
+                        :rule="propsForm.rule"
+                        v-model="propsForm.api"
+                        :option="propsForm.option"
+                        :value.sync="propsForm.value"
+                        @change="propsChange"
+                    ></FormCreate>
+                    <Divider v-if="showBaseRule" size="small">校验规则</Divider>
+                    <FormCreate
+                        v-show="showBaseRule"
+                        :rule="validateForm.rule"
+                        v-model="validateForm.api"
+                        :option="validateForm.option"
+                        :value.sync="validateForm.value"
+                        @change="validateChange"
+                    ></FormCreate>
+                </TabPane>
+            </Tabs>
+        </Sider>
     </Layout>
 </template>
 
@@ -87,6 +84,7 @@ export default {
         return {
             menuList: createMenu(),
             activeTab: "form",
+            activeProps: false,
             dragForm: {
                 rule: this.makeDragRule(children),
                 api: {},
@@ -288,6 +286,7 @@ export default {
                             delete: ({ self }) => {
                                 // console.log(inject);
                                 this.getParent(self).parent.__fc__.rm();
+                                this.clearActive();
                             },
                             add: ({ self }) => {
                                 const top = this.getParent(self);
@@ -304,7 +303,9 @@ export default {
                                 const top = this.getParent(self);
                                 top.root.children.splice(top.root.children.indexOf(top.parent) + 1, 0, deepCopy(top.parent));
                             },
-                            active: () => {},
+                            active: ({ self }) => {
+                                this.toolActive(this.getParent(self).parent);
+                            },
                         },
                         children: rule.children,
                     },
@@ -321,6 +322,7 @@ export default {
                     on: {
                         delete: ({ self }) => {
                             self.__fc__.rm();
+                            this.clearActive();
                         },
                         add: ({ self }) => {
                             const top = this.getParent(self);
@@ -358,7 +360,7 @@ export default {
         },
         toolActive(rule) {
             this.activeTab = "props";
-
+            this.activeProps = true;
             this.activeRule = rule;
             this.showBaseRule = !!rule.field;
 
@@ -371,7 +373,15 @@ export default {
                     field: rule.field,
                     title: rule.title,
                 };
+
+                this.validateForm.value = { validate: rule.validate ? [...rule.validate] : [] };
             }
+        },
+        clearActive() {
+            this.showBaseRule = false;
+            this.activeProps = false;
+            this.activeRule = null;
+            this.activeTab = "form";
         },
         baseChange(field, value, origin, api, flag) {
             if (!flag && this.activeRule) {
@@ -396,12 +406,8 @@ export default {
 </script>
 
 <style>
-.fc-designer {
-    height: 100%;
-    min-height: 500px;
-}
-.fc-header {
-    background: #fff;
+.fc-center {
+    height: calc(100% - 133px);
 }
 .fc-side-l {
     background: #fff;
@@ -421,7 +427,10 @@ export default {
 }
 .fc-side-r .ivu-tabs .ivu-tabs-content {
     height: calc(100% - 52px);
-    /* overflow-y: auto; */
+}
+.fc-side-r .ivu-tabs .ivu-tabs-content .ivu-tabs-tabpane {
+    height: 100%;
+    overflow: auto;
 }
 .fc-group {
     padding: 0 10px;

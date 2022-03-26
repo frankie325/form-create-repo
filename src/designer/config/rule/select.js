@@ -27,4 +27,7 @@ export default {
             ],
         };
     },
+    props() {
+        return [];
+    },
 };

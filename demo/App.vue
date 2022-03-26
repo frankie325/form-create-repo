@@ -1,17 +1,5 @@
 <template>
     <div style="height: 100%">
-        <!-- <Form label-position="top" :label-width="0">
-            <FormItem label="user" prop="user">
-                <Input placeholder="Username"> </Input>
-            </FormItem>
-            <FormItem label="user" prop="user">
-                <Input placeholder="Username"> </Input>
-            </FormItem>
-
-            <FormItem label="password" prop="password">
-                <Input placeholder="Password"> </Input>
-            </FormItem>
-        </Form> -->
         <FormCreate
             v-model="fApi"
             :rule="rule"
@@ -79,7 +67,6 @@ import methods from "./methods.js";
 import json from "./json.js";
 import Designer from "./Designer";
 import FormCreate from "@/iview";
-
 FormCreate.register({
     name: "str",
     components: ["input", "select"], //属性绑定的组件,不设置或者'*'默认为全部组件
@@ -233,12 +220,13 @@ export default {
             // 全局配置
             option: {
                 // iview的Form组件属性
-                // form: {
-                //     inline: false,
-                //     labelWidth: 125,
-                //     labelPosition: "right",
-                //     disabled: false,
-                // },
+                form: {
+                    inline: false,
+                    labelWidth: 125,
+                    labelPosition: "right",
+                    disabled: false,
+                    // clearable: true,
+                },
                 global: {
                     input: {
                         style: "color:red",

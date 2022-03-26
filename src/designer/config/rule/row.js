@@ -5,6 +5,7 @@ export default {
     icon: "md-reorder",
     label,
     name,
+    children: "col",
     rule() {
         return {
             type: name,
@@ -12,5 +13,7 @@ export default {
             children: [],
         };
     },
-    children: "col",
+    props() {
+        return [];
+    },
 };

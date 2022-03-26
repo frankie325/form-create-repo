@@ -12,7 +12,15 @@ export default {
             type: name,
             title: label,
             field: unique(),
-            props: {},
+            props: {
+                placeholder: "请输入...",
+                maxlength: null,
+                border: true,
+                autosize: {
+                    minRows: 2,
+                    maxRows: null,
+                },
+            },
         };
     },
     props() {
@@ -21,6 +29,7 @@ export default {
                 title: "输入框类型",
                 type: "select",
                 field: "type",
+                value: "",
                 options: [
                     {
                         label: "text",
@@ -35,24 +44,33 @@ export default {
                         value: "textarea",
                     },
                     {
-                        label: "url",
-                        value: "url",
-                    },
-                    {
-                        label: "email",
-                        value: "email",
-                    },
-                    {
-                        label: "date",
-                        value: "date",
-                    },
-                    {
                         label: "number",
                         value: "number",
                     },
+                ],
+                control: [
                     {
-                        label: "tel",
-                        value: "tel",
+                        value: "textarea",
+                        rule: [
+                            {
+                                type: "object",
+                                field: "autosize",
+                                props: {
+                                    rule: [
+                                        {
+                                            title: "最小行数",
+                                            type: "inputNumber",
+                                            field: "minRows",
+                                        },
+                                        {
+                                            title: "最大行数",
+                                            type: "inputNumber",
+                                            field: "maxRows",
+                                        },
+                                    ],
+                                },
+                            },
+                        ],
                     },
                 ],
             },
@@ -61,6 +79,73 @@ export default {
                 type: "input",
                 field: "placeholder",
                 value: "",
+            },
+            {
+                title: "是否显示清空按钮",
+                type: "switch",
+                field: "clearable",
+            },
+            {
+                title: "是否显示边框",
+                type: "switch",
+                field: "border",
+            },
+            {
+                title: "是否禁用",
+                type: "switch",
+                field: "disabled",
+            },
+            {
+                title: "是否只读",
+                type: "switch",
+                field: "readonly",
+            },
+            {
+                title: "是否显示切换密码图标",
+                type: "switch",
+                field: "password",
+            },
+            {
+                title: "是否显示输入字数统计",
+                type: "switch",
+                field: "showWordLimit",
+                control: [
+                    {
+                        handle: (val) => val > 0,
+                        rule: [
+                            {
+                                title: "最大输入长度",
+                                type: "inputNumber",
+                                field: "maxlength",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                title: "输入框头部图标",
+                type: "input",
+                field: "prefix",
+            },
+            {
+                title: "输入框尾部图标",
+                type: "input",
+                field: "suffix",
+            },
+            {
+                title: "是否显示为搜索型输入框",
+                type: "switch",
+                field: "search",
+                control: {
+                    value: true,
+                    rule: [
+                        {
+                            title: "搜索型输入框是否显示为按钮",
+                            type: "switch",
+                            field: "enterButton",
+                        },
+                    ],
+                },
             },
         ];
     },

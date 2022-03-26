@@ -33,6 +33,7 @@ export default function $FormCreate(FormCreate) {
         watch: {
             value: {
                 handler(n) {
+                    // debugger;
                     if (JSON.stringify(n) === this.updateValue) return;
                     this.$f.setValue(n);
                 },

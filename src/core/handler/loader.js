@@ -191,11 +191,12 @@ export default function useLoader(Handle) {
         _reloadRule(rules) {
             // debugger
             if (!rules) rules = this.rules;
-            if (!rules.__ob__) Vue.observable(rules);
+            // if (!rules.__ob__) Vue.observable(rules);
             // 旧的ctxs
             const ctxs = { ...this.ctxs };
             this.$render.clearOrgChildren();
             this.initData(rules);
+            this.initAppendData();
             this.fc.rules = rules;
 
             this.bus.$once("load-end", () => {

@@ -67,8 +67,11 @@ extend(Handle.prototype, {
             rules,
         });
     },
-    init() {
+    initAppendData() {
         this.appendData = { ...(this.fc.options.formData || {}), ...(this.vm.value || {}), ...this.appendData };
+    },
+    init() {
+        this.initAppendData();
         this.useProvider();
         this.loadRule();
         this.$manager.__init();

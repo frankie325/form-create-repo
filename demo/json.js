@@ -115,12 +115,12 @@ export default function json() {
             // },
             // col: {},
             props: {
-                // type: "number",
-                // rows: 10,
-                // autosize: {
-                //     minRows: 2,
-                //     maxRows: 20,
-                // },
+                type: "textarea",
+                rows: 10,
+                autosize: {
+                    minRows: 5,
+                    maxRows: 20,
+                },
             },
             wrap: {
                 // required: true,

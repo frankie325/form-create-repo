@@ -12,5 +12,11 @@ export default function field() {
             field: "title",
             value: "",
         },
+        {
+            title: "联动数据",
+            type: "struct",
+            field: "_control",
+            props: {},
+        },
     ];
 }
