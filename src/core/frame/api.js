@@ -91,7 +91,7 @@ export default function Api(h) {
             });
         },
         /**
-         * @description: 设置表单值，采用合并，未定义的字段不做修改
+         * @description: 设置表单值，采用合并
          * @param {Object} formData
          * 或者
          * @param {field} 表单字段

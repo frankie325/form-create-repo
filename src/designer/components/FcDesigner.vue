@@ -16,8 +16,16 @@
             </template>
         </Sider>
         <Content class="fc-m">
-            <div class="fc-m-drag">
-                <FormCreate :rule="dragForm.rule" v-model="dragForm.api" :option="form.value"></FormCreate>
+            <div class="fc-m-tool">
+                <Button type="primary" icon="md-eye" shape="circle" size="small" style="width: 80px; margin-right: 8px" @click="previewFc"
+                    >预览</Button
+                >
+                <Button type="error" icon="md-trash" shape="circle" size="small" style="width: 80px" @click="clearDragRule">清空</Button>
+            </div>
+            <div class="fc-m-drag-wrap">
+                <div class="fc-m-drag">
+                    <FormCreate :rule="dragForm.rule" v-model="dragForm.api" :option="form.value"></FormCreate>
+                </div>
             </div>
         </Content>
         <Sider :width="320" class="fc-side-r" hide-trigger>
@@ -56,12 +64,15 @@
                 </TabPane>
             </Tabs>
         </Sider>
+        <Modal v-model="preview.state" :width="1000" title="预览" :footer-hide="true">
+            <FormCreate v-if="preview.state" :rule="preview.rule" :option="preview.option"></FormCreate>
+        </Modal>
     </Layout>
 </template>
 
 <script>
 import draggable from "vuedraggable";
-import { deepCopy } from "@/utils";
+import { is, deepCopy, parseJson } from "@/utils";
 import createMenu from "../config/menu";
 import ruleList from "../config/rule";
 import form from "../config/base/form";
@@ -85,6 +96,11 @@ export default {
             menuList: createMenu(),
             activeTab: "form",
             activeProps: false,
+            preview: {
+                state: false,
+                rule: [],
+                options: {},
+            },
             dragForm: {
                 rule: this.makeDragRule(children),
                 api: {},
@@ -93,11 +109,9 @@ export default {
                 rule: form(),
                 option: {
                     form: {
-                        // inline: true,
                         labelPosition: "top",
                         size: "small",
                         labelWidth: null,
-                        // showMessage: false,
                     },
                     submitBtn: false,
                 },
@@ -162,6 +176,116 @@ export default {
         };
     },
     methods: {
+        getOption() {
+            const option = deepCopy(this.form.value);
+            delete option.submitBtn;
+            return option;
+        },
+        setOption(option) {
+            const _o = option;
+            _o.submitBtn = false;
+            // if (_o.resetBtn) delete _o.resetBtn;
+            this.form.value = _o;
+        },
+        getRule() {
+            return this.parseRule(deepCopy(this.dragForm.api.rule[0].children));
+        },
+        // 去除DragTool、DragBox的规则
+        parseRule(children) {
+            return [...children].reduce((initial, rule) => {
+                if (is.String(rule)) {
+                    initial.push(initial);
+                    return;
+                } else if (rule.type === "DragBox") {
+                    initial.push(...this.parseRule(rule.children));
+                    return initial;
+                } else if (rule.type === "DragTool") {
+                    rule = rule.children[0];
+                    if (rule.type === "DragBox") {
+                        initial.push(...this.parseRule(rule.children));
+                        return initial;
+                    }
+                }
+
+                if (!rule) return initial;
+                rule = { ...rule };
+                if (rule.children.length) {
+                    rule.children = this.parseRule(rule.children);
+                }
+
+                if (rule.config) {
+                    delete rule.config.config;
+                }
+
+                if (rule.effect) {
+                    delete rule.effect._fc;
+                }
+
+                if (rule._control) {
+                    rule.control = rule._control;
+                    delete rule._control;
+                }
+
+                // 删除空对象和空数组
+                Object.keys(rule)
+                    .filter((k) => (Array.isArray(rule[k]) && rule[k].length === 0) || (is.Object(rule[k]) && Object.keys(rule[k]).length === 0))
+                    .forEach((k) => delete rule[k]);
+
+                initial.push(rule);
+                return initial;
+            }, []);
+        },
+        setRule(rules) {
+            const children = this.loadRule(is.String(rules) ? parseJson(rules) : rules);
+            this.clearActive();
+            // debugger;
+            // let rule = this.makeDragRule(children);
+            this.dragForm.rule = this.makeDragRule(children);
+        },
+        loadRule(rules) {
+            const loadRule = [];
+            rules.forEach((rule) => {
+                if (is.String(rule)) {
+                    return loadRule.push(rule);
+                }
+
+                const config = ruleList[rule.type];
+                const _children = rule.children;
+                rule.children = [];
+
+                if (rule.control) {
+                    rule._control = rule.control;
+                    delete rule.control;
+                }
+
+                if (config) {
+                    // DragTool或DragBox进行包裹
+                    rule = this.makeRule(config, rule);
+
+                    if (_children) {
+                        let children = rule.children[0].children; //拿到DragTool内的rule.children
+
+                        // col内的rule会有DragTool和DragBox
+                        if (config.drag) {
+                            children = children[0].children;
+                        }
+                        children.push(...this.loadRule(_children));
+                    }
+                } else if (_children) {
+                    rule.children = this.loadRule(_children);
+                }
+                loadRule.push(rule);
+            });
+            return loadRule;
+        },
+        previewFc() {
+            this.preview.state = true;
+            this.preview.rule = this.getRule();
+            this.preview.option = this.getOption();
+        },
+        clearDragRule() {
+            this.setRule([]);
+        },
         makeDragRule(children) {
             return [
                 this.makeDrag(true, "draggable", children, {
@@ -254,6 +378,10 @@ export default {
         makeRule(config, _rule) {
             const rule = _rule || config.rule();
             rule.config = { config };
+
+            if (!rule.effect) rule.effect = {};
+            rule.effect._fc = true;
+
             let drag;
             // 布局组件col内可继续拖拽
             if (config.drag) {
@@ -267,10 +395,11 @@ export default {
                     }))
                 );
             }
-            // debugger;
+
             if (config.children && !_rule) {
+                // 导入JSON时，row不需要进入该条件
                 const child = this.makeRule(ruleList[config.children]);
-                rule.children.push(child);
+                (drag || rule).children.push(child);
             }
 
             if (config.inside) {
@@ -478,13 +607,28 @@ export default {
 .fc-m {
 }
 
+.fc-m-tool {
+    padding: 8px 12px;
+    text-align: right;
+    background: #fff;
+    border-top: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+}
+
+.fc-m-drag-wrap {
+    padding: 12px;
+    height: calc(100% - 43px);
+}
+
 .fc-m-drag {
-    padding: 8px;
+    padding: 3px;
     height: 100%;
+    overflow: auto;
+    background: #fff;
 }
 .draggable-box {
     min-height: 60px;
-    background: #fff;
+    /* background: #fff; */
     height: 100%;
 }
 

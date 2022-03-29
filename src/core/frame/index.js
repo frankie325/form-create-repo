@@ -1,4 +1,5 @@
-import { extend, deepCopy, is, toCase } from "@/utils";
+import { extend, deepCopy, is, toCase, parseJson, toJson } from "@/utils";
+import { parseFn } from "@/utils/json";
 import { mergeGlobal } from "./utils";
 
 import $FormCreate from "../components/formCreate";
@@ -258,6 +259,9 @@ export default function FormCreateFactory(config) {
             register,
             $form,
             deepCopy,
+            parseJson,
+            toJson,
+            parseFn,
         });
     }
 

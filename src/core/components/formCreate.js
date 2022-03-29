@@ -35,7 +35,7 @@ export default function $FormCreate(FormCreate) {
                 handler(n) {
                     // debugger;
                     if (JSON.stringify(n) === this.updateValue) return;
-                    this.$f.setValue(n);
+                    this.$f.coverValue(n);
                 },
                 deep: true,
             },

@@ -102,7 +102,7 @@ export default function useLoader(Handle) {
                 let rule = getRule(_rule);
 
                 const isRepeat = () => {
-                    return;
+                    return !!(rule.field && this.fieldCtx[rule.field] && this.fieldCtx[rule.field][0] !== _rule.__fc__);
                 };
 
                 this.ruleEffect(rule, "init", { repeat: isRepeat() });
