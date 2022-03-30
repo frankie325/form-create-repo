@@ -67,6 +67,7 @@ import "codemirror/addon/edit/matchbrackets";
 
 import FormCreate from "@/iview";
 import { is } from "@/utils";
+import { deepParseFn } from "./utils";
 const TITLE = ["设置生成规则", "设置Option", "生成规则", "生成组件"];
 export default {
     name: "Designer",
@@ -145,8 +146,7 @@ export default {
                     this.err = "：option必须为对象";
                     return;
                 }
-                debugger
-                this.$refs.designer.setOption(val);
+                this.$refs.designer.setOption(deepParseFn(val));
             }
             this.showModal = false;
         },
@@ -172,10 +172,12 @@ export default {
         },
         makeTemplate() {
             const rule = this.$refs.designer.getRule();
+            const opt = this.$refs.designer.getOption();
             return `<template>  
     <FormCreate
         v-model="fApi"
         :rule="rule"
+        :option="option"
     ></FormCreate>
 </template>
 
@@ -187,6 +189,7 @@ export default {
         return {
             fApi: null,
             rule: FormCreate.parseJson(${FormCreate.toJson(rule)}),
+            option: FormCreate.parseJson(${FormCreate.toJson(opt)})
         }
     }
     methods:{

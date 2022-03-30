@@ -143,6 +143,18 @@ export default function json() {
             //         slot: "prefix",
             //     },
             // ],
+            control: [
+                {
+                    handle: (val) => val == 1,
+                    rule: [
+                        {
+                            title: "组件联动",
+                            type: "input",
+                            field: "control-input",
+                        },
+                    ],
+                },
+            ],
         },
         {
             title: "选择器",

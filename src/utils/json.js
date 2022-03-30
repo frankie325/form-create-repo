@@ -7,7 +7,8 @@ const fnExpReg = /^([\w$_]+|\([^)]*?\))\s*=>|^function(?:\s+[\w$]+)?\s*\(/;
 // 将rules规则转化为JSON
 export function toJson(obj, space) {
     return JSON.stringify(
-        deepExtend([], obj, true),
+        obj,
+        // deepExtend([], obj, true),
         function (key, val) {
             if (val && val._isVue === true) {
                 return undefined;

@@ -90,6 +90,14 @@ export default {
             },
         };
     },
+    watch: {
+        "preview.state": function (n) {
+            if (!n) {
+                this.preview.rule = [];
+                this.preview.option = {};
+            }
+        },
+    },
     data() {
         const children = [];
         return {
@@ -184,7 +192,7 @@ export default {
         setOption(option) {
             const _o = option;
             _o.submitBtn = false;
-            // if (_o.resetBtn) delete _o.resetBtn;
+            // delete _o.resetBtn;
             this.form.value = _o;
         },
         getRule() {
@@ -501,6 +509,7 @@ export default {
                 this.baseForm.value = {
                     field: rule.field,
                     title: rule.title,
+                    _control: rule._control,
                 };
 
                 this.validateForm.value = { validate: rule.validate ? [...rule.validate] : [] };

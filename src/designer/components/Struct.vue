@@ -35,6 +35,7 @@ export default {
             if (n) {
                 this.load();
             } else {
+                this.err = false;
             }
         },
         value() {
@@ -51,7 +52,7 @@ export default {
     },
     methods: {
         load() {
-            const val = toJson(this.value, 2);
+            const val = toJson(this.value || this.defaultValue, 2);
             this.oldVal = val;
             this.$nextTick(() => {
                 this.editor = CodeMirror(this.$refs.editor, {
@@ -64,7 +65,7 @@ export default {
                     line: true,
                     tabSize: 2, //制表符的宽度。默认为 4
                     lineWrapping: true, //在长行时文字是换行还是滚动,true为换行
-                    value: val || "",
+                    value: val || "[]",
                     styleActiveLine: true, // 光标行背景高亮
                     closebrackets: true, // 自动补全功能
                     foldGutter: true, //折叠功能

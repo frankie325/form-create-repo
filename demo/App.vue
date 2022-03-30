@@ -65,7 +65,7 @@
 <script>
 import methods from "./methods.js";
 import json from "./json.js";
-import Designer from "./Designer";
+import Designer from "@/designer/Designer";
 import FormCreate from "@/iview";
 FormCreate.register({
     name: "str",
