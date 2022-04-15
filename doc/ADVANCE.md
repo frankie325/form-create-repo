@@ -1,3 +1,11 @@
+- [进阶使用](#进阶使用)
+  - [使用插槽](#使用插槽)
+  - [对象组件（子表单）](#对象组件子表单)
+  - [数组组件](#数组组件)
+  - [自定义组件](#自定义组件)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 # 进阶使用
 
 ## 使用插槽
