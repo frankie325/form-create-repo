@@ -1,4 +1,5 @@
 import { unique } from "@/utils";
+import { options, request } from "../default";
 
 const label = "选择器";
 const name = "select";
@@ -13,35 +14,13 @@ export default {
             title: label,
             field: unique(),
             props: {
-                transfer: true,
+                // transfer: true,
                 placeholder: "请选择...",
                 notFoundText: "无匹配数据",
                 placement: "bottom-start",
             },
-            options: [
-                {
-                    label: "选项一",
-                    value: 1,
-                },
-                {
-                    label: "选项二",
-                    value: 2,
-                },
-            ],
-            request: [
-                {
-                    to: "options",
-                    axios: {
-                        url: "",
-                        method: "post",
-                        data: {},
-                    },
-                    parse(res) {
-                        return res.data;
-                    },
-                    altKeys: {},
-                },
-            ],
+            options: options(),
+            request: request(),
         };
     },
     props() {

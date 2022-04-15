@@ -15,12 +15,15 @@ export default function form() {
             options: [
                 {
                     label: "default",
+                    value: "default",
                 },
                 {
                     label: "large",
+                    value: "large",
                 },
                 {
                     label: "small",
+                    value: "small",
                 },
             ],
         },
@@ -44,12 +47,15 @@ export default function form() {
             options: [
                 {
                     label: "right",
+                    value: "right",
                 },
                 {
                     label: "left",
+                    value: "left",
                 },
                 {
                     label: "top",
+                    value: "top",
                 },
             ],
         },

@@ -38,7 +38,10 @@ export default function $FormCreate(FormCreate) {
                 this.formCreate.$handle.reloadRule(n);
                 this._renderRule();
             },
-            // 当rule和value同时修改时，保证先触发rule的更新（监听顺序），重新reloadRule
+            /*
+                当rule和value同时修改时，保证先触发rule的更新（监听顺序），重新reloadRule
+                否则当value修改引起control配置操作了顶层规则，会先_renderRule，导致无法reloadRule
+            */ 
             value: {
                 handler(n) {
                     if (JSON.stringify(n) === this.updateValue) return;

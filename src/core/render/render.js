@@ -73,8 +73,7 @@ export default function useRender(Render) {
 
                 const isShow = is.Undef(rule.show) || !!rule.show;
 
-                if (false) {
-                } else if (_type === "fcFragment") {
+                if (_type === "fcFragment") {
                     vn = this.renderChildren(ctx);
                 } else {
                     ctx.initProp(); //重新合并rule，比如重新注入参数后的事件
@@ -117,6 +116,7 @@ export default function useRender(Render) {
             return this.getCache(ctx);
         },
         injectProp(ctx) {
+
             // 这里对ctxInject操作，会导致form-create执行完render，再次执行render
             if (!this.vm.ctxInject[ctx.id]) {
                 $set(this.vm.ctxInject, ctx.id, {
@@ -129,6 +129,7 @@ export default function useRender(Render) {
                 });
             }
             const inject = this.vm.ctxInject[ctx.id];
+
             extend(inject, {
                 options: ctx.prop.options,
                 children: ctx.rule.children,
@@ -173,7 +174,7 @@ export default function useRender(Render) {
                 [vn]
             );
         },
-        // 自定义组件可以使用props访问下面的属性
+        // 注入参数，可以提供给自定义组件使用
         injectProp(ctx) {
             if (!this.vm.ctxInject[ctx.id]) {
                 $set(this.vm.ctxInject, ctx.id, {
@@ -196,7 +197,7 @@ export default function useRender(Render) {
                 prop: (function () {
                     const temp = { ...ctx.prop };
                     temp.on = temp.on ? { ...temp.on } : {};
-                    // delete temp.model;
+                    delete temp.model;
                     return temp;
                 })(),
             });

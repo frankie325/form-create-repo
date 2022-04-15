@@ -506,11 +506,9 @@ export default {
             ["options", "request"].forEach((key) => {
                 propsFormData[key] = rule[key];
             });
-            // debugger
+
             this.propsForm.rule = rule.config.config.props();
-            // this.$nextTick(() => {
-                this.propsForm.value = propsFormData;
-            // });
+            this.propsForm.value = propsFormData;
 
             if (this.showBaseRule) {
                 this.baseForm.value = {
@@ -536,7 +534,7 @@ export default {
         },
         propsChange(field, value, origin, api, flag) {
             if (!flag && this.activeRule) {
-                if (field === "request") {
+                if (["options", "request"].indexOf(field) > -1) {
                     this.$set(this.activeRule, field, value);
                 } else {
                     this.$set(this.activeRule.props, field, value);
@@ -603,6 +601,7 @@ export default {
 }
 .fc-group-item-name {
     margin-top: 8px;
+    font-size: 12px;
     text-align: center;
 }
 .fc-group-item:hover > .fc-group-item-name,
@@ -643,6 +642,7 @@ export default {
     height: 100%;
     overflow: auto;
     background: #fff;
+    z-index: 0;
 }
 .draggable-box {
     min-height: 60px;

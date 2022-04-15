@@ -119,13 +119,20 @@ export default function json() {
             // },
             // col: {},
             props: {
-                type: "textarea",
+                // type: "textarea",
                 rows: 10,
+                // prefix: "md-add",
                 autosize: {
                     minRows: 5,
                     maxRows: 20,
                 },
             },
+            // 只使用scopedSlots，无法生效，iview做了限制（没有设置props.prefix或者默认插槽没有prefix则不会渲染插槽内容）
+            // scopedSlots: {
+            //     prefix: () => {
+            //         return "prefix";
+            //     },
+            // },
             wrap: {
                 // required: true,
             },
@@ -166,11 +173,13 @@ export default function json() {
             field: "select-field",
             value: [],
             props: {
-                // multiple: true,
+                multiple: true,
                 // transfer: true,
                 placement: "bottom-start",
             },
-            validate: [{ mode: "min", required: true, type: "array", min: 1, message: "最少选中一个元素", trigger: "change" }],
+            validate: [{ mode: "min", type: "array", min: 2, message: "最小长度为2", trigger: "change" }],
+            // validate: [{ mode: "max", type: "array", max: 1, message: "最大长度为1", trigger: "change" }],
+            // validate: [{ mode: "len", type: "array", len: 1, message: "长度不为1", trigger: "change" }],
             options: [
                 {
                     label: "苹果",
@@ -189,6 +198,10 @@ export default function json() {
                 {
                     label: "香蕉",
                     value: "banana",
+                },
+                {
+                    label: "梨子",
+                    value: "pear",
                 },
             ],
             // request: {},
@@ -223,27 +236,29 @@ export default function json() {
             //     },
             // ],
         },
-        // {
-        //     title: "单选框",
-        //     type: "radio",
-        //     field: "radio-field",
-        //     value: "选项1",
-        //     options: [
-        //         {
-        //             label: "选项1",
-        //             slot(h) {
-        //                 return h("Icon", {
-        //                     props: {
-        //                         type: "logo-apple",
-        //                     },
-        //                 });
-        //             },
-        //         },
-        //         {
-        //             label: "选项2",
-        //         },
-        //     ],
-        // },
+        {
+            title: "单选框",
+            type: "radio",
+            field: "radio-field",
+            value: 1,
+            options: [
+                {
+                    label: "选项1",
+                    value: 1,
+                    slot(h) {
+                        return h("Icon", {
+                            props: {
+                                type: "logo-apple",
+                            },
+                        });
+                    },
+                },
+                {
+                    label: "选项2",
+                    value: 2,
+                },
+            ],
+        },
         // {
         //     title: "复选框",
         //     type: "checkbox",

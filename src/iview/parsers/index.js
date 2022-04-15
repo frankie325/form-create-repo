@@ -1,3 +1,4 @@
 import input from "./input";
+import _switch from "./switch";
 
-export default [input];
+export default [input, _switch];

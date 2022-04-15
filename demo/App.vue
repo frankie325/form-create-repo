@@ -1,5 +1,15 @@
 <template>
     <div style="height: 100%">
+        <!-- <Radio v-model="radioValue" :label="1" :trueValue="'一'">金斑蝶</Radio> -->
+        <!-- true-value和false-value只在单独使用时有效 -->
+        <RadioGroup v-model="radioValue">
+            <Radio :label="1" :true-value="'一'">金斑蝶</Radio>
+            <Radio :label="2">爪哇犀牛</Radio>
+            <Radio :label="3">印度黑羚</Radio>
+            <!-- <Radio label="金斑蝶"></Radio>
+            <Radio label="爪哇犀牛"></Radio>
+            <Radio label="印度黑羚"></Radio> -->
+        </RadioGroup>
         <FormCreate
             v-model="fApi"
             :rule="rule"
@@ -11,7 +21,6 @@
             @emit-event="emitEvent"
         >
         </FormCreate>
-        <!-- <Select :placement="placement"></Select> -->
         <Collapse>
             <Panel name="1">
                 字段操作
@@ -132,95 +141,12 @@ export default {
     watch: {},
     data() {
         return {
+            radioValue: "",
             // placement: "bottom-start",
             single: [],
             fApi: {},
             ceshi: { name: true },
-            rule: [
-                ...json(),
-                // "111",
-                // {
-                //     title: "姓名",
-                //     field: "name",
-                //     value: "",
-                //     type: "input",
-                //     // name: "自定义组件的字段名称",
-                //     attrs: {}, //与props一样，组件的props如果没有用到，将渲染到组件根标签
-                //     props: {
-                //         clearable: true,
-                //     }, //作为组件的props
-                //     domProps: {},
-                //     scopedSlots: {
-                //         ceshi() {},
-                //     },
-                //     // style:  "color:red" ,  //style三种形式
-                //     // style:  {color:"red"} ,
-                //     style: [{ color: "red" }],
-                //     // class: "div1",
-                //     // class: { div1: true }, //class三种形式
-                //     // class: [{ div1: true }, "div2", ["div3"]], //组合
-                //     validate: [{ required: true, message: "姓名不能为空", trigger: "change" }], //校验规则
-                //     children: [
-                //         {
-                //             type: "icon",
-                //             props: {
-                //                 type: "ios-checkmark",
-                //             },
-                //             slot: "append",
-                //         },
-                //     ],
-                //     wrap: {
-                //         labelWidth: 80,
-                //         // label: "姓名11",
-                //     }, //设置FormItem
-                //     options: [], //设置radio,select,checkbox等组件option选择项
-                //     // col: {},
-                //     control: [
-                //         {
-                //             handle: (val) => !!val,
-                //             append: "name",
-                //             rule: [
-                //                 // "info",
-                //                 {
-                //                     type: "input",
-                //                     field: "info",
-                //                     title: "差评原因",
-                //                     value: "default info",
-                //                 },
-                //             ],
-                //         },
-                //     ],
-                // },
-                // {
-                //     type: "row",
-                //     children: [
-                //         {
-                //             type: "col",
-                //             props: { span: 24 },
-                //             children: [
-                //                 {
-                //                     // show: true,
-                //                     title: "年龄1",
-                //                     type: "input",
-                //                     field: "age1",
-                //                     value: "age1",
-                //                     // props: {
-                //                     //     size: "large",
-                //                     // },
-                //                     validate: [{ required: true, message: "年龄1不能为空", trigger: "change" }], //校验规则
-                //                 },
-                //                 {
-                //                     title: "年龄2",
-                //                     type: "input",
-                //                     field: "age2",
-                //                     value: "age2",
-                //                     validate: [{ required: true, message: "年龄2不能为空", trigger: "change" }], //校验规则
-                //                 },
-                //             ],
-                //         },
-                //     ],
-                // },
-            ],
+            rule: [...json()],
             // 全局配置
             option: {
                 // iview的Form组件属性
