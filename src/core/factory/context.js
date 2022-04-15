@@ -35,6 +35,7 @@ export default function RuleContext(handle, rule) {
         defaultValue: deepCopy(rule.value),
         payload: {},
         computed: {},
+        request: [],
     });
     this.updateType();
     this.updateKey();

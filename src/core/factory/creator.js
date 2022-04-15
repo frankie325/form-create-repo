@@ -5,6 +5,8 @@ export function baseRule() {
         on: {},
         options: [],
         children: [],
+        emit: [],
+        request: [],
         hidden: false,
         show: true,
         value: undefined,

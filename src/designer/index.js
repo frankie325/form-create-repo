@@ -9,7 +9,7 @@ import Struct from "./components/Struct";
 
 FormCreate.register("_fc", {
     init(fc, rule) {
-        // 复制时更新rule.field
+        // rule.field重复时更新rule.field
         if (fc.repeat) {
             rule.field = unique();
         }

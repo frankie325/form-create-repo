@@ -221,6 +221,7 @@ export default function useRender(Render) {
             }
             ctx.parser.mounted(ctx);
             this.$handle.effect(ctx, "mounted");
+            this.$handle.runRequest(ctx);
         },
         onInput(ctx, value) {
             this.$handle.onInput(ctx, value);

@@ -2,6 +2,15 @@
     margin-bottom: 24px;
 }
 
-/* .ivu-form-item .form-create .ivu-form-item .ivu-form-item-content {
-    margin-left: auto !important;
-} */
+/* 修正嵌套子表单样式混乱问题 */
+.form-create .sub-form-create.ivu-form-label-left .ivu-form-item-label {
+    padding: 10px 12px 10px 0 !important;
+    float: left !important;
+    text-align: left !important;
+}
+
+.form-create .sub-form-create.ivu-form-label-right .ivu-form-item-label {
+    padding: 10px 12px 10px 0 !important;
+    float: left !important;
+    text-align: right !important;
+}

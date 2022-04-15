@@ -31,9 +31,16 @@ export default function $FormCreate(FormCreate) {
             extendOption: Boolean, //子表单为true
         },
         watch: {
+            // 只监听顶层rules的变化
+            rule(n) {
+                // 如果新rules在旧rules每一项都一样，则不用重新更新
+                if (n.length === this.renderRule.length && n.every((v) => this.renderRule.indexOf(v) > -1)) return;
+                this.formCreate.$handle.reloadRule(n);
+                this._renderRule();
+            },
+            // 当rule和value同时修改时，保证先触发rule的更新（监听顺序），重新reloadRule
             value: {
                 handler(n) {
-                    // debugger;
                     if (JSON.stringify(n) === this.updateValue) return;
                     this.$f.coverValue(n);
                 },
@@ -46,14 +53,6 @@ export default function $FormCreate(FormCreate) {
                     this.$f.refresh();
                 },
                 deep: true,
-            },
-            // 只监听顶层rules的变化
-            rule(n) {
-                // debugger;
-                // 如果新rules在旧rules每一项都一样，则不用重新更新
-                if (n.length === this.renderRule.length && n.every((v) => this.renderRule.indexOf(v) > -1)) return;
-                this.formCreate.$handle.reloadRule(n);
-                this._renderRule();
             },
         },
         data() {

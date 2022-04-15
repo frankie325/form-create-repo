@@ -15,6 +15,7 @@
     "dependencies": {
         "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
         "@vue/babel-preset-jsx": "^1.2.4",
+        "axios": "^0.26.1",
         "codemirror": "^5.65.2",
         "jsonlint-mod": "^1.7.6",
         "view-design": "^4.7.0",

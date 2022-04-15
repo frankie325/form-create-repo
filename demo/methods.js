@@ -108,22 +108,26 @@ export default function method() {
             //         },
             //     },
             // });
-            // this.fApi.updateRule("age1", {
+            // this.fApi.updateRule("input-field", {
             //     style: {
             //         border: "1px solid red",
             //     },
             //     props: {},
+            //     control: [],
+            //     emit: [
+            //         {
+            //             name: "on-change",
+            //             inject: "注入的参数1",
+            //         },
+            //     ],
             // });
-            this.fApi.updateRules({
-                age1: {
-                    hidden: true,
-                },
-                age2: {
-                    style: {
-                        border: "1px solid red",
-                    },
-                },
-            });
+            // this.fApi.updateRules({
+            //     "select-field": {
+            //         props: {
+            //             placement: "top",
+            //         },
+            //     },
+            // });
         },
         // 更新表单校验规则
         updateValidate() {
@@ -240,10 +244,45 @@ export default function method() {
         },
         // emit注入参数的事件
         emitChange(...args) {
-            // console.log("emitChange", args);
+            console.log("emitChange", args);
         },
         emitEvent(emitName, ...args) {
             console.log(emitName, args);
+        },
+        changeSelectOptions() {
+            this.rule[1].options = [
+                {
+                    label: "标签1",
+                    value: "1",
+                },
+                {
+                    label: "标签2",
+                    value: "2",
+                },
+            ];
+        },
+        changeRequest() {
+            this.rule[1].request = {
+                to: "options",
+                axios: {
+                    url: "/example",
+                    method: "get",
+                    params: {},
+                    data: {},
+                },
+                // to: "props.options",
+                parse: (res) => {
+                    // const a = "1";
+                    // a = 1;
+
+                    return res.data;
+                },
+                // 替换返回数据中指定的的字段
+                altKeys: {
+                    label: "name",
+                    value: "age",
+                },
+            };
         },
     };
 }

@@ -8,6 +8,8 @@ import Handle from "../handler";
 import { createManager } from "../factory/manager";
 import createNodeFactory from "../factory/node";
 import BaseParser from "../factory/parser";
+import createRequestInstance from "./request";
+
 let _vue = null;
 
 function _parseProp(name, id) {
@@ -46,6 +48,7 @@ export default function FormCreateFactory(config) {
         global: {},
         mounted: () => {},
         onSubmit: () => {},
+        axios: {},
     };
 
     // 注册自定义属性，以register({name:"str", components: "*", init(){},...})为例
@@ -156,6 +159,8 @@ export default function FormCreateFactory(config) {
         updateOptions(userOptions) {
             this.options = this.mergeOptions(this.options, userOptions); //用户传递的配置优先级大于顶层配置
             this.$handle.$manager.updateOptions(this.options); //iview包里的默认配置优先级最低
+            // 每个FormCreate注册一个请求实例
+            this.request = createRequestInstance(this.options.axios);
         },
         created() {
             this.$handle.init();
@@ -202,7 +207,7 @@ export default function FormCreateFactory(config) {
         // if (component.formCreateParser) parser(name, component.formCreateParser);
     }
 
-    // 注册来自iview包的
+    // 设置组件的别名
     function componentAlias(alias) {
         // 在CreateNode原型上生成创建表单表单控件VNode的原型方法
         CreateNode.use(alias);

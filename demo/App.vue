@@ -11,6 +11,7 @@
             @emit-event="emitEvent"
         >
         </FormCreate>
+        <!-- <Select :placement="placement"></Select> -->
         <Collapse>
             <Panel name="1">
                 字段操作
@@ -31,6 +32,8 @@
                     <Button type="primary" @click="addRule">新增规则</Button>
                     <Button type="primary" @click="getAllRule">获取所有表单组件规则</Button>
                     <Button type="primary" @click="updateRule">更新指定规则</Button>
+                    <Button type="primary" @click="changeSelectOptions">更新选择器选项</Button>
+                    <Button type="primary" @click="changeRequest">更新请求配置</Button>
                 </p>
             </Panel>
             <Panel name="3">
@@ -129,6 +132,7 @@ export default {
     watch: {},
     data() {
         return {
+            // placement: "bottom-start",
             single: [],
             fApi: {},
             ceshi: { name: true },
@@ -222,7 +226,7 @@ export default {
                 // iview的Form组件属性
                 form: {
                     inline: false,
-                    labelWidth: 125,
+                    labelWidth: 100,
                     labelPosition: "right",
                     disabled: false,
                     // clearable: true,
@@ -282,7 +286,7 @@ export default {
             // this.$set(this.ceshi, "name", false);  //没有绑定过观察者实例的属性，使用$set不会进行响应式处理，只起简单的赋值作用
             // this.ceshi.name = false;
             // this.fValue.age1 = 23;
-            this.fValue["input-field"] = 23;
+            // this.fValue["input-field"] = 23;
             // this.fValue = {
             //     name: "kfg22",
             //     age: "22222",
@@ -311,6 +315,9 @@ export default {
             // });
             // this.$set(this.rule[0].props, "size", "large");
             //  = "large";
+            // this.$set(this.rule[1].props, "placement", "top");
+            // this.rule[1].props.placement = "top";
+            // this.placement = "top";
         },
     },
     updated() {

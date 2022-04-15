@@ -57,25 +57,26 @@ export default function useContext(Handle) {
         watchCtx(ctx) {
             const vm = this.vm;
             // 下列属性不需要监听变化
-            const none = ["field", "value", "vm", "template", "name", "config", "control", "inject", "sync", "payload", "optionsTo", "update"];
+            // const none = ["field", "value", "vm", "template", "name", "config", "control", "inject", "sync", "payload", "optionsTo", "update"];
+            const none = ["field", "value", "vm", "template", "name", "config", "control", "inject", "update"];
 
             Object.keys(ctx.rule)
                 .filter((k) => k[0] !== "_" && none.indexOf(k) === -1)
                 .forEach((key) => {
-                    // debugger
-                    // if (key === "input-field") debugger;
                     ctx.watch.push(
                         vm.$watch(
                             () => ctx.rule[key],
                             (n, o) => {
-                                if (this.noWatchFn) return;
-                                // if (this.loading || this.noWatchFn || this.reloading) return;
+                                if (this.loading || this.noWatchFn || this.reloading) return;
                                 // debugger
                                 this.watching = true;
                                 if (["props", "on", "nativeOn"].indexOf(key) > -1) {
                                     this.parseInjectEvent(ctx.rule, n || {});
                                 } else if (["emit", "nativeEmit"].indexOf(key) > -1) {
                                     this.parseEmit(ctx, key === "emit");
+                                } else if (key === "request") {
+                                    this.parseRequest(ctx);
+                                    this.runRequest(ctx);
                                 } else if (key === "type") {
                                     ctx.updateType();
                                     this.bindParser(ctx);

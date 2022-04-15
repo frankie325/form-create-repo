@@ -1,12 +1,12 @@
 <template>
     <div class="fc-struct">
         <Button size="small" style="width: 100%" @click="showModal = true">{{ title }}</Button>
-        <Modal :width="700" class="fc-struct-modal" v-model="showModal" :title="title">
+        <Modal :width="700" class="fc-struct-modal" v-model="showModal" :title="title" @on-cancel="onCancel">
             <div ref="editor" v-if="showModal"></div>
             <div slot="footer">
-                <span style="color: red; float: left; text-align: left" v-if="err">输入内容格式有误{{ err !== true ? err : "" }}</span>
+                <span style="color: red; float: left; text-align: left" v-if="err">输入内容格式有误{{ err !== true ? `：${err}` : "" }}</span>
                 <Button type="primary" @click="onOk">确定</Button>
-                <Button>取消</Button>
+                <Button @click="onCancel">取消</Button>
             </div>
         </Modal>
     </div>
@@ -79,8 +79,8 @@ export default {
         onOk() {
             if (this.err) return;
             const str = this.editor.getValue();
-
             let val;
+
             try {
                 // 将JSON字符转换为js表达式
                 val = eval("(function(){return " + str + "})()");
@@ -89,8 +89,9 @@ export default {
                 return;
             }
 
-            if (this.validate && false === this.validate(val)) {
-                this.err = true;
+            let msg;
+            if (this.validate && (msg = this.validate(val))) {
+                this.err = msg;
                 return;
             }
 
@@ -98,6 +99,11 @@ export default {
             if (toJson(val, 2) !== this.oldVal) {
                 this.$emit("input", deepParseFn(val));
             }
+        },
+        onCancel() {
+            // this.$emit("input", deepParseFn(this.defaultValue));
+            this.err = null;
+            this.showModal = false;
         },
     },
 };

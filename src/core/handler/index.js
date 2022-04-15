@@ -9,6 +9,7 @@ import useRender from "./render";
 import useInject from "./inject";
 import useEffect from "./effect";
 import useLifecycle from "./lifecycle";
+import useRequest from "./request";
 
 export default function Handle(fc) {
     extend(this, {
@@ -87,3 +88,4 @@ useRender(Handle);
 useInject(Handle);
 useEffect(Handle);
 useLifecycle(Handle);
+useRequest(Handle);

@@ -38,6 +38,10 @@ export default function json() {
         //                         },
         //                     ],
         //                     option: {
+        //                         form: {
+        //                             labelPosition: "top",
+        //                             labelWidth: null,
+        //                         },
         //                         submitBtn: false,
         //                     },
         //                 },
@@ -48,7 +52,7 @@ export default function json() {
         //         ],
         //         option: {
         //             form: {
-        //                 labelPosition: "right",
+        //                 labelPosition: "left",
         //                 labelWidth: 100,
         //             },
         //             submitBtn: false,
@@ -99,12 +103,12 @@ export default function json() {
                 str: "我是自定义属性",
             },
             // emit: ["change"],
-            emit: [
-                {
-                    name: "on-change",
-                    inject: "注入的参数",
-                },
-            ],
+            // emit: [
+            //     {
+            //         name: "on-change",
+            //         inject: "注入的参数",
+            //     },
+            // ],
             // inject: true,
             // on: {
             //     "on-change": [
@@ -162,7 +166,9 @@ export default function json() {
             field: "select-field",
             value: [],
             props: {
-                multiple: true,
+                // multiple: true,
+                // transfer: true,
+                placement: "bottom-start",
             },
             validate: [{ mode: "min", required: true, type: "array", min: 1, message: "最少选中一个元素", trigger: "change" }],
             options: [
@@ -185,6 +191,28 @@ export default function json() {
                     value: "banana",
                 },
             ],
+            // request: {},
+            // request: {
+            //     to: "options",
+            //     axios: {
+            //         url: "/example",
+            //         method: "get",
+            //         params: {},
+            //         data: {},
+            //     },
+            //     // to: "props.options",
+            //     parse: (res) => {
+            //         // const a = "1";
+            //         // a = 1;
+
+            //         return res.data;
+            //     },
+            //     // 替换返回数据中指定的的字段
+            //     altKeys: {
+            //         label: "name",
+            //         value: "age",
+            //     },
+            // },
             // children: [
             //     {
             //         type: "icon",

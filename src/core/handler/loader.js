@@ -4,8 +4,10 @@ import { baseRule } from "../factory/creator";
 
 import { extend, deepCopy } from "@/utils";
 import is, { hasProperty } from "@/utils/type";
+import { $set } from "@/utils/modify";
 import { err } from "@/utils/console";
-import Vue from "vue";
+// import Vue from "vue";
+
 export default function useLoader(Handle) {
     extend(Handle.prototype, {
         nextRefresh(fn) {
@@ -147,6 +149,9 @@ export default function useLoader(Handle) {
                 }
                 // 处理rule.emit | rule.nativeEmit
                 [true, false].forEach((b) => this.parseEmit(ctx, b));
+
+                // 处理rule.request
+                this.parseRequest(ctx);
 
                 ctx.parent = parent;
                 ctx.root = rules;
@@ -351,12 +356,12 @@ function findCtrl(ctx, rule) {
         if (ctrl.children === rule) return ctrl;
     }
 }
-// 填充一些默认的属性
+// 填充一些属性默认值，并做响应式处理
 function fullRule(rule) {
     const def = baseRule();
 
     Object.keys(def).forEach((key) => {
-        if (!hasProperty(rule, key)) rule[key] = def[key];
+        if (!hasProperty(rule, key)) $set(rule, key, def[key]);
     });
 
     return rule;

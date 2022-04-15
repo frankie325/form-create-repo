@@ -81,6 +81,11 @@ export default {
                 value: "",
             },
             {
+                title: "是否禁用",
+                type: "switch",
+                field: "disabled",
+            },
+            {
                 title: "是否显示清空按钮",
                 type: "switch",
                 field: "clearable",
@@ -89,11 +94,6 @@ export default {
                 title: "是否显示边框",
                 type: "switch",
                 field: "border",
-            },
-            {
-                title: "是否禁用",
-                type: "switch",
-                field: "disabled",
             },
             {
                 title: "是否只读",

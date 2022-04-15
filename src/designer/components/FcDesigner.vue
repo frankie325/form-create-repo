@@ -126,13 +126,14 @@ export default {
                 value: {
                     form: {
                         name: "",
-                        inline: false,
+                        // inline: false,
                         size: "default",
                         labelWidth: 120,
                         labelPosition: "right",
                         labelColon: false,
                         showMessage: true,
                         hideRequiredMark: false,
+                        disabled: false,
                     },
                     submitBtn: false,
                 },
@@ -501,10 +502,16 @@ export default {
             this.activeRule = rule;
             this.showBaseRule = !!rule.field;
 
+            let propsFormData = { ...rule.props };
+            ["options", "request"].forEach((key) => {
+                propsFormData[key] = rule[key];
+            });
+            // debugger
             this.propsForm.rule = rule.config.config.props();
-            this.propsForm.value = {
-                ...rule.props,
-            };
+            // this.$nextTick(() => {
+                this.propsForm.value = propsFormData;
+            // });
+
             if (this.showBaseRule) {
                 this.baseForm.value = {
                     field: rule.field,
@@ -523,12 +530,14 @@ export default {
         },
         baseChange(field, value, origin, api, flag) {
             if (!flag && this.activeRule) {
+                // if(field)
                 this.$set(this.activeRule, field, value);
             }
         },
         propsChange(field, value, origin, api, flag) {
             if (!flag && this.activeRule) {
-                if (false) {
+                if (field === "request") {
+                    this.$set(this.activeRule, field, value);
                 } else {
                     this.$set(this.activeRule.props, field, value);
                 }

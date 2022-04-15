@@ -53,6 +53,12 @@ export default function form() {
                 },
             ],
         },
+        // {
+        //     title: "是否开启行内表单模式",
+        //     type: "switch",
+        //     field: "inline",
+        //     value: false,
+        // },
         {
             title: "是否在标签后添加冒号",
             type: "switch",
@@ -70,6 +76,12 @@ export default function form() {
             type: "switch",
             field: "showMessage",
             value: true,
+        },
+        {
+            title: "是否禁用所有组件",
+            type: "switch",
+            field: "disabled",
+            value: false,
         },
     ];
 }

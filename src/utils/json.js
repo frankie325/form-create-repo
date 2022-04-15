@@ -4,6 +4,8 @@ import { err } from "./console";
 // 匹配普通函数或者箭头函数
 const fnExpReg = /^([\w$_]+|\([^)]*?\))\s*=>|^function(?:\s+[\w$]+)?\s*\(/;
 
+const omitFn = /^[\w$_]+\s*\(.*\)\s*\{/;
+
 // 将rules规则转化为JSON
 export function toJson(obj, space) {
     return JSON.stringify(
@@ -19,8 +21,15 @@ export function toJson(obj, space) {
                 return val;
             }
 
-            // 将函数转为字符
-            return "" + val;
+            let strFn = "" + val;
+            /* 
+             { 
+                 example(){}
+             }
+             处理简写形式的函数，直接转为字符会获得 "example(){}" 
+            */
+            if (omitFn.test(strFn)) strFn = "function " + strFn;
+            return strFn;
         },
         space
     );

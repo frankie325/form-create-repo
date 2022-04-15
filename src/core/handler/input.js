@@ -80,7 +80,7 @@ export default function useInput(Handle) {
             return JSON.stringify(ctx.rule.value, strFn) !== JSON.stringify(value, strFn);
         },
         /*
-            表单控件value的初始值
+            设置表单组件value的初始值
             通过在form-create组件上绑定的value.sync优先级更高
             option.formData次之
             rule.value最低

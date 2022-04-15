@@ -27,6 +27,11 @@ Vue.use(FormCreate, {
         //     // },
         // },
     },
+    axios: {
+        baseURL: "http://localhost:3000/",
+        timeout: 10000,
+        headers: [],
+    },
     // submitBtn: true,
     // resetBtn: true,
 });
