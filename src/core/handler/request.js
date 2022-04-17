@@ -7,10 +7,10 @@ function deepSet(data, path, val) {
         to;
     (path || "").split(".").forEach((key) => {
         if (to) {
-            if (!_data[key] || typeof _data[key] != "object") {
-                _data[key] = {};
+            if (!_data[to] || typeof _data[to] != "object") {
+                _data[to] = {};
             }
-            _data = _data[key];
+            _data = _data[to];
         }
         to = key;
     });
@@ -36,7 +36,6 @@ export default function useRequest(Handle) {
                     let res;
                     try {
                         const data = await this.fc.request(axios);
-
                         res = r.parse ? r.parse(data) : data;
                         // 替换数据中的字段
                         if (is.Object(altKeys) && Object.keys(altKeys).length !== 0) {
@@ -65,7 +64,7 @@ export default function useRequest(Handle) {
             const request = ctx.request;
             request.forEach(async (r) => {
                 const data = await r();
-                deepSet(ctx.rule, data.to, data.response);
+                data.response && deepSet(ctx.rule, data.to, data.response);
             });
         },
     });

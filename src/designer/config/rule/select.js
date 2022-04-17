@@ -14,7 +14,7 @@ export default {
             title: label,
             field: unique(),
             props: {
-                // transfer: true,
+                // transfer: false,
                 placeholder: "请选择...",
                 notFoundText: "无匹配数据",
                 placement: "bottom-start",
@@ -46,6 +46,16 @@ export default {
                 },
             },
             {
+                title: "是否禁用",
+                type: "switch",
+                field: "disabled",
+            },
+            {
+                title: "占位文本",
+                type: "input",
+                field: "placeholder",
+            },
+            {
                 title: "是否支持多选",
                 type: "switch",
                 field: "multiple",
@@ -62,11 +72,6 @@ export default {
                         ],
                     },
                 ],
-            },
-            {
-                title: "是否禁用",
-                type: "switch",
-                field: "disabled",
             },
             {
                 title: "是否显示清空按钮",

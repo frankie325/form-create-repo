@@ -55,7 +55,6 @@ export default {
     position: relative;
     padding: 2px;
     overflow: hidden;
-    contain: layout;
     /* word-wrap: break-word;
     word-break: break-all; */
 

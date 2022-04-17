@@ -13,7 +13,6 @@ export default {
             title: label,
             field: unique(),
             props: {
-                transfer: true,
                 editable: true,
                 hue: true,
                 recommend: true,

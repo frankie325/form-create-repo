@@ -1,5 +1,5 @@
 import { unique } from "@/utils";
-
+import { is } from "@/utils";
 const label = "滑块";
 const name = "slider";
 
@@ -12,7 +12,13 @@ export default {
             type: name,
             title: label,
             field: unique(),
-            props: {},
+            value: 0,
+            props: {
+                min: 0,
+                max: 100,
+                step: 1,
+                activeChange: true,
+            },
         };
     },
     props() {
@@ -23,52 +29,83 @@ export default {
                 field: "disabled",
             },
             {
-                title: "是否可以输入色值",
-                type: "switch",
-                field: "editable",
+                title: "最小值",
+                type: "inputNumber",
+                field: "min",
             },
             {
-                title: "是否支持透明度选择",
-                type: "switch",
-                field: "alpha",
+                title: "最大值",
+                type: "inputNumber",
+                field: "max",
             },
             {
-                title: "是否支持色彩选择",
-                type: "switch",
-                field: "hue",
+                title: "步长，建议能被（max - min）整除",
+                type: "inputNumber",
+                field: "step",
             },
             {
-                title: "是否显示推荐的颜色预设",
+                title: "是否开启双滑块模式",
                 type: "switch",
-                field: "recommend",
-            },
-            {
-                title: "是否开启 capture 模式",
-                type: "switch",
-                field: "capture",
-            },
-            {
-                title: "颜色格式",
-                type: "select",
-                field: "format",
-                options: [
+                field: "range",
+                control: [
                     {
-                        label: "hsl",
-                        value: "hsl",
-                    },
-                    {
-                        label: "hsv",
-                        value: "hsv",
-                    },
-                    {
-                        label: "hex",
-                        value: "hex",
-                    },
-                    {
-                        label: "rgb",
-                        value: "rgb",
+                        handle: (v) => !v,
+                        rule: [
+                            {
+                                title: "是否显示数字输入框",
+                                type: "switch",
+                                field: "showInput",
+                                control: [
+                                    {
+                                        value: true,
+                                        rule: [
+                                            {
+                                                title: "数字输入框的尺寸",
+                                                type: "select",
+                                                field: "inputSize",
+                                                options: [
+                                                    {
+                                                        label: "large",
+                                                        value: "large",
+                                                    },
+                                                    {
+                                                        label: "small",
+                                                        value: "small",
+                                                    },
+                                                    {
+                                                        label: "default",
+                                                        value: "default",
+                                                    },
+                                                ],
+                                            },
+                                            {
+                                                title: "是否实时响应数据",
+                                                type: "switch",
+                                                field: "activeChange",
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
                     },
                 ],
+            },
+            {
+                title: "是否显示间断点，建议步长不密集时使用",
+                type: "switch",
+                field: "showStops",
+            },
+            {
+                title: "设置标记",
+                type: "struct",
+                field: "marks",
+                props: {
+                    defaultValue: {},
+                    validate(val) {
+                        if (!is.Object(val)) return "标记数据必须为对象";
+                    },
+                },
             },
         ];
     },

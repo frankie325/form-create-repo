@@ -10,6 +10,7 @@ export default function useInput(Handle) {
             }
         },
         getValue(ctx) {
+            // 初始时已经经过了toFormValue的转化，这里又会经toValue在转化一次
             if (is.Undef(ctx.cacheValue)) {
                 ctx.cacheValue = ctx.parser.toValue(this.getFormData(ctx), ctx);
             }
@@ -27,9 +28,8 @@ export default function useInput(Handle) {
             this.vm.$emit("change", ctx.field, value, ctx.origin, this.api, setFlag);
             this.effect(ctx, "value");
         },
+        // v-model绑定时的回调
         onInput(ctx, value) {
-            // debugger
-
             let val;
             if ((ctx.input && this.isQuote(ctx, (val = ctx.parser.toValue(value, ctx)))) || this.isChange(ctx, value)) {
                 this.setValue(ctx, val, value);
@@ -42,11 +42,6 @@ export default function useInput(Handle) {
         setFormData(ctx, formValue) {
             $set(this.formData, ctx.id, formValue);
         },
-        /*
-            进行拦截，代理到this.formData
-            所以不论是对rule.value，form-create上v-model绑定的值修改了
-            都是对this.formData修改，触发form-create重新render
-        */
         valueHandle(ctx) {
             return {
                 enumerable: true,
@@ -134,7 +129,7 @@ export default function useInput(Handle) {
             if (this.deferSyncFn) {
                 return (this.deferSyncFn.sync = true);
             }
-            this.vm._updateValue({ ...this.form }); //浅拷贝会丢失get，set方法，还需要在form-create上:value.sync的变化
+            this.vm._updateValue({ ...this.form });
             // this.vm._updateValue(this.form);
         },
         // 当递归调用传入的方法时，等所有递归结束后再执行syncValue方法

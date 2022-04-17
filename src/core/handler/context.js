@@ -68,10 +68,13 @@ export default function useContext(Handle) {
                             () => ctx.rule[key],
                             (n, o) => {
                                 if (this.loading || this.noWatchFn || this.reloading) return;
-                                // debugger
                                 this.watching = true;
                                 if (["props", "on", "nativeOn"].indexOf(key) > -1) {
                                     this.parseInjectEvent(ctx.rule, n || {});
+                                    // 比如当slider的range属性变化时，需要重新设置value为数组   `
+                                    if (key === "props" && ctx.input) {
+                                        this.setFormData(ctx, ctx.parser.toFormValue(ctx.rule.value, ctx));
+                                    }
                                 } else if (["emit", "nativeEmit"].indexOf(key) > -1) {
                                     this.parseEmit(ctx, key === "emit");
                                 } else if (key === "request") {

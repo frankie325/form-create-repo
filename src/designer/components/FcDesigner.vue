@@ -51,6 +51,7 @@
                         :option="propsForm.option"
                         :value.sync="propsForm.value"
                         @change="propsChange"
+                        @removeField="propsRemoveFiled"
                     ></FormCreate>
                     <Divider v-if="showBaseRule" size="small">校验规则</Divider>
                     <FormCreate
@@ -499,14 +500,16 @@ export default {
         toolActive(rule) {
             this.activeTab = "props";
             this.activeProps = true;
+            // this.prevActiveRule = this.activeRule || {};
             this.activeRule = rule;
             this.showBaseRule = !!rule.field;
 
             let propsFormData = { ...rule.props };
             ["options", "request"].forEach((key) => {
-                propsFormData[key] = rule[key];
+                if (rule[key] && rule[key].length) {
+                    propsFormData[key] = rule[key];
+                }
             });
-
             this.propsForm.rule = rule.config.config.props();
             this.propsForm.value = propsFormData;
 
@@ -540,6 +543,15 @@ export default {
                     this.$set(this.activeRule.props, field, value);
                 }
             }
+        },
+        propsRemoveFiled(field, rule, api) {
+            // debugger
+            // console.log(field, rule, api);
+            // if (["options", "request"].indexOf(field) > -1) {
+            //     this.$delete(this.activeRule, field);
+            // } else if (this.activeRule) {
+            //     this.$delete(this.activeRule.props, field);
+            // }
         },
         validateChange(field, value, origin, api, flag) {
             if (!flag && this.activeRule) {

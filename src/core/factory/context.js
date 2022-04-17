@@ -17,7 +17,7 @@ export default function RuleContext(handle, rule) {
         wrapRef: id + "fi", //FormItem的ref
         field: rule.field || undefined,
         rule,
-        prop: undefined,
+        prop: { ...rule },
         origin: rule.__origin__ || rule,
         name: rule.name,
         input: !!rule.field, //是否存在rule.field字段

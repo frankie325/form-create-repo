@@ -1,15 +1,13 @@
 <template>
     <div style="height: 100%">
+        <!-- <Slider range v-model="slider"></Slider> -->
         <!-- <Radio v-model="radioValue" :label="1" :trueValue="'一'">金斑蝶</Radio> -->
         <!-- true-value和false-value只在单独使用时有效 -->
-        <RadioGroup v-model="radioValue">
+        <!-- <RadioGroup v-model="radioValue">
             <Radio :label="1" :true-value="'一'">金斑蝶</Radio>
             <Radio :label="2">爪哇犀牛</Radio>
             <Radio :label="3">印度黑羚</Radio>
-            <!-- <Radio label="金斑蝶"></Radio>
-            <Radio label="爪哇犀牛"></Radio>
-            <Radio label="印度黑羚"></Radio> -->
-        </RadioGroup>
+        </RadioGroup> -->
         <FormCreate
             v-model="fApi"
             :rule="rule"
@@ -141,6 +139,7 @@ export default {
     watch: {},
     data() {
         return {
+            slider: [0, 50],
             radioValue: "",
             // placement: "bottom-start",
             single: [],
