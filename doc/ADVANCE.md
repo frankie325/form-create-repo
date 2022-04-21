@@ -3,6 +3,7 @@
   - [对象组件（子表单）](#对象组件子表单)
   - [数组组件](#数组组件)
   - [自定义组件](#自定义组件)
+  - [新增属性](#新增属性)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -161,3 +162,28 @@ export default {
 | onBeforeRemove |     删除时的前置回调，返回 false 取消操作      |    Boolean    |   -    |
 
 ## 自定义组件
+
+## 新增属性
+
+有些组件，新增了一些属性，方便表单设计器的使用，配置时也可以使用
+
+**switch**
+
+-   open：打开时的文字
+-   close：关闭是的文字
+
+**panel**
+
+-   headContent：面板头部内容
+
+**divider**
+
+-   title：分割线标题，会覆盖 rule.children
+
+**button**
+
+-   content：按钮的内容，会覆盖 rule.children
+
+**alert**
+
+-   content：提示内容，会覆盖 rule.children

@@ -6,8 +6,8 @@ export default {
     mergeProp(ctx) {
         const props = ctx.prop.props || {};
         const scopedSlots = ctx.prop.scopedSlots || {};
-        if (props.open) scopedSlots.open = () => props.open;
-        if (props.close) scopedSlots.close = () => props.close;
+        if (!scopedSlots.open && props.open) scopedSlots.open = () => props.open;
+        if (!scopedSlots.close && props.close) scopedSlots.close = () => props.close;
         ctx.prop.scopedSlots = scopedSlots;
     },
 };

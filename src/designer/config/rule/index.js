@@ -1,18 +1,27 @@
-import input from "./input";
-import select from "./select";
-import radio from "./radio";
-import checkbox from "./checkbox";
-import _switch from "./switch"; //switch是关键字，直接使用会报错
-import slider from "./slider";
-import datePicker from "./datePicker";
-import timePicker from "./timePicker";
-import cascader from "./cascader";
-import inputNumber from "./inputNumber";
-import rate from "./rate";
-import colorPicker from "./colorPicker";
-import row from "./row";
-import col from "./col";
-import divider from "./divider";
+import input from "./base/input";
+import select from "./base/select";
+import radio from "./base/radio";
+import checkbox from "./base/checkbox";
+import _switch from "./base/switch"; //switch是关键字，直接使用会报错
+import slider from "./base/slider";
+import datePicker from "./base/datePicker";
+import timePicker from "./base/timePicker";
+import cascader from "./base/cascader";
+import inputNumber from "./base/inputNumber";
+import rate from "./base/rate";
+import colorPicker from "./base/colorPicker";
+
+import row from "./layout/row";
+import col from "./layout/col";
+import tabs from "./layout/tabs";
+import tabPane from "./layout/tabPane";
+import collapse from "./layout/collapse";
+import panel from "./layout/panel";
+import divider from "./layout/divider";
+import space from "./layout/space";
+
+import button from "./aide/button";
+import alert from "./aide/alert";
 
 const ruleList = {
     [input.name]: input,
@@ -29,7 +38,14 @@ const ruleList = {
     [colorPicker.name]: colorPicker,
     [row.name]: row,
     [col.name]: col,
+    [tabs.name]: tabs,
+    [tabPane.name]: tabPane,
+    [collapse.name]: collapse,
+    [panel.name]: panel,
     [divider.name]: divider,
+    [space.name]: space,
+    [button.name]: button,
+    [alert.name]: alert,
 };
 
 export default ruleList;

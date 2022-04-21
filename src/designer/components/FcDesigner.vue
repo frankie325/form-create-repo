@@ -7,7 +7,8 @@
                     <draggable :list="item.list" :group="{ name: 'default', pull: 'clone', put: false }" :sort="false">
                         <div class="fc-group-item" v-for="(data, index) in item.list" :key="index">
                             <div class="fc-group-item-icon">
-                                <Icon :type="data.icon" size="20" />
+                                <Icon v-if="!data.customIcon" :type="data.icon" size="20" />
+                                <Icon v-else :custom="`iconfont ${data.icon}`" size="20" />
                             </div>
                             <div class="fc-group-item-name">{{ data.label }}</div>
                         </div>
@@ -229,6 +230,7 @@ export default {
 
                 if (rule.effect) {
                     delete rule.effect._fc;
+                    delete rule.effect._tabPane;
                 }
 
                 if (rule._control) {
@@ -407,7 +409,7 @@ export default {
             }
 
             if (config.children && !_rule) {
-                // 导入JSON时，row不需要进入该条件
+                // !_rule表示导入JSON时，row不需要进入该条件
                 const child = this.makeRule(ruleList[config.children]);
                 (drag || rule).children.push(child);
             }
@@ -420,6 +422,7 @@ export default {
                             dragBtn: config.dragBtn !== false,
                             children: config.children,
                         },
+                        slot: config.slot,
                         inject: true,
                         on: {
                             delete: ({ self }) => {
@@ -440,6 +443,7 @@ export default {
                             // },
                             copy: ({ self }) => {
                                 const top = this.getParent(self);
+
                                 top.root.children.splice(top.root.children.indexOf(top.parent) + 1, 0, deepCopy(top.parent));
                             },
                             active: ({ self }) => {
@@ -468,7 +472,7 @@ export default {
                             top.root.children.splice(top.root.children.indexOf(top.parent) + 1, 0, this.makeRule(self.children[0].config.config));
                         },
                         addChild: ({ self }) => {
-                            console.log(self);
+                            // console.log(self);
                             const config = self.children[0].config.config;
                             const item = ruleList[config.children];
                             if (!item) return;
@@ -503,10 +507,11 @@ export default {
             // this.prevActiveRule = this.activeRule || {};
             this.activeRule = rule;
             this.showBaseRule = !!rule.field;
+            // this.propsForm.api.activeRule = rule;
 
             let propsFormData = { ...rule.props };
-            ["options", "request"].forEach((key) => {
-                if (rule[key] && rule[key].length) {
+            ["style", "options", "request"].forEach((key) => {
+                if (rule[key] && Object.keys(rule[key]).length) {
                     propsFormData[key] = rule[key];
                 }
             });
@@ -537,7 +542,7 @@ export default {
         },
         propsChange(field, value, origin, api, flag) {
             if (!flag && this.activeRule) {
-                if (["options", "request"].indexOf(field) > -1) {
+                if (["style", "options", "request"].indexOf(field) > -1) {
                     this.$set(this.activeRule, field, value);
                 } else {
                     this.$set(this.activeRule.props, field, value);

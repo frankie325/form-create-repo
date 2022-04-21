@@ -1,5 +1,5 @@
 import { unique } from "@/utils";
-import { options, request } from "../default";
+import { options, request } from "../../default";
 
 const label = "多选框";
 const name = "checkbox";

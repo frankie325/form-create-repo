@@ -32,12 +32,10 @@ export default function form() {
             type: "inputNumber",
             field: "labelWidth",
             value: 0,
-            // style: {
-            //     width: "100%",
-            // },
-            // props: {
-            //     formatter: (value) => `${value}px`,
-            // },
+            props: {
+                parser: (value) => value.replace("px", ""),
+                formatter: (value) => `${value}px`,
+            },
         },
         {
             title: "标签位置",

@@ -4,7 +4,6 @@ import alias from "./alias";
 import parsers from "../parsers";
 import extendApi from "./api";
 import components from "../components";
-import "../style/index.css";
 
 function install(create) {
     create.componentAlias(alias);

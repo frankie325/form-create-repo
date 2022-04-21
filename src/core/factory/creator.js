@@ -7,6 +7,7 @@ export function baseRule() {
         children: [],
         emit: [],
         request: [],
+        scopedSlots: {},
         hidden: false,
         show: true,
         value: undefined,

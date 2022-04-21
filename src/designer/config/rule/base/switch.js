@@ -13,11 +13,6 @@ export default {
             title: label,
             field: unique(),
             props: {},
-            // scopedSlots: {
-            //     open() {
-            //         return "开"
-            //     },
-            // },
         };
     },
     props() {

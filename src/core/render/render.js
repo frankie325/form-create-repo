@@ -116,7 +116,6 @@ export default function useRender(Render) {
             return this.getCache(ctx);
         },
         injectProp(ctx) {
-
             // 这里对ctxInject操作，会导致form-create执行完render，再次执行render
             if (!this.vm.ctxInject[ctx.id]) {
                 $set(this.vm.ctxInject, ctx.id, {
@@ -224,6 +223,10 @@ export default function useRender(Render) {
             this.$handle.effect(ctx, "mounted");
             this.$handle.runRequest(ctx);
         },
+        // onUpdated(ctx) {
+        //     this.$handle.effect(ctx, "updated");
+        //     console.log(ctx)
+        // },
         onInput(ctx, value) {
             this.$handle.onInput(ctx, value);
         },
@@ -242,6 +245,9 @@ export default function useRender(Render) {
                         "hook:mounted": () => {
                             this.onMounted(ctx);
                         },
+                        // "hook:updated": () => {
+                        //     this.onUpdated(ctx);
+                        // },
                     },
                 },
             ];

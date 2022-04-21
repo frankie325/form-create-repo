@@ -127,6 +127,7 @@ export default function useContext(Handle) {
         },
         rmCtx(ctx) {
             if (ctx.deleted) return;
+            // this.effect(ctx, "beforeDeleted");
             const { id, field, input, name } = ctx;
 
             // 重新定义value，不再代理到formData，因为在下面已经删除了

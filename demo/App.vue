@@ -8,6 +8,9 @@
             <Radio :label="2">爪哇犀牛</Radio>
             <Radio :label="3">印度黑羚</Radio>
         </RadioGroup> -->
+        <!-- <Tabs value="name1">
+            <TabPane :label="item.name" :name="item.id" :index="index" v-for="(item, index) in tabs" :key="item.id">{{ item.name }}</TabPane>
+        </Tabs> -->
         <FormCreate
             v-model="fApi"
             :rule="rule"
@@ -139,6 +142,16 @@ export default {
     watch: {},
     data() {
         return {
+            tabs: [
+                {
+                    name: "标签1",
+                    id: "1",
+                },
+                {
+                    name: "标签2",
+                    id: "2",
+                },
+            ],
             slider: [0, 50],
             radioValue: "",
             // placement: "bottom-start",
@@ -243,6 +256,10 @@ export default {
             // this.$set(this.rule[1].props, "placement", "top");
             // this.rule[1].props.placement = "top";
             // this.placement = "top";
+            this.tabs.splice(1, 0, {
+                name: "标签3",
+                id: "3",
+            });
         },
     },
     updated() {

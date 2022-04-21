@@ -1,5 +1,5 @@
 import { unique } from "@/utils";
-import { options, request } from "../default";
+import { options, request } from "../../default";
 
 const label = "选择器";
 const name = "select";

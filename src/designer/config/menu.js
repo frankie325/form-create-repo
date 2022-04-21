@@ -1,34 +1,46 @@
-import input from "./rule/input";
-import select from "./rule/select";
-import radio from "./rule/radio";
-import checkbox from "./rule/checkbox";
-import _switch from "./rule/switch";
-import slider from "./rule/slider";
-import datePicker from "./rule/datePicker";
-import timePicker from "./rule/timePicker";
-import cascader from "./rule/cascader";
-import inputNumber from "./rule/inputNumber";
-import rate from "./rule/rate";
-import colorPicker from "./rule/colorPicker";
+import input from "./rule/base/input";
+import select from "./rule/base/select";
+import radio from "./rule/base/radio";
+import checkbox from "./rule/base/checkbox";
+import _switch from "./rule/base/switch";
+import slider from "./rule/base/slider";
+import datePicker from "./rule/base/datePicker";
+import timePicker from "./rule/base/timePicker";
+import cascader from "./rule/base/cascader";
+import inputNumber from "./rule/base/inputNumber";
+import rate from "./rule/base/rate";
+import colorPicker from "./rule/base/colorPicker";
 
-import row from "./rule/row";
-import divider from "./rule/divider";
+import row from "./rule/layout/row";
+import tabs from "./rule/layout/tabs";
+import collapse from "./rule/layout/collapse";
+import divider from "./rule/layout/divider";
+import space from "./rule/layout/space";
+
+import button from "./rule/aide/button";
+import alert from "./rule/aide/alert";
+
 export default function createMenu() {
     return [
         {
             name: "main",
-            title: "表单组件",
+            title: "基础组件",
             list: [input, select, radio, checkbox, _switch, slider, datePicker, timePicker, cascader, inputNumber, rate, colorPicker],
         },
         {
-            name: "aide",
-            title: "辅助组件",
+            name: "custom",
+            title: "自定义组件",
             list: [],
         },
         {
             name: "layout",
             title: "布局组件",
-            list: [row, divider],
+            list: [row, tabs, collapse, divider, space],
+        },
+        {
+            name: "aide",
+            title: "辅助组件",
+            list: [button, alert],
         },
     ];
 }

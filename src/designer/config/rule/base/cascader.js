@@ -1,11 +1,12 @@
 import { unique } from "@/utils";
-import { cascaderData, request } from "../default";
+import { cascaderData, request } from "../../default";
 
 const label = "级联选择";
 const name = "cascader";
 
 export default {
-    icon: "ios-list-box",
+    customIcon: true,
+    icon: "icon-cascader",
     label,
     name,
     rule() {

@@ -102,6 +102,9 @@ export default function json() {
             effect: {
                 str: "我是自定义属性",
             },
+            style: {
+                height: "100px",
+            },
             // emit: ["change"],
             // emit: [
             //     {
