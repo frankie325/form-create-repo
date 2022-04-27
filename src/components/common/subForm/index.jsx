@@ -84,9 +84,9 @@ export default {
         return (
             <Type
                 on={{
-                    "update:value": this.formData,
+                    input: this.formData,
                     "emit-event": this.emitEvent,
-                    input: this.add$f,
+                    "update:api": this.add$f,
                 }}
                 rule={rule}
                 option={option}

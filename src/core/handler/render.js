@@ -1,4 +1,4 @@
-import { extend } from "@/utils";
+import { extend } from "@form-create/utils";
 
 export default function useRender(Handle) {
     extend(Handle.prototype, {

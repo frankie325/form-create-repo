@@ -1,6 +1,6 @@
-import { unique } from "@/utils";
-import { $set } from "@/utils/modify";
-import FormCreate from "@/iview";
+import { unique } from "@form-create/utils";
+import { $set } from "@form-create/utils/modify";
+import FormCreate from "@form-create/iview";
 import FcDesigner from "./components/FcDesigner";
 import draggable from "vuedraggable";
 import DragBox from "./components/DragBox";

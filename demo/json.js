@@ -92,7 +92,7 @@ export default function json() {
         // },
         {
             title: "输入框",
-            type: "input",
+            type: "Input",
             field: "input-field",
             value: "",
             className: "input-wrap",
@@ -148,15 +148,15 @@ export default function json() {
             // validate: [{ mode: "min", required: true, type: "string", min: 10, message: "最小长度为10", trigger: "change" }],
             // validate: [{ mode: "max", type: "string", max: 10, message: "最大长度为10", trigger: "change" }],
             // validate: [{ mode: "len", type: "string", len: 10, message: "长度为10", trigger: "change" }],
-            // children: [
-            //     {
-            //         type: "icon",
-            //         props: {
-            //             type: "ios-checkmark",
-            //         },
-            //         slot: "prefix",
-            //     },
-            // ],
+            children: [
+                {
+                    type: "icon",
+                    props: {
+                        type: "ios-checkmark",
+                    },
+                    slot: "prefix",
+                },
+            ],
             control: [
                 {
                     handle: (val) => val == 1,

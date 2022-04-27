@@ -1,7 +1,7 @@
-import { extend, toArray } from "@/utils";
-import is, { hasProperty } from "@/utils/type";
+import { extend, toArray } from "@form-create/utils";
+import is, { hasProperty } from "@form-create/utils/type";
 import { invoke, parseValidate } from "../frame/utils";
-import { $set } from "@/utils/modify";
+import { $set } from "@form-create/utils/modify";
 export default function useInput(Handle) {
     extend(Handle.prototype, {
         addSubForm(ctx, subForm) {
@@ -17,7 +17,6 @@ export default function useInput(Handle) {
             return ctx.cacheValue;
         },
         setValue(ctx, value, formValue, setFlag) {
-            console.log("value值更新了", this);
             if (ctx.deleted) return;
             ctx.cacheValue = value;
             this.changeStatus = true;

@@ -1,7 +1,7 @@
 import { byCtx, mergeRule } from "./utils";
-import { extend, deepCopy } from "@/utils";
-import is, { hasProperty } from "@/utils/type";
-import { $set } from "@/utils/modify";
+import { extend, deepCopy } from "@form-create/utils";
+import is, { hasProperty } from "@form-create/utils/type";
+import { $set } from "@form-create/utils/modify";
 import { invoke } from "./utils";
 // 核心api
 export default function Api(h) {

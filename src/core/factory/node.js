@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { extend, toLine, is } from "@/utils";
+import { extend, toLine, is } from "@form-create/utils";
 
 function parseProp(prop) {
     if (is.String(prop)) return { domProps: { innerHTML: prop } };

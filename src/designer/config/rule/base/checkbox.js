@@ -1,4 +1,4 @@
-import { unique } from "@/utils";
+import { unique } from "@form-create/utils";
 import { options, request } from "../../default";
 
 const label = "多选框";

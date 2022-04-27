@@ -1,3 +1,3 @@
-import FormCreateFactory from "@/core/frame";
+import FormCreateFactory from "@form-create/core/frame";
 
 export default FormCreateFactory;

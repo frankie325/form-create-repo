@@ -1,4 +1,4 @@
-import { unique } from "@/utils";
+import { unique } from "@form-create/utils";
 import { cascaderData, request } from "../../default";
 
 const label = "级联选择";

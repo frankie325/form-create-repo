@@ -1,5 +1,5 @@
 import Api from "../frame/api";
-import { extend } from "@/utils";
+import { extend } from "@form-create/utils";
 import { funcProxy } from "../frame/utils";
 import Render from "../render";
 import useLoader from "./loader";

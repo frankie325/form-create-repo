@@ -1,4 +1,4 @@
-import { unique } from "@/utils";
+import { unique } from "@form-create/utils";
 
 const label = "输入框";
 const name = "input";

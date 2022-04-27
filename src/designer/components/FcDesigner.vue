@@ -25,32 +25,32 @@
             </div>
             <div class="fc-m-drag-wrap">
                 <div class="fc-m-drag">
-                    <FormCreate :rule="dragForm.rule" v-model="dragForm.api" :option="form.value"></FormCreate>
+                    <FormCreate :rule="dragForm.rule" :api.sync="dragForm.api" :option="form.value"></FormCreate>
                 </div>
             </div>
         </Content>
         <Sider :width="320" class="fc-side-r" hide-trigger>
             <Tabs v-model="activeTab">
                 <TabPane label="表单配置" name="form">
-                    <FormCreate :rule="form.rule" :option="form.option" :value.sync="form.value.form"></FormCreate>
+                    <FormCreate :rule="form.rule" :option="form.option" v-model="form.value.form"></FormCreate>
                 </TabPane>
                 <TabPane label="组件配置" name="props">
                     <Divider v-if="showBaseRule" size="small">基础配置</Divider>
                     <FormCreate
                         v-show="showBaseRule"
                         :rule="baseForm.rule"
-                        v-model="baseForm.api"
+                        :api.sync="baseForm.api"
                         :option="baseForm.option"
-                        :value.sync="baseForm.value"
+                        v-model="baseForm.value"
                         @change="baseChange"
                     ></FormCreate>
                     <Divider v-if="activeProps" size="small">属性配置</Divider>
                     <FormCreate
                         v-show="activeProps"
                         :rule="propsForm.rule"
-                        v-model="propsForm.api"
+                        :api.sync="propsForm.api"
                         :option="propsForm.option"
-                        :value.sync="propsForm.value"
+                        v-model="propsForm.value"
                         @change="propsChange"
                         @removeField="propsRemoveFiled"
                     ></FormCreate>
@@ -58,9 +58,9 @@
                     <FormCreate
                         v-show="showBaseRule"
                         :rule="validateForm.rule"
-                        v-model="validateForm.api"
+                        :api.sync="validateForm.api"
                         :option="validateForm.option"
-                        :value.sync="validateForm.value"
+                        v-model="validateForm.value"
                         @change="validateChange"
                     ></FormCreate>
                 </TabPane>
@@ -74,7 +74,7 @@
 
 <script>
 import draggable from "vuedraggable";
-import { is, deepCopy, parseJson } from "@/utils";
+import { is, deepCopy, parseJson } from "@form-create/utils";
 import createMenu from "../config/menu";
 import ruleList from "../config/rule";
 import form from "../config/base/form";
@@ -225,12 +225,18 @@ export default {
                 }
 
                 if (rule.config) {
+                    // 折叠面板内部组件需要设置slot为“content”
+                    if (rule.type === "panel") {
+                        rule.children.forEach((c) => {
+                            c.slot = rule.config.config.slot;
+                        });
+                    }
                     delete rule.config.config;
                 }
 
                 if (rule.effect) {
                     delete rule.effect._fc;
-                    delete rule.effect._tabPane;
+                    delete rule.effect._name;
                 }
 
                 if (rule._control) {
@@ -271,6 +277,12 @@ export default {
                 }
 
                 if (config) {
+                    // 导入JSON时，删除掉panel的slot属性
+                    if (rule.type === "panel") {
+                        _children.forEach((c) => {
+                            c.slot && delete c.slot;
+                        });
+                    }
                     // DragTool或DragBox进行包裹
                     rule = this.makeRule(config, rule);
 

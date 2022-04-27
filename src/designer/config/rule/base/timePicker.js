@@ -1,4 +1,4 @@
-import { unique } from "@/utils";
+import { unique } from "@form-create/utils";
 
 const label = "时间选择器";
 const name = "timePicker";

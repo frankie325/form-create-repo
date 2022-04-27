@@ -1,7 +1,7 @@
-import { extend, toCase, is } from "@/utils";
+import { extend, toCase, is } from "@form-create/utils";
 import BaseParser from "../factory/parser";
 import { invoke } from "../frame/utils";
-import { $del } from "@/utils/modify";
+import { $del } from "@form-create/utils/modify";
 export default function useContext(Handle) {
     extend(Handle.prototype, {
         getCtx(id) {

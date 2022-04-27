@@ -1,5 +1,5 @@
-import { extend, is, toArray } from "@/utils";
-import { invoke } from "@/core/frame/utils";
+import { extend, is, toArray } from "@form-create/utils";
+import { invoke } from "@form-create/core/frame/utils";
 
 function tidyBtnProp(btn, def) {
     if (is.Boolean(btn)) {

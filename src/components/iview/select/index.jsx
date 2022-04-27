@@ -1,4 +1,4 @@
-import { is } from "@/utils";
+import { is } from "@form-create/utils";
 
 const NAME = "fcSelect";
 

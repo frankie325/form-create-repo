@@ -1,4 +1,4 @@
-import { hasProperty } from "@/utils/type";
+import { hasProperty } from "@form-create/utils/type";
 
 const NAME = "fcGroup";
 const AddIcon = "md-add-circle";
@@ -294,9 +294,9 @@ export default {
                                     <Type
                                         key={key}
                                         on={{
-                                            "update:value": (formData) => this.formData(key, formData),
+                                            input: (formData) => this.formData(key, formData),
                                             "emit-event": (name, ...args) => this.emitEvent(name, args, index, key),
-                                            input: ($f) => this.add$f(index, key, $f),
+                                            "update:api": ($f) => this.add$f(index, key, $f),
                                         }}
                                         rule={rule}
                                         option={option}

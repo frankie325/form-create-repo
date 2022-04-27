@@ -1,4 +1,4 @@
-import { is, extend } from "@/utils";
+import { is, extend } from "@form-create/utils";
 import { invoke } from "../frame/utils";
 
 export default function useLifecycle(Handle) {

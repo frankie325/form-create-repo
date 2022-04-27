@@ -1,6 +1,6 @@
 import axios from "axios";
-import { is } from "@/utils";
-import { err } from "@/utils/console";
+import { is } from "@form-create/utils";
+import { err } from "@form-create/utils/console";
 
 const defaultConfig = {
     baseURL: "",

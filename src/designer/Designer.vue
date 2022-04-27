@@ -65,8 +65,8 @@ import "codemirror/addon/fold/comment-fold.js";
 // 括号匹配高亮提示功能
 import "codemirror/addon/edit/matchbrackets";
 
-import FormCreate from "@/iview";
-import { is } from "@/utils";
+import FormCreate from "@form-create/iview";
+import { is } from "@form-create/utils";
 import { deepParseFn } from "./utils";
 const TITLE = ["设置生成规则", "设置Option", "生成规则", "生成组件"];
 export default {

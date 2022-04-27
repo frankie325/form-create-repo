@@ -1,7 +1,7 @@
 import getConfig from "./config";
-import { extend, mergeProps, toArray } from "@/utils";
-import { parseValidate } from "@/core/frame/utils";
-import is, { hasProperty } from "@/utils/type";
+import { extend, mergeProps, toArray } from "@form-create/utils";
+import { parseValidate } from "@form-create/core/frame/utils";
+import is, { hasProperty } from "@form-create/utils/type";
 function isFalse(val) {
     return val === false;
 }

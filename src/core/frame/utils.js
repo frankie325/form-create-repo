@@ -1,5 +1,5 @@
-import { mergeProps, is } from "@/utils";
-import { logError, err } from "@/utils/console";
+import { mergeProps, is } from "@form-create/utils";
+import { logError, err } from "@form-create/utils/console";
 import { arrayAttrs, normalAttrs } from "./attrs";
 export function enumerable(value, writable) {
     return {

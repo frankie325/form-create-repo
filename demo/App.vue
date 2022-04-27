@@ -11,18 +11,18 @@
         <!-- <Tabs value="name1">
             <TabPane :label="item.name" :name="item.id" :index="index" v-for="(item, index) in tabs" :key="item.id">{{ item.name }}</TabPane>
         </Tabs> -->
-        <FormCreate
-            v-model="fApi"
+        <!-- <FormCreate
+            v-model="fValue"
             :rule="rule"
             :option="option"
-            :value.sync="fValue"
+            :api.sync="fApi"
             @created="created"
             @update="update"
             @input-field-on-change="emitChange"
             @emit-event="emitEvent"
         >
-        </FormCreate>
-        <Collapse>
+        </FormCreate> -->
+        <!-- <Collapse>
             <Panel name="1">
                 字段操作
                 <p slot="content">
@@ -70,8 +70,9 @@
                     <Button type="primary" @click="nextRefresh">自动重新渲染</Button>
                 </p>
             </Panel>
-        </Collapse>
+        </Collapse> -->
         <Designer />
+        <div id="fc"></div>
     </div>
 </template>
 
@@ -80,6 +81,12 @@ import methods from "./methods.js";
 import json from "./json.js";
 import Designer from "@/designer/Designer";
 import FormCreate from "@/iview";
+
+// 注册组件的别名
+FormCreate.componentAlias({
+    inp: "Input",
+});
+
 FormCreate.register({
     name: "str",
     components: ["input", "select"], //属性绑定的组件,不设置或者'*'默认为全部组件
@@ -256,10 +263,11 @@ export default {
             // this.$set(this.rule[1].props, "placement", "top");
             // this.rule[1].props.placement = "top";
             // this.placement = "top";
-            this.tabs.splice(1, 0, {
-                name: "标签3",
-                id: "3",
-            });
+            // this.tabs.splice(1, 0, {
+            //     name: "标签3",
+            //     id: "3",
+            // });
+            this.rule[0].children.splice(0, 1);
         },
     },
     updated() {
@@ -288,32 +296,21 @@ export default {
         //         ],
         //     },
         // ]);
+        // createFormCreate(
+        //     [
+        //         {
+        //             title: "输入框",
+        //             type: "input",
+        //             filed: "input-f",
+        //         },
+        //     ],
+        //     {
+        //         el: "#fc",
+        //     },
+        //     this
+        // );
     },
 };
-
-let str = "name";
-let obj = {};
-
-// Object.defineProperty(obj, "str", {
-//     get() {
-//         return str;
-//     },
-//     set(n) {
-//         str = n;
-//     },
-// });
-
-Object.defineProperties(obj, {
-    str: {
-        get() {
-            return str;
-        },
-        set(n) {
-            str = n;
-        },
-    },
-});
-let obj2 = { ...obj };
 </script>
 
 <style>

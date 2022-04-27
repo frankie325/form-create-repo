@@ -1,5 +1,5 @@
-import { extend, is, toArray } from "@/utils";
-import { err } from "@/utils/console";
+import { extend, is, toArray } from "@form-create/utils";
+import { err } from "@form-create/utils/console";
 
 // 根据传入的取值路径path，设置值到rule属性上
 function deepSet(data, path, val) {

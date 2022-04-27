@@ -1,5 +1,5 @@
-import is from "@/utils/type";
-import { parseFn } from "@/utils/json";
+import is from "@form-create/utils/type";
+import { parseFn } from "@form-create/utils/json";
 
 // 进行递归，解析形式为函数字符的值
 export const deepParseFn = function (target) {

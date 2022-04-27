@@ -1,4 +1,4 @@
-import { extend, unique, mergeProps } from "@/utils";
+import { extend, unique, mergeProps } from "@form-create/utils";
 
 //用来注册来自不同包的manager方法
 export function createManager(proto) {

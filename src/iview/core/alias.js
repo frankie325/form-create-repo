@@ -1,5 +1,5 @@
 export default {
-    button: "iButton",
+    button: "Button",
     icon: "Icon",
     slider: "Slider",
     rate: "Rate",

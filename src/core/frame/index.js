@@ -1,5 +1,5 @@
-import { extend, deepCopy, is, toCase, parseJson, toJson } from "@/utils";
-import { parseFn } from "@/utils/json";
+import { extend, deepCopy, is, toCase, parseJson, toJson } from "@form-create/utils";
+import { parseFn } from "@form-create/utils/json";
 import { mergeGlobal } from "./utils";
 
 import $FormCreate from "../components/formCreate";
@@ -96,7 +96,8 @@ export default function FormCreateFactory(config) {
             const h = new Handle(this);
             this.$handle = h;
             vm.$f = h.api;
-            vm.$emit("input", h.api);
+            // vm.$emit("input", h.api);
+            vm.$emit("update:api", h.api);
             vm.$on("hook:created", () => {
                 if (this.isSub()) {
                     this.unwatch = vm.$watch(
@@ -185,8 +186,44 @@ export default function FormCreateFactory(config) {
         return _vue.extend(fragment);
     }
 
-    function create() {
-        console.log("create方法");
+    function mountForm(rule, option) {
+        const $vm = new _vue({
+            data() {
+                return {
+                    rule: rule,
+                    option: option,
+                };
+            },
+            render(h) {
+                return h("FormCreate", { ref: "fc", props: this.$data });
+            },
+        });
+
+        $vm.$mount();
+        return $vm;
+    }
+
+    function getEl(opt) {
+        if (!opt.el) return window.document.body;
+        return is.Element(opt.el) ? opt.el : document.querySelector(opt.el);
+    }
+
+    // 函数调用方式
+    function create(rule, opt, parent) {
+        let $vm = mountForm(rule, opt || {});
+
+        const _this = $vm.$refs.fc;
+
+        // if (parent) {
+        //     $vm.$parent = parent;
+        //     parent.$children ? parent.$children.push($vm) : (parent.$children = [$vm]);
+        // }
+
+        const _opt = _this.formCreate.options;
+
+        getEl(_opt).appendChild($vm.$el);
+
+        return _this.formCreate.api();
     }
 
     function component(id, component) {

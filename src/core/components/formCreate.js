@@ -1,13 +1,13 @@
-import { extend } from "@/utils";
+import { extend } from "@form-create/utils";
 
 const Name = "FormCreate";
 
 export default function $FormCreate(FormCreate) {
     return {
         name: Name,
-        model: {
-            prop: "api",
-        },
+        // model: {
+        //     prop: "api",
+        // },
         // 注入参数，子表单使用
         provide() {
             return {
@@ -86,7 +86,9 @@ export default function $FormCreate(FormCreate) {
             _updateValue(value) {
                 if (this.destroyed) return;
                 this.updateValue = JSON.stringify(value);
-                this.$emit("update:value", value);
+                // this.$emit("update:value", value);
+                this.$emit("input", value);
+                
             },
         },
         updated() {

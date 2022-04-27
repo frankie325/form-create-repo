@@ -1,5 +1,5 @@
-import { extend, is, mergeProps } from "@/utils";
-import { hasProperty } from "@/utils/type";
+import { extend, is, mergeProps } from "@form-create/utils";
+import { hasProperty } from "@form-create/utils/type";
 
 export default function useEffect(Handle) {
     extend(Handle.prototype, {

@@ -14,7 +14,7 @@
 
 <script>
 import CodeMirror from "codemirror/lib/codemirror";
-import { toJson } from "@/utils";
+import { toJson } from "@form-create/utils";
 import { deepParseFn } from "../utils";
 
 export default {

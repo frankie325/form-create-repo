@@ -1,4 +1,4 @@
-import FormCreateFactory from "@/core";
+import FormCreateFactory from "@form-create/core";
 import manager from "./manager";
 import alias from "./alias";
 import parsers from "../parsers";

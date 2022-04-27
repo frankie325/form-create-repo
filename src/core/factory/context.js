@@ -1,4 +1,4 @@
-import { extend, unique, toCase, deepCopy, mergeProps } from "@/utils";
+import { extend, unique, toCase, deepCopy, mergeProps } from "@form-create/utils";
 import { enumerable } from "../frame/utils";
 function bind(ctx) {
     // 为rule或者maker实例添加__fc__属性，为ctx实例

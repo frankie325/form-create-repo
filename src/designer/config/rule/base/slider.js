@@ -1,5 +1,5 @@
-import { unique } from "@/utils";
-import { is } from "@/utils";
+import { unique } from "@form-create/utils";
+import { is } from "@form-create/utils";
 const label = "滑块";
 const name = "slider";
 

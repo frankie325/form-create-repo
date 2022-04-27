@@ -40,6 +40,7 @@ module.exports = {
             // system: false,
             vue$: "vue/dist/vue.esm.js",
             "@": path.resolve(__dirname, "./src"),
+            "@form-create": path.resolve(__dirname, "./src"),
         },
     },
     devServer: {

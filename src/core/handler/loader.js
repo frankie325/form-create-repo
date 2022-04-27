@@ -2,10 +2,10 @@ import { getRule, enumerable, byCtx, invoke } from "../frame/utils";
 import RuleContext from "../factory/context";
 import { baseRule } from "../factory/creator";
 
-import { extend, deepCopy } from "@/utils";
-import is, { hasProperty } from "@/utils/type";
-import { $set } from "@/utils/modify";
-import { err } from "@/utils/console";
+import { extend, deepCopy } from "@form-create/utils";
+import is, { hasProperty } from "@form-create/utils/type";
+import { $set } from "@form-create/utils/modify";
+import { err } from "@form-create/utils/console";
 // import Vue from "vue";
 
 export default function useLoader(Handle) {
@@ -236,6 +236,7 @@ export default function useLoader(Handle) {
             } else {
                 this.bus.$emit("load-end");
                 this.syncForm();
+                this.$render.initOrgChildren(); //新增子rule时，重新更新
             }
 
             // 删除rule.children时需要清除缓存

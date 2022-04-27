@@ -1,4 +1,4 @@
-import { extend } from "@/utils";
+import { extend } from "@form-create/utils";
 import { funcProxy } from "../frame/utils";
 import useRender from "./render";
 import useCache from "./cache";

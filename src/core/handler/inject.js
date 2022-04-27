@@ -1,4 +1,4 @@
-import { extend, is, toLine } from "@/utils";
+import { extend, is, toLine } from "@form-create/utils";
 
 export default function useInject(Handle) {
     extend(Handle.prototype, {

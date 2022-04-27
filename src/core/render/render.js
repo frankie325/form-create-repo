@@ -1,7 +1,7 @@
-import { extend, is } from "@/utils";
-import { $set } from "@/utils/modify";
+import { extend, is } from "@form-create/utils";
+import { $set } from "@form-create/utils/modify";
 import { mergeRule } from "../frame/utils";
-import { lower } from "@/utils/toCase";
+import { lower } from "@form-create/utils/toCase";
 export default function useRender(Render) {
     extend(Render.prototype, {
         initRender() {
@@ -205,9 +205,22 @@ export default function useRender(Render) {
         renderChildren(ctx) {
             const { children } = ctx.rule,
                 orgChildren = this.orgChildren[ctx.id];
+            // debugger;
+            const notRm = (child) => {
+                return !is.String(child) && child.__fc__ && this.$handle.ctxs[child.__fc__.id];
+            };
+            // 通过this.splice删除rule.children时，删除相应的ctx实例
+            orgChildren.forEach((child, index) => {
+                if (!child) return;
+                if (children.indexOf(child) === -1 && notRm(child)) {
+                    this.$handle.rmCtx(child.__fc__);
+                    orgChildren.splice(index, 1);
+                }
+            });
+
             // console.log(children);
             return children.map((child) => {
-                if (!child) return; //无效的，直接返回
+                if (!child) return;
                 if (is.String(child)) return child;
                 if (child.__fc__) {
                     return this.renderCtx(child.__fc__, ctx);
