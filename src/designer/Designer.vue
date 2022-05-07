@@ -215,6 +215,10 @@ export default {
     background: #fff !important;
 }
 
+.fc-header > button {
+    margin-right: 8px;
+}
+
 .fc-struct-modal .CodeMirror {
     height: 400px;
 }

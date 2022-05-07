@@ -262,6 +262,13 @@ export default function json() {
                 },
             ],
         },
+        {
+            title: "树选择",
+            type: "treeSelect",
+            field: "treeSelect-field",
+            props:{
+            }
+        }
         // {
         //     title: "复选框",
         //     type: "checkbox",

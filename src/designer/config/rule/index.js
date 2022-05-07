@@ -11,8 +11,12 @@ import inputNumber from "./base/inputNumber";
 import rate from "./base/rate";
 import colorPicker from "./base/colorPicker";
 
+import treeSelect from './higher/treeSelect'
+
 import row from "./layout/row";
 import col from "./layout/col";
+import grid from "./layout/grid";
+import gridItem from "./layout/gridItem";
 import tabs from "./layout/tabs";
 import tabPane from "./layout/tabPane";
 import collapse from "./layout/collapse";
@@ -36,8 +40,11 @@ const ruleList = {
     [inputNumber.name]: inputNumber,
     [rate.name]: rate,
     [colorPicker.name]: colorPicker,
+    [treeSelect.name]: treeSelect,
     [row.name]: row,
     [col.name]: col,
+    [grid.name]: grid,
+    [gridItem.name]: gridItem,
     [tabs.name]: tabs,
     [tabPane.name]: tabPane,
     [collapse.name]: collapse,

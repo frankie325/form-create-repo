@@ -11,7 +11,10 @@ import inputNumber from "./rule/base/inputNumber";
 import rate from "./rule/base/rate";
 import colorPicker from "./rule/base/colorPicker";
 
+import treeSelect from "./rule/higher/treeSelect";
+
 import row from "./rule/layout/row";
+import grid from "./rule/layout/grid";
 import tabs from "./rule/layout/tabs";
 import collapse from "./rule/layout/collapse";
 import divider from "./rule/layout/divider";
@@ -28,14 +31,14 @@ export default function createMenu() {
             list: [input, select, radio, checkbox, _switch, slider, datePicker, timePicker, cascader, inputNumber, rate, colorPicker],
         },
         {
-            name: "custom",
+            name: "higher",
             title: "高级组件",
-            list: [],
+            list: [treeSelect],
         },
         {
             name: "layout",
             title: "布局组件",
-            list: [row, tabs, collapse, divider, space],
+            list: [row, grid, tabs, collapse, divider, space],
         },
         {
             name: "aide",

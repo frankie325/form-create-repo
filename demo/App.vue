@@ -11,7 +11,7 @@
         <!-- <Tabs value="name1">
             <TabPane :label="item.name" :name="item.id" :index="index" v-for="(item, index) in tabs" :key="item.id">{{ item.name }}</TabPane>
         </Tabs> -->
-        <!-- <FormCreate
+        <FormCreate
             v-model="fValue"
             :rule="rule"
             :option="option"
@@ -21,7 +21,7 @@
             @input-field-on-change="emitChange"
             @emit-event="emitEvent"
         >
-        </FormCreate> -->
+        </FormCreate>
         <!-- <Collapse>
             <Panel name="1">
                 字段操作
@@ -79,8 +79,8 @@
 <script>
 import methods from "./methods.js";
 import json from "./json.js";
-import Designer from "@/designer/Designer";
-import FormCreate from "@/iview";
+import Designer from "@form-create/designer/Designer";
+import FormCreate from "@form-create/iview";
 
 // 注册组件的别名
 FormCreate.componentAlias({

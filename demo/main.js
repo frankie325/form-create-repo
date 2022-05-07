@@ -1,8 +1,16 @@
 import Vue from "vue";
 import App from "./App.vue";
 import ViewUI from "view-design";
+import ViewUIPro from "../lib/iview-pro/iview-pro.min.js";
+
 import "view-design/dist/styles/iview.css";
+import "../lib/iview-pro/iview-pro.css";
+
 Vue.use(ViewUI, {
+    transfer: true,
+});
+
+Vue.use(ViewUIPro, {
     transfer: true,
 });
 
@@ -11,23 +19,22 @@ import FcDesigner from "@/designer";
 
 Vue.use(FormCreate, {
     form: {
-        // clearable: true,
         // inline: true,
         // labelWidth: 200,
         // labelPosition: "right",
     },
     global: {
-        // input: {
-        //     style: "color:blue",
-        //     props: {
-        //         clearable: false,
-        //         disabled: false,
-        //     },
-        //     // on: {
-        //     //     fun1: [() => {console.log("global")}],
-        //     //     fun2: () => {},
-        //     // },
-        // },
+        input: {
+            style: "color:blue",
+            props: {
+                // clearable: true,
+                disabled: false,
+            },
+            // on: {
+            //     fun1: [() => {console.log("global")}],
+            //     fun2: () => {},
+            // },
+        },
     },
     axios: {
         baseURL: "http://localhost:3000/",

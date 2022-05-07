@@ -1,4 +1,10 @@
-export default {
+const proAlias = {
+    treeSelect: "TreeSelect",
+    grid: "Grid",
+    gridItem: "GridItem",
+};
+
+const alias = {
     button: "Button",
     icon: "Icon",
     slider: "Slider",
@@ -25,4 +31,8 @@ export default {
     subForm: "fcSubForm",
     object: "fcSubForm",
     divider: "Divider",
+};
+export default {
+    ...alias,
+    ...proAlias,
 };
