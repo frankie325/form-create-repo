@@ -86,7 +86,7 @@ export default {
                 this.expandRule(d);
             }
         },
-        value(n) {
+        value(n, o) {
             n = n || [];
             let keys = Object.keys(this.cacheRule),
                 total = keys.length,
@@ -102,19 +102,22 @@ export default {
                 for (let i = 0; i < total; i++) {
                     this.setValue(keys[i], n[i]);
                 }
-            } else {
+            } else if (len > 0) {
                 //len > 0, 新数组长度比旧数组长度短
-                if (len > 0) {
-                    // 删除旧数组长的部分
-                    for (let i = 0; i < len; i++) {
-                        this.removeRule(keys[total - i - 1]);
-                    }
-                    this.subForm();
+                // 删除旧数组长的部分
+                for (let i = 0; i < len; i++) {
+                    this.removeRule(keys[total - i - 1]);
+                }
+                this.subForm();
 
-                    // 全部更新
-                    n.forEach((val, i) => {
-                        this.setValue(keys[i], n[i]);
-                    });
+                // 全部更新
+                n.forEach((val, i) => {
+                    this.setValue(keys[i], n[i]);
+                });
+            } else {
+                // 长度相等则直接更新
+                for (let i = 0; i < total; i++) {
+                    this.setValue(keys[i], n[i]);
                 }
             }
         },
@@ -128,7 +131,7 @@ export default {
                       submitBtn: false,
                       resetBtn: false,
                   };
-            
+
             option.formData = this.field ? { [this.field]: this._value(this.value[i]) } : this.value[i] || {};
             this.$set(this.cacheRule, ++this.len, { rule, option });
             if (emit) {

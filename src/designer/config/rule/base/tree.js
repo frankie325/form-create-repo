@@ -1,12 +1,12 @@
 import { unique } from "@form-create/utils";
-import { treeSelect, request } from "../../default";
+import { tree, request } from "../../default";
 
-const label = "树选择";
-const name = "treeSelect";
+const label = "树形控件";
+const name = "tree";
 
 export default {
     customIcon: true,
-    icon: "icon-treeSelect",
+    icon: "icon-tree",
     label,
     name,
     rule() {
@@ -15,8 +15,8 @@ export default {
             title: label,
             field: unique(),
             props: {
-                data: treeSelect(),
-                placeholder: "请选择...",
+                data: tree(),
+                selectNode: true,
             },
         };
     },
@@ -44,26 +44,46 @@ export default {
                 },
             },
             {
-                title: "占位文本",
-                type: "input",
-                field: "placeholder",
-            },
-            {
                 title: "是否支持多选",
                 type: "switch",
                 field: "multiple",
+            },
+            {
+                title: "是否显示多选框",
+                type: "switch",
+                field: "showCheckbox",
                 control: [
                     {
                         value: true,
                         rule: [
                             {
-                                title: "是否显示多选框",
+                                title: "父子节点之间是否相互关联",
                                 type: "switch",
-                                field: "showCheckbox",
+                                field: "checkStrictly",
+                            },
+                            {
+                                title: "点击节点是否选中多选框",
+                                type: "switch",
+                                field: "checkDirectly",
                             },
                         ],
                     },
                 ],
+            },
+            {
+                title: "没有数据时的提示",
+                type: "input",
+                field: "emptyText",
+            },
+            {
+                title: "是否能够选中节点",
+                type: "switch",
+                field: "selectNode",
+            },
+            {
+                title: "点击节点是否展开",
+                type: "switch",
+                field: "expandNode",
             },
         ];
     },

@@ -15,7 +15,6 @@ export default {
             field: unique(),
             props: {},
             options: options(),
-            request: request(),
         };
     },
     props() {
@@ -35,6 +34,7 @@ export default {
                 type: "struct",
                 field: "request",
                 props: {
+                    defaultValue: request(),
                     validate(val) {
                         if (!Array.isArray(val) && !is.Object(val)) return "请求数据必须为数组或者对象";
                     },

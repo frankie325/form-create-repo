@@ -80,6 +80,8 @@ export default function Api(h) {
          */
         coverValue(formData) {
             h.deferSyncValue(() => {
+                let fields = api.fields()
+                // console.log(api.fields())
                 api.fields().forEach((key) => {
                     const ctxs = h.fieldCtx[key];
                     if (!ctxs) return (h.appendData[key] = formData[key]);

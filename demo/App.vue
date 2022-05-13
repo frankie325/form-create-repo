@@ -22,7 +22,7 @@
             @emit-event="emitEvent"
         >
         </FormCreate>
-        <!-- <Collapse>
+        <Collapse>
             <Panel name="1">
                 字段操作
                 <p slot="content">
@@ -70,7 +70,7 @@
                     <Button type="primary" @click="nextRefresh">自动重新渲染</Button>
                 </p>
             </Panel>
-        </Collapse> -->
+        </Collapse>
         <Designer />
         <div id="fc"></div>
     </div>
@@ -79,7 +79,7 @@
 <script>
 import methods from "./methods.js";
 import json from "./json.js";
-import Designer from "@form-create/designer/Designer";
+import Designer from "./Designer";
 import FormCreate from "@form-create/iview";
 
 // 注册组件的别名
@@ -267,7 +267,9 @@ export default {
             //     name: "标签3",
             //     id: "3",
             // });
-            this.rule[0].children.splice(0, 1);
+            // this.rule[0].children.splice(0, 1);
+            // debugger
+            // this.rule[3].value = ["1-1-1"];
         },
     },
     updated() {

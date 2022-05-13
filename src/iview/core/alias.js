@@ -1,5 +1,6 @@
 const proAlias = {
     treeSelect: "TreeSelect",
+    city: "City",
     grid: "Grid",
     gridItem: "GridItem",
 };
@@ -22,7 +23,7 @@ const alias = {
     input: "Input",
     formItem: "FormItem",
     form: "Form",
-    frame: "fcFrame",
+    // frame: "fcFrame",
     col: "Col",
     row: "Row",
     tree: "fcTree",

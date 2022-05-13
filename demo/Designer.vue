@@ -67,7 +67,8 @@ import "codemirror/addon/edit/matchbrackets";
 
 import FormCreate from "@form-create/iview";
 import { is } from "@form-create/utils";
-import { deepParseFn } from "./utils";
+import { deepParseFn } from "@form-create/designer/utils";
+
 const TITLE = ["设置生成规则", "设置Option", "生成规则", "生成组件"];
 export default {
     name: "Designer",
@@ -228,6 +229,6 @@ export default {
 }
 
 .CodeMirror-lint-tooltip {
-    z-index: 2021 !important;
+    z-index: 2022 !important;
 }
 </style>

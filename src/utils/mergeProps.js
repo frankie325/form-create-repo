@@ -1,37 +1,3 @@
-/*
-    合并option配置和rule选项，都要用到该方法
-    不能简单的就用Object.assign合并
-    需要考虑的配置项的优先级，全局 > 用户 > 默认
-    比如全局设置为
-    {
-        form: {
-            inline: true,
-        }
-    }
-    用户设置为
-    {
-        form: {
-            labelWidth: "100"
-            inline: false,
-        }
-    }
-    如果直接简单的拷贝合并 Object.assign(用户的, 全局的)
-    form属性会直接覆盖变成
-    {
-        form: {
-            inline: true,
-        }
-    }
-    我们并不期待这样，而是应该
-    {
-        form: {
-            inline: true,
-            labelWidth: "100"
-            inline: false,
-        }
-    }
-*/
-
 const rule = {
     title: "xxx",
     field: "表单字段",
@@ -57,12 +23,11 @@ const rule = {
 };
 
 export const normalMerge = ["attrs", "props", "domProps", "scopedSlots"];
-// export const toObjectMerge = [];
 export const toArrayMerge = ["class", "style", "directives"];
 export const functionalMerge = ["on", "nativeOn"];
 
+// 合并option配置和rule选项，都要用到该方法
 export default function mergeProps(target = {}, options, mergeStrategy = {}) {
-    // console.log(target, options);
     const _normalMerge = [...normalMerge, ...(mergeStrategy["normal"] || [])];
     const _toArrayMerge = [...toArrayMerge, ...(mergeStrategy["array"] || [])];
     const _toFunctionalMerge = [...functionalMerge, ...(mergeStrategy["function"] || [])];

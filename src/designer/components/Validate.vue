@@ -1,10 +1,24 @@
 <template>
-    <FormCreate :rule="rule" :option="option" :value="formValue" @update:value="onInput"></FormCreate>
+    <FormCreate :rule="rule" :option="option" :value="formValue" @input="onInput"></FormCreate>
 </template>
 
 <script>
+export function setMessage(title, validate) {
+    validate.forEach((v) => {
+        if (v.mode) {
+            v.message = `${title}格式不正确`;
+            return;
+        }
+        if (v.required) {
+            v.message = `${title}不能为空`;
+        }
+    });
+    return validate;
+}
+
 export default {
     name: "Validate",
+    inject: ["designer"],
     props: {
         value: Array,
     },
@@ -75,18 +89,29 @@ export default {
                                                 type: "switch",
                                                 field: "required",
                                                 value: true,
+                                                inject: true,
+                                                on: {
+                                                    // "on-change": this.updateMessage,
+                                                },
                                             },
                                             {
                                                 title: "验证方式",
                                                 type: "select",
                                                 field: "mode",
                                                 value: "",
+                                                props: {
+                                                    clearable: true,
+                                                },
                                                 options: [
                                                     { value: "pattern", label: "正则表达式" },
                                                     { value: "min", label: "最小长度" },
                                                     { value: "max", label: "最大长度" },
                                                     { value: "len", label: "长度" },
                                                 ],
+                                                inject: true,
+                                                on: {
+                                                    // "on-change": this.updateMessage,
+                                                },
                                                 control: [
                                                     {
                                                         value: "pattern",
@@ -138,6 +163,19 @@ export default {
                                                 type: "input",
                                                 field: "message",
                                                 value: "",
+                                                // inject: true,
+                                                // on: {
+                                                //     "hook:mounted": ({ api }) => {
+                                                //         if (this.designer.activeRule) {
+                                                //             let msg = "请输入";
+                                                //             if (api.form.mode) {
+                                                //                 msg = "正确的";
+                                                //             }
+                                                //             api.setValue("message", msg + this.designer.activeRule.title);
+                                                //         }
+                                                //         // console.log("validate", inject);
+                                                //     },
+                                                // },
                                             },
                                         ],
                                     },
@@ -158,6 +196,7 @@ export default {
         onInput(formData) {
             let val = [];
             const { validate, type } = formData;
+
             if (type && validate.length === 0) {
                 return this.$emit("input", val);
             } else if (type) {
@@ -169,11 +208,11 @@ export default {
             this.$emit("input", val);
         },
         parseValue(n) {
+            let title = this.designer.activeRule.title;
             let val = {
-                validate: n ? [...n] : [],
+                validate: n ? [...setMessage(title, n)] : [],
                 type: n.length ? n[0].type : undefined,
             };
-            // val.validate.forEach
             return val;
         },
     },

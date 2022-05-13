@@ -41,10 +41,11 @@ export default function $FormCreate(FormCreate) {
             /*
                 当rule和value同时修改时，保证先触发rule的更新（监听顺序），重新reloadRule
                 否则当value修改引起control配置操作了顶层规则，会先_renderRule，导致无法reloadRule
-            */ 
+            */
             value: {
                 handler(n) {
                     if (JSON.stringify(n) === this.updateValue) return;
+                    this.formCreate.$handle.initAppendData();
                     this.$f.coverValue(n);
                 },
                 deep: true,
@@ -86,9 +87,7 @@ export default function $FormCreate(FormCreate) {
             _updateValue(value) {
                 if (this.destroyed) return;
                 this.updateValue = JSON.stringify(value);
-                // this.$emit("update:value", value);
                 this.$emit("input", value);
-                
             },
         },
         updated() {
@@ -101,10 +100,6 @@ export default function $FormCreate(FormCreate) {
                 extend(this.$options[k], this.formCreate.prop[k]);
             });
             this.$emit("beforeCreate", this.formCreate.api());
-        },
-        mounted() {
-            console.log("---------form-create实例---------", this);
-            console.log("----------FormCreate实例----------", this.formCreate);
         },
     };
 }

@@ -1,6 +1,6 @@
 <template>
     <Layout class="fc-center">
-        <Sider :width="260" class="fc-side-l" hide-trigger>
+        <Sider :width="270" class="fc-side-l" hide-trigger>
             <template v-for="(item, index) in menuList">
                 <div class="fc-group" :key="index">
                     <h4 class="fc-group-title">{{ item.title }}</h4>
@@ -74,12 +74,15 @@
 
 <script>
 import draggable from "vuedraggable";
-import { is, deepCopy, parseJson } from "@form-create/utils";
 import createMenu from "../config/menu";
 import ruleList from "../config/rule";
 import form from "../config/base/form";
 import field from "../config/base/field";
 import validate from "../config/base/validate";
+
+import { is, deepCopy, parseJson } from "@form-create/utils";
+import { setMessage } from "./Validate";
+
 export default {
     name: "FcDesigner",
     components: {
@@ -90,6 +93,7 @@ export default {
             fcx: {
                 active: null,
             },
+            designer: this,
         };
     },
     watch: {
@@ -187,6 +191,73 @@ export default {
         };
     },
     methods: {
+        // 添加左侧菜单
+        addMenu(config) {
+            if (!config.name || !config.list) {
+                return;
+            }
+            let flag = true;
+            this.menuList.forEach((menu, i) => {
+                if (menu.name === config.name) {
+                    this.$set(this.menuList, i, config);
+                    flag = false;
+                }
+            });
+            if (flag) {
+                this.menuList.push(config);
+            }
+        },
+        // 移除左侧菜单
+        removeMenu(name) {
+            this.menuList.forEach((menu, i) => {
+                if (menu.name === name) {
+                    this.menuList.splice(i, 1);
+                }
+            });
+        },
+        // 设置左侧菜单的list
+        setMenuItem(name, list) {
+            this.menuList.forEach((menu, i) => {
+                if (menu.name === name) {
+                    menu.list = list;
+                }
+            });
+        },
+        // 添加一个组件菜单到左侧菜单的list
+        appendMenuItem(name, item) {
+            this.menuList.forEach((menu) => {
+                if (name === menu.name) {
+                    menu.list.push(item);
+                }
+            });
+        },
+        // 移除左侧菜单list中的一个组件菜单
+        removeMenuItem(item) {
+            this.menuList.forEach((menu) => {
+                if (is.String(item)) {
+                    menu.list.forEach((l, i) => {
+                        if (l.name === item) {
+                            menu.list.splice(i, 1);
+                        }
+                    });
+                } else {
+                    let idx;
+                    if ((idx = menu.list.indexOf(item) > -1)) {
+                        menu.list.splice(idx, 1);
+                    }
+                }
+            });
+        },
+        // 添加自定义组件
+        addComponent(data) {
+            if (Array.isArray(data)) {
+                data.forEach((v) => {
+                    ruleList[v.name] = v;
+                });
+            } else {
+                ruleList[data.name] = data;
+            }
+        },
         getOption() {
             const option = deepCopy(this.form.value);
             delete option.submitBtn;
@@ -231,6 +302,7 @@ export default {
                             c.slot = rule.config.config.slot;
                         });
                     }
+
                     delete rule.config.config;
                 }
 
@@ -536,7 +608,6 @@ export default {
                     title: rule.title,
                     _control: rule._control,
                 };
-
                 this.validateForm.value = { validate: rule.validate ? [...rule.validate] : [] };
             }
         },
@@ -548,7 +619,11 @@ export default {
         },
         baseChange(field, value, origin, api, flag) {
             if (!flag && this.activeRule) {
-                // if(field)
+                if (field === "title") {
+                    // title变化更新验证的message
+                    this.validateForm.value.validate.length &&
+                        this.validateForm.api.setValue("validate", setMessage(value, this.validateForm.value.validate));
+                }
                 this.$set(this.activeRule, field, value);
             }
         },
@@ -586,6 +661,7 @@ export default {
 .fc-side-l {
     background: #fff;
     border: 1px solid #dedede;
+    overflow: auto;
 }
 
 .fc-side-r {

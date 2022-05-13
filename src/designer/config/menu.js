@@ -10,8 +10,10 @@ import cascader from "./rule/base/cascader";
 import inputNumber from "./rule/base/inputNumber";
 import rate from "./rule/base/rate";
 import colorPicker from "./rule/base/colorPicker";
+import tree from "./rule/base/tree";
 
 import treeSelect from "./rule/higher/treeSelect";
+import city from "./rule/higher/city";
 
 import row from "./rule/layout/row";
 import grid from "./rule/layout/grid";
@@ -28,12 +30,12 @@ export default function createMenu() {
         {
             name: "main",
             title: "基础组件",
-            list: [input, select, radio, checkbox, _switch, slider, datePicker, timePicker, cascader, inputNumber, rate, colorPicker],
+            list: [input, select, radio, checkbox, _switch, slider, datePicker, timePicker, cascader, inputNumber, rate, colorPicker, tree],
         },
         {
             name: "higher",
             title: "高级组件",
-            list: [treeSelect],
+            list: [treeSelect, city],
         },
         {
             name: "layout",

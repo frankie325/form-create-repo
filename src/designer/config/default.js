@@ -85,14 +85,13 @@ export function treeSelect() {
     return [
         {
             title: "parent1",
-            expand: true,
             value: "parent1",
+            expand: true,
             selected: false,
             checked: false,
             children: [
                 {
                     title: "parent 1-1",
-                    expand: true,
                     value: "parent1-1",
                     selected: false,
                     checked: false,
@@ -113,7 +112,6 @@ export function treeSelect() {
                 },
                 {
                     title: "parent 1-2",
-                    expand: true,
                     value: "parent1-2",
                     selected: false,
                     checked: false,
@@ -129,6 +127,48 @@ export function treeSelect() {
                             value: "leaf4",
                             selected: false,
                             checked: false,
+                        },
+                    ],
+                },
+            ],
+        },
+    ];
+}
+
+export function tree() {
+    return [
+        {
+            id: "1",
+            title: "parent 1",
+            expand: true,
+            selected: false,
+            checked: false,
+            children: [
+                {
+                    id: "1-1",
+                    title: "parent 1-1",
+                    children: [
+                        {
+                            id: "1-1-1",
+                            title: "leaf 1-1-1",
+                        },
+                        {
+                            id: "1-1-2",
+                            title: "leaf 1-1-2",
+                        },
+                    ],
+                },
+                {
+                    id: "1-2",
+                    title: "parent 1-2",
+                    children: [
+                        {
+                            id: "1-2-1",
+                            title: "leaf 1-2-1",
+                        },
+                        {
+                            id: "1-2-2",
+                            title: "leaf 1-2-2",
                         },
                     ],
                 },

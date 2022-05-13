@@ -262,13 +262,69 @@ export default function json() {
                 },
             ],
         },
+        // {
+        //     title: "树选择",
+        //     type: "treeSelect",
+        //     field: "treeSelect-field",
+        //     props: {},
+        // },
         {
-            title: "树选择",
-            type: "treeSelect",
-            field: "treeSelect-field",
-            props:{
-            }
-        }
+            title: "树",
+            type: "tree",
+            field: "tree-field",
+            value: [],
+            props: {
+                data: [
+                    {
+                        id: "1",
+                        title: "parent 1",
+                        children: [
+                            {
+                                id: "1-1",
+                                title: "parent 1-1",
+                                children: [
+                                    {
+                                        id: "1-1-1",
+                                        title: "leaf 1-1-1",
+                                    },
+                                    {
+                                        id: "1-1-2",
+                                        title: "leaf 1-1-2",
+                                    },
+                                ],
+                            },
+                            {
+                                id: "1-2",
+                                title: "parent 1-2",
+                                children: [
+                                    {
+                                        id: "1-2-1",
+                                        title: "leaf 1-2-1",
+                                    },
+                                    {
+                                        id: "1-2-2",
+                                        title: "leaf 1-2-2",
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+                // multiple: true,
+                // checkStrictly: true,
+                showCheckbox: true,
+                checkDirectly: true,
+                // selectNode: false, //作用为是否能够选中节点
+            },
+            on: {
+                "on-select-change": () => {
+                    console.log("on-select-change");
+                },
+                "on-check-change": () => {
+                    console.log("on-check-change");
+                },
+            },
+        },
         // {
         //     title: "复选框",
         //     type: "checkbox",

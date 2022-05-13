@@ -69,7 +69,7 @@ extend(Handle.prototype, {
         });
     },
     initAppendData() {
-        this.appendData = { ...(this.fc.options.formData || {}), ...(this.vm.value || {}), ...this.appendData };
+        this.appendData = { ...this.appendData, ...(this.fc.options.formData || {}), ...(this.vm.value || {}) };
     },
     init() {
         this.initAppendData();

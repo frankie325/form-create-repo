@@ -10,8 +10,10 @@ import cascader from "./base/cascader";
 import inputNumber from "./base/inputNumber";
 import rate from "./base/rate";
 import colorPicker from "./base/colorPicker";
+import tree from "./base/tree";
 
 import treeSelect from './higher/treeSelect'
+import city from './higher/city'
 
 import row from "./layout/row";
 import col from "./layout/col";
@@ -40,7 +42,9 @@ const ruleList = {
     [inputNumber.name]: inputNumber,
     [rate.name]: rate,
     [colorPicker.name]: colorPicker,
+    [tree.name]: tree,
     [treeSelect.name]: treeSelect,
+    [city.name]: city,
     [row.name]: row,
     [col.name]: col,
     [grid.name]: grid,
