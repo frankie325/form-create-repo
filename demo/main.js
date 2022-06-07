@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import ViewUI from "view-design";
+
 import ViewUIPro from "../lib/iview-pro/iview-pro.min.js";
 
 import "view-design/dist/styles/iview.css";
