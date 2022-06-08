@@ -4,68 +4,18 @@
   - [组件模式](#组件模式)
 - [教程](#教程)
   - [基础配置](#基础配置)
-    - [title](#title)
-    - [type](#type)
-    - [field](#field)
-    - [value](#value)
-    - [hidden](#hidden)
-    - [show](#show)
-    - [native](#native)
   - [扩展配置](#扩展配置)
-    - [col](#col)
-    - [wrap](#wrap)
-    - [options](#options)
-    - [request](#request)
-    - [control](#control)
-    - [children](#children)
-    - [inject](#inject)
-    - [emit](#emit)
-    - [nativeEmit](#nativeemit)
-    - [emitPrefix](#emitprefix)
   - [通用配置](#通用配置)
-    - [ref](#ref)
-    - [attrs](#attrs)
-    - [props](#props)
-    - [class](#class)
-    - [style](#style)
-    - [on](#on)
-    - [nativeOn](#nativeon)
-    - [directives](#directives)
-    - [scopedSlots](#scopedslots)
-    - [slot](#slot)
   - [全局配置](#全局配置)
-    - [form](#form)
-    - [global](#global)
-    - [formData](#formdata)
-    - [injectEvent](#injectevent)
-    - [submitBtn](#submitbtn)
-    - [resetBtn](#resetbtn)
-    - [onSubmit](#onsubmit)
-    - [onReload](#onreload)
   - [布局组件](#布局组件)
-    - [Row、Col 布局](#rowcol-布局)
   - [组件联动](#组件联动)
   - [事件注入](#事件注入)
   - [事件监听](#事件监听)
-    - [emit 监听事件](#emit-监听事件)
-    - [nativeEmit 监听原生事件](#nativeemit-监听原生事件)
   - [数据请求](#数据请求)
   - [自定义属性](#自定义属性)
   - [组件事件](#组件事件)
-    - [created](#created)
-    - [update](#update)
-    - [mounted](#mounted)
-    - [change](#change)
-    - [control](#control-1)
-    - [submit](#submit)
-    - [removeField](#removefield)
-    - [removeRule](#removerule)
-    - [emit-event](#emit-event)
 - [进阶使用](#进阶使用)
 - [Api](#api)
-
-
-
 
 # 动态表单生成器
 
@@ -147,97 +97,97 @@ export default {
 }
 ```
 
-### title
+> title
 
 -   类型：`String`
 -   说明：表单标签值，`wrap.label`优先级更高
 
-### type
+> type
 
 -   类型：`String`
 -   说明：设置生成的表单组件的名称，可以使用连字符、驼峰、小写
 
-### field
+> field
 
 -   类型：`String`
 -   说明：表单组件的字段名称
 
-### value
+> value
 
 -   类型：`Any`
 -   说明：表单组件字段的初始值
 
-### hidden
+> hidden
 
 -   类型：`Boolean`
 -   说明：设置组件是否生成
 
-### show
+> show
 
 -   类型：`Boolean`
 -   说明：设置组件是否显示，通过 `display:none` 进行隐藏
 
-### native
+> native
 
 -   类型：`Boolean`
 -   说明：设置是否使用 `FormItem` 包裹表单组件，默认会包裹
--   ### className
+    > className
 -   类型：`String`
 -   说明：往 `FormItem` 设置 class 名称
 
 ## 扩展配置
 
-### col
+> col
 
 -   类型：`Object`
 -   说明：设置 `COl` 组件的属性  
     [布局组件说明](#布局组件)
 
-### wrap
+> wrap
 
 -   类型：`Object`
 -   说明：设置 `FormItem` 组件的属性
 
-### options
+> options
 
 -   类型：`Array`
 -   说明：设置`radio`, `select`, `checkbox` 等组件 option 选择项
 
-### request
+> request
 
 -   类型：`Object | Array<Object>`
 -   说明：请求接口数据，并设置到规则中的属性
     [数据请求说明](#数据请求)
 
-### control
+> control
 
 -   类型：`Object | Array`
 -   说明：设置组件联动  
     [组件联动说明](#组件联动)
 
-### children
+> children
 
 -   类型：`Array<rule | string>`
 -   说明：设置父组件的插槽，默认为 default，可配合 slot 使用
 
-### inject
+> inject
 
 -   类型：`Boolean | Any`
 -   说明：是否开启向事件中注入参数  
     [事件注入](#事件注入)
 
-### emit
+> emit
 
 -   类型：`Array`
 -   说明：使用 `emit` 方式触发事件  
     [emit 说明](#emit监听事件)
 
-### nativeEmit
+> nativeEmit
 
 -   类型：`Array`
 -   说明：使用 `nativeEmit` 方式触发原生事件
 
-### emitPrefix
+> emitPrefix
 
 -   类型：`String`
 -   说明：会为 emit 事件添加前缀  
@@ -249,48 +199,51 @@ export default {
 
 ```js
 export default {
-    data(){
+    data() {
         return {
-            rule:[
+            rule: [
                 {
                     title: "姓名",
                     type: "input",
                     field: "name",
                     value: "xxx",
                     ref: "inputRef",
-                    props: { //表单组件上传递的props
-                        size: "large"
+                    props: {
+                        //表单组件上传递的props
+                        size: "large",
                     },
-                    style:{
+                    style: {
                         color: "red",
                     },
                     on: {
-                        "on-change": ()=> {}
-                    }
-                }
+                        "on-change": () => {},
+                    },
+                },
             ],
-}
+        };
+    },
+};
 ```
 
-### ref
+> ref
 
-### attrs
+> attrs
 
-### props
+> props
 
-### class
+> class
 
-### style
+> style
 
-### on
+> on
 
-### nativeOn
+> nativeOn
 
-### directives
+> directives
 
-### scopedSlots
+> scopedSlots
 
-### slot
+> slot
 
 ## 全局配置
 
@@ -322,7 +275,7 @@ export default {
 }
 ```
 
-### form
+> form
 
 设置 Form 组件的属性: `Object`
 
@@ -349,7 +302,7 @@ let form = {
 };
 ```
 
-### global
+> global
 
 设置表单组件的全局配置: `Object`
 
@@ -376,16 +329,16 @@ export default {
 }
 ```
 
-### formData
+> formData
 
 设置表单组件初始值: `Object`，优先级大于`rule.value`
 
-### injectEvent
+> injectEvent
 
 所有表单组件事件都会开启事件注入: `Boolean | Any`  
 [事件注入](#事件注入)
 
-### submitBtn
+> submitBtn
 
 设置提交按钮：`Boolean | Object`
 
@@ -412,7 +365,7 @@ export default {
 }
 ```
 
-### resetBtn
+> resetBtn
 
 设置重置按钮：`Boolean | Object`，默认为隐藏
 
@@ -437,15 +390,15 @@ export default {
 }
 ```
 
-### onSubmit
+> onSubmit
 
 设置表单提交的回调函数
 
-### onReload
+> onReload
 
 ## 布局组件
 
-### Row、Col 布局
+> Row、Col 布局
 
 ```js
 export default {
@@ -583,7 +536,7 @@ export default {
 
 ## 事件监听
 
-### emit 监听事件
+> emit 监听事件
 
 设置 `emit` 可监听组件内抛出的事件：`Array<String> | Array<Object>`
 
@@ -644,7 +597,7 @@ export default {
 };
 ```
 
-### nativeEmit 监听原生事件
+> nativeEmit 监听原生事件
 
 设置 `emit` 可监听组件内抛出的原生事件：`Array<String> | Array<Object>`，用法与 `emit` 一致，事件名称为`native-${field}-${eventName}`
 
@@ -799,25 +752,25 @@ export default {
 };
 ```
 
-### created
+> created
 
 -   说明：对 `rules` 的处理完成后触发
 -   参数：
     -   fApi：api 接口
 
-### update
+> update
 
 -   说明：`rules` 发生变化时触发
 -   参数：
     -   fApi：api 接口
 
-### mounted
+> mounted
 
 -   说明：表单首次完成渲染时触发
 -   参数：
     -   fApi：api 接口
 
-### change
+> change
 
 -   说明：表单组件值变化时触发
 -   参数：
@@ -827,21 +780,21 @@ export default {
     -   fApi: api 接口
     -   setFlag：为 true 说明是用户通过代码修改 value 值，false 为操作组件修改
 
-### control
+> control
 
 -   说明：组件联动的 `control` 配置生效或失效时触发
 -   参数：
     -   rule：组件的 rule 规则
     -   fApi: api 接口
 
-### submit
+> submit
 
 -   说明：点击表单提交按钮或者通过调用`api.submit()`没有传递回调时触发
 -   参数：
     -   formData：表单数据
     -   fApi: api 接口
 
-### removeField
+> removeField
 
 -   说明：移除表单组件时触发，只有定义了 `rule.field` 属性才会触发
 -   参数：
@@ -849,14 +802,14 @@ export default {
     -   rule: 组件的 rule 规则
     -   fApi: api 接口
 
-### removeRule
+> removeRule
 
 -   说明：移除表单组件或移除规则时触发
 -   参数：
     -   rule: 组件的 rule 规则
     -   fApi: api 接口
 
-### emit-event
+> emit-event
 
 -   说明：在组件的`emit`事件触发时触发
 -   参数：
