@@ -1,4 +1,3 @@
-- [动态表单生成器](#动态表单生成器)
 - [指南](#指南)
   - [引入](#引入)
   - [组件模式](#组件模式)
@@ -17,9 +16,12 @@
 - [进阶使用](#进阶使用)
 - [Api](#api)
 
-# 动态表单生成器
 
-本仓库的实现参考了 form-create 动态表单，根据公司需求在功能上做了一些修改，并对部分源码进行了注释，帮助有需要理解 form-create 源码的同学，如果想要使用完整的功能，请使用[form-create](https://github.com/xaboy/form-create)
+ <center>✨✨✨**动态表单生成器**✨✨✨</center>
+ 
+***
+
+本仓库的实现参考了 form-create 动态表单，进行了部分修改，仅限公司内部使用。如果想要使用完整的功能，请使用 👉[form-create](https://github.com/xaboy/form-create)
 
 # 指南
 
