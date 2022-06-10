@@ -7,7 +7,7 @@
             <Button type="success" @click="genTemplate">生成组件</Button>
         </Header>
         <fc-designer ref="designer"></fc-designer>
-        <Footer class="fc-side-footer">Footer</Footer>
+        <!-- <Footer class="fc-side-footer">Footer</Footer> -->
         <Modal class="fc-struct-modal" :width="700" v-model="showModal" :title="title[type]" :footer-hide="type > 1">
             <div ref="editor" v-if="showModal"></div>
             <div slot="footer">

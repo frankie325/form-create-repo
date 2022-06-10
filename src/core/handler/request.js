@@ -27,7 +27,7 @@ export default function useRequest(Handle) {
             request = toArray(request);
 
             request.forEach(async (r) => {
-                const altKeys = r.altKeys;
+                const altKeys = { ...r.altKeys };
                 const axios = r.axios;
                 const to = r.to || "options"; //默认设置的属性为rule.options
                 // const isNest = is.String(r.nestKey) || is.trueArray(r.nestKey);
@@ -75,11 +75,9 @@ export default function useRequest(Handle) {
 
                 if (nestKey && Array.isArray(item[nestKey[0]])) {
                     item[nestKey[1]] = this.alternativeKeys(item[nestKey[0]], nestKey, altKeys);
-                } else {
-                    item[nestKey[1]] = [];
+                    delete item[nestKey[0]];
                 }
 
-                delete item[nestKey[0]];
                 return item;
             });
         },
