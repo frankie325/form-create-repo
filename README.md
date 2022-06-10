@@ -1,3 +1,10 @@
+
+---
+
+<p align="center" style="font-size:24px;font-weight:bold"> ✨✨✨ 动态表单生成器 ✨✨✨ </p>
+
+---
+
 - [指南](#指南)
   * [引入](#引入)
   * [组件模式](#组件模式)
@@ -23,10 +30,6 @@
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
----
-<p align="center" style="font-size:24px;font-weight:bold"> ✨✨✨ 动态表单生成器 ✨✨✨ </p>
-
----
 
 本仓库的实现参考了 form-create 动态表单，进行了部分修改，仅限公司内部使用。如果想要使用完整的功能，请使用 👉[form-create](https://github.com/xaboy/form-create)
 
