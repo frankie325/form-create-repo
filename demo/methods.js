@@ -261,6 +261,9 @@ export default function method() {
                 },
             ];
         },
+        formReload(api){
+            console.log("formReload",api)
+        },
         changeRequest() {
             this.rule[1].request = {
                 to: "options",

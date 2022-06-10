@@ -62,9 +62,10 @@ export default {
                     const props = { ...option };
                     delete props.value;
                     const slot = props.slot;
+                    delete option.slot;
                     return (
                         <Checkbox disabled={this.disabled} border={this.border} {...{ props }} key={"" + index + props.label}>
-                            {slot ? (is.Function(slot) ? slot(h) : slot) : ""}
+                            {slot ? (is.Function(slot) ? slot(h, { ...option }) : slot) : ""}
                         </Checkbox>
                     );
                 })}

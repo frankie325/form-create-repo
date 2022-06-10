@@ -1,16 +1,5 @@
 <template>
     <div style="height: 100%">
-        <!-- <Slider range v-model="slider"></Slider> -->
-        <!-- <Radio v-model="radioValue" :label="1" :trueValue="'一'">金斑蝶</Radio> -->
-        <!-- true-value和false-value只在单独使用时有效 -->
-        <!-- <RadioGroup v-model="radioValue">
-            <Radio :label="1" :true-value="'一'">金斑蝶</Radio>
-            <Radio :label="2">爪哇犀牛</Radio>
-            <Radio :label="3">印度黑羚</Radio>
-        </RadioGroup> -->
-        <!-- <Tabs value="name1">
-            <TabPane :label="item.name" :name="item.id" :index="index" v-for="(item, index) in tabs" :key="item.id">{{ item.name }}</TabPane>
-        </Tabs> -->
         <FormCreate
             v-model="fValue"
             :rule="rule"
@@ -20,6 +9,7 @@
             @update="update"
             @input-field-on-change="emitChange"
             @emit-event="emitEvent"
+            @reload="formReload"
         >
         </FormCreate>
         <Collapse>
@@ -72,7 +62,7 @@
             </Panel>
         </Collapse>
         <Designer />
-        <div id="fc"></div>
+        <!-- <div id="fc"></div> -->
     </div>
 </template>
 

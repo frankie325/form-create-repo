@@ -427,19 +427,19 @@ export default {
         dragEnd           from
         */
         dragStart(children, evt) {
-            console.log("-------dragStart-----", children, evt);
+            // console.log("-------dragStart-----", children, evt);
             this.moveRule = children;
             this.added = false;
         },
         dragUnChoose(children, evt) {
-            console.log("-------dragUnChoose-----", children, evt);
+            // console.log("-------dragUnChoose-----", children, evt);
             this.addRule = {
                 children,
                 oldIndex: evt.oldIndex,
             };
         },
         dragAdd(children, evt) {
-            console.log("-------dragAdd-----", children, evt);
+            // console.log("-------dragAdd-----", children, evt);
             const newIndex = evt.newIndex;
             const menu = evt.item._underlying_vm_;
             if (!menu) {
@@ -456,11 +456,11 @@ export default {
             this.added = true;
         },
         dragEnd(children, evt) {
-            console.log("-------dragEnd-----", children, evt);
+            // console.log("-------dragEnd-----", children, evt);
             const newIndex = evt.newIndex;
             const oldIndex = evt.oldIndex;
             // debugger
-            console.log(this.moveRule === children);
+            // console.log(this.moveRule === children);
             //DragBox内元素的移动需要进行更新
             if (!this.added && newIndex !== oldIndex) {
                 const rule = this.moveRule.splice(oldIndex, 1);

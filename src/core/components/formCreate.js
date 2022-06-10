@@ -73,7 +73,6 @@ export default function $FormCreate(FormCreate) {
             };
         },
         render(h) {
-            console.log("form-create重新渲染");
             return this.formCreate.render();
         },
         methods: {
@@ -90,9 +89,9 @@ export default function $FormCreate(FormCreate) {
                 this.$emit("input", value);
             },
         },
-        updated() {
-            console.log("form-create执行updated钩子", this);
-        },
+        // updated() {
+        //     console.log("form-create执行updated钩子", this);
+        // },
         beforeCreate() {
             const { rule, option } = this.$options.propsData;
             this.formCreate = new FormCreate(this, rule, option);

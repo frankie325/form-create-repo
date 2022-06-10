@@ -1,6 +1,109 @@
 export default function json() {
     return [
         // {
+        //     type: "grid",
+        //     props: {
+        //         border: true,
+        //     },
+        //     children: [
+        //         {
+        //             type: "gridItem",
+        //             children: [
+        //                 {
+        //                     title: "输入框",
+        //                     type: "input",
+        //                     field: "inputField",
+        //                 },
+        //             ],
+        //         },
+        //     ],
+        // },
+        // {
+        //     type: "tabs",
+        //     props: {
+        //         value: "0",
+        //     },
+        //     children: [
+        //         {
+        //             type: "tabPane",
+        //             props: {
+        //                 label: "标签一",
+        //                 name: "0",
+        //             },
+        //             children: [
+        //                 {
+        //                     title: "输入框1",
+        //                     type: "input",
+        //                     field: "inputField",
+        //                 },
+        //             ],
+        //         },
+        //         {
+        //             type: "tabPane",
+        //             props: {
+        //                 label: "标签二",
+        //                 name: "1",
+        //             },
+        //             children: [
+        //                 {
+        //                     title: "输入框2",
+        //                     type: "input",
+        //                     field: "inputField2",
+        //                 },
+        //             ],
+        //         },
+        //     ],
+        // },
+        {
+            type: "collapse",
+            props: {
+                value: "0",
+            },
+            children: [
+                {
+                    type: "panel",
+                    props: {
+                        headContent: "折叠面板1",
+                        name: "0",
+                    },
+                    children: [
+                        {
+                            title: "输入框1",
+                            type: "input",
+                            field: "inputField",
+                            slot: "content",
+                        },
+                    ],
+                },
+                {
+                    type: "panel",
+                    props: {
+                        headContent: "折叠面板2",
+                        name: "1",
+                    },
+                    children: [
+                        {
+                            title: "输入框2",
+                            type: "input",
+                            field: "inputField2",
+                            slot: "content",
+                        },
+                    ],
+                },
+            ],
+        },
+        // {
+        //     type: "button",
+        //     children: [
+        //         {
+        //             type: "icon",
+        //             props: {
+        //                 class: "md-add",
+        //             },
+        //         },
+        //     ],
+        // },
+        // {
         //     title: "子表单1",
         //     type: "subForm",
         //     field: "sub-form1",
@@ -187,7 +290,7 @@ export default function json() {
                 {
                     label: "苹果",
                     value: "apple",
-                    slot(h) {
+                    slot(h, option) {
                         return [
                             h("span", "苹果"),
                             h("Icon", {
@@ -248,7 +351,8 @@ export default function json() {
                 {
                     label: "选项1",
                     value: 1,
-                    slot(h) {
+                    disabled: true,
+                    slot(h, option) {
                         return h("Icon", {
                             props: {
                                 type: "logo-apple",
@@ -262,6 +366,30 @@ export default function json() {
                 },
             ],
         },
+        // {
+        //     title: "单选框",
+        //     type: "checkbox",
+        //     field: "checkbox-field",
+        //     value: 1,
+        //     options: [
+        //         {
+        //             label: "选项1",
+        //             value: 1,
+        //             disabled: true,
+        //             slot(h, option) {
+        //                 return h("Icon", {
+        //                     props: {
+        //                         type: "logo-apple",
+        //                     },
+        //                 });
+        //             },
+        //         },
+        //         {
+        //             label: "选项2",
+        //             value: 2,
+        //         },
+        //     ],
+        // },
         // {
         //     title: "树选择",
         //     type: "treeSelect",
@@ -315,6 +443,30 @@ export default function json() {
                 showCheckbox: true,
                 checkDirectly: true,
                 // selectNode: false, //作用为是否能够选中节点
+            },
+            request: {
+                to: "props.data",
+                axios: {
+                    url: "/example",
+                    method: "get",
+                    params: {},
+                    data: {},
+                },
+                // to: "props.options",
+                parse: (res) => {
+                    // const a = "1";
+                    // a = 1;
+
+                    return res.data;
+                },
+                // 可以在parse中自己解析，则不用设置下面的配置了
+                nestKey: "items", //如果是嵌套结构的数据，则指定嵌套key会被替换，默认为children
+                // nestKey: ["items", "children"], //可以设置替换的key
+                // 替换返回数据中指定的的字段
+                altKeys: {
+                    label: "name",
+                    value: "age",
+                },
             },
             on: {
                 "on-select-change": () => {

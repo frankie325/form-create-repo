@@ -45,7 +45,6 @@ export default {
         },
         // 双向绑定的数据为数组id
         onInput(list) {
-            console.log("input", list);
             this.$emit(
                 "input",
                 list.map((node) => node.id).filter((node) => node)
