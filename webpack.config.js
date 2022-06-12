@@ -11,10 +11,6 @@ function resolvePath(relativePath) {
 
 const CommonConfig = {
     entry: "./demo/main.js",
-    output: {
-        filename: "./js/[name].[chunkhash:6].js",
-        path: resolvePath("./dist"),
-    },
     module: {
         rules: [
             {
@@ -65,9 +61,12 @@ const DevConfig = {
 
 const BuildConfig = {
     mode: "production",
-    plugins: [
-        new CleanWebpackPlugin(),
-    ],
+    output: {
+        publicPath: "/form-create/",
+        filename: "./js/[name].[chunkhash:6].js",
+        path: resolvePath("./dist"),
+    },
+    plugins: [new CleanWebpackPlugin()],
 };
 
 module.exports = (env) => {

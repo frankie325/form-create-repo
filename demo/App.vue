@@ -1,6 +1,6 @@
 <template>
     <div style="height: 100%">
-        <FormCreate
+        <!-- <FormCreate
             v-model="fValue"
             :rule="rule"
             :option="option"
@@ -60,7 +60,7 @@
                     <Button type="primary" @click="nextRefresh">自动重新渲染</Button>
                 </p>
             </Panel>
-        </Collapse>
+        </Collapse> -->
         <Designer />
         <!-- <div id="fc"></div> -->
     </div>
